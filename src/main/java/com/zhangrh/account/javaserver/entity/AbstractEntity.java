@@ -1,0 +1,51 @@
+package com.zhangrh.account.javaserver.entity;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
+/**
+ * AbstractEntity
+ */
+public abstract class AbstractEntity {
+  private long createAt;
+  private long updateAt;
+  private long deleteAt;
+
+  public long getDeleteAt() {
+    return deleteAt;
+  }
+
+  public void setDeleteAt(long deleteAt) {
+    this.deleteAt = deleteAt;
+  }
+
+  public long getUpdateAt() {
+    return updateAt;
+  }
+
+  public void setUpdateAt(long updateAt) {
+    this.updateAt = updateAt;
+  }
+
+  public long getCreateAt() {
+    return createAt;
+  }
+
+  public void setCreateAt(long createAt) {
+    this.createAt = createAt;
+  }
+
+
+  public ZonedDateTime getCreatedDateTime() {
+    return Instant.ofEpochMilli(this.createAt).atZone(ZoneId.systemDefault());
+  }
+
+  public ZonedDateTime getUpdateDateTime() {
+    return Instant.ofEpochMilli(this.updateAt).atZone(ZoneId.systemDefault());
+  }
+
+  public ZonedDateTime getDeleteDateTime() {
+    return Instant.ofEpochMilli(this.deleteAt).atZone(ZoneId.systemDefault());
+  }
+}
