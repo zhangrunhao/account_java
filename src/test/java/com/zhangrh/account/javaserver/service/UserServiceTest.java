@@ -17,6 +17,8 @@ public class UserServiceTest {
   @Test
   void test() {
     User user = userService.getUserById(1);
+    assertEquals("1", user.getUsersId());
+    assertEquals("1970-01-01 08:00:00.0", user.getCreateAt());
     assertEquals("zhangrhweb@163.com", user.getEmail());
   }
 }

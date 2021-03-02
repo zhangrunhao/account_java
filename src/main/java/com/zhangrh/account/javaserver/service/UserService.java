@@ -1,5 +1,7 @@
 package com.zhangrh.account.javaserver.service;
 
+import java.util.Map;
+
 import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.mapper.UserMapper;
 
@@ -10,12 +12,25 @@ import org.springframework.stereotype.Component;
 public class UserService {
   @Autowired
   UserMapper userMapper;
-
+  
   public User getUserById(long id) {
-    User user = userMapper.getById(id);
-    if (user == null) {
-      throw new RuntimeException("User not found by id");
-    }
+    return userMapper.getById(id);
+  }
+
+  public User register(String email, String password) {
+    User user = new User();
+    user.setEmail(email);
+    user.setPassword(password);
+    user.setCreateAt(System.currentTimeMillis());
+    userMapper.insert(user);
     return user;
+  }
+
+  public Map<String, Object> signin(String email, String password) {
+    User user = userMapper.getUserByEmail(email);
+    if (user != null && user.getPassword().equals(password)) {
+      return Map.of("User", user);
+    }
+    return Map.of("error", "SIGNIN_FAILED");
   }
 }
