@@ -1,40 +1,31 @@
 package com.zhangrh.account.javaserver.web;
 
-import java.util.Map;
-
 import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.service.UserService;
+import com.zhangrh.account.javaserver.util.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
   @Autowired
   UserService userService;
 
-  @PostMapping("/register")
-  public User doRegister(
-    @RequestParam("email") String email,
-    @RequestParam("password") String password
-  ) {
-    return userService.register(email, password);
-  }
-
   @PostMapping("/signin")
-  public Map<String, Object> doSignin(
+  public Result<Object> doSignin(
     @RequestBody User user
-    // @RequestParam("email") String email,
-    // @RequestParam("password") String password
   ) {
-    return userService.signin(user.getEmail(), user.getPassword());
+    Object data = userService.signin(user.getEmail(), user.getPassword()).get("User");
+    Result<Object> result = new Result<>();
+    result.setCode(200);
+    result.setSuccess(true);
+    result.setData(data);
+    result.setMsg("用户信息");
+    return result;
   }
-
 }

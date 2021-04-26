@@ -17,15 +17,6 @@ public class UserService {
     return userMapper.getById(id);
   }
 
-  public User register(String email, String password) {
-    User user = new User();
-    user.setEmail(email);
-    user.setPassword(password);
-    user.setCreateAt(System.currentTimeMillis());
-    userMapper.insert(user);
-    return user;
-  }
-
   public Map<String, Object> signin(String email, String password) {
     User user = userMapper.getUserByEmail(email);
     if (user != null && user.getPassword().equals(password)) {
