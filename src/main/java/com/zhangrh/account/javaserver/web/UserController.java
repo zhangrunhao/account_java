@@ -5,6 +5,7 @@ import com.zhangrh.account.javaserver.service.UserService;
 import com.zhangrh.account.javaserver.util.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,24 @@ public class UserController {
   public Result<Object> doSignin(
     @RequestBody User user
   ) {
-    Object data = userService.signin(user.getEmail(), user.getPassword()).get("User");
-    Result<Object> result = new Result<>();
-    result.setCode(200);
-    result.setSuccess(true);
-    result.setData(data);
-    result.setMsg("用户信息");
-    return result;
+    // Object data = userService.signin(user.getEmail(), user.getPassword()).get("User");
+    // Result<Object> result = new Result<>();
+    // result.setCode(200);
+    // result.setSuccess(true);
+    // result.setData(data);
+    // result.setMsg("用户信息");
+    // return result;
+    return null;
+  }
+
+  @GetMapping("/hello")
+  public Result<Object> doHello(
+    @RequestBody User user
+  ) {
+    System.out.println("aaa");
+    Object data = userService.loadUserByUsername(user.getEmail());
+    Result<Object> r = new Result<>();
+    r.setData(data);
+    return r;
   }
 }
