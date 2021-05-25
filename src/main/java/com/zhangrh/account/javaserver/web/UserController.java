@@ -20,6 +20,11 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @RequestMapping(value = "/hi", method = RequestMethod.POST)
+  public CommonResult<String> doHi() {
+    return CommonResult.success("hi");
+  }
+
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<User> doSignin(
