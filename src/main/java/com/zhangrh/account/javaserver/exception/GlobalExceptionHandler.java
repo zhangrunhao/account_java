@@ -1,30 +1,56 @@
 package com.zhangrh.account.javaserver.exception;
 
-import javax.servlet.http.HttpServletRequest;
+import com.zhangrh.account.javaserver.api.CommonResult;
 
-import com.zhangrh.account.javaserver.util.Result;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+/**
+ * 全局异常处理
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
-  /**
-   * 处理自定义异常
-   */
-  @ExceptionHandler(value = DefinitionException.class)
+  
   @ResponseBody
-  public Result<Object> bizExceptionHandler(HttpServletRequest request, DefinitionException e) {
-    return Result.defineError(e);
+  @ExceptionHandler(value = ApiException.class)
+  public CommonResult<Object> handle(ApiException e) {
+    if (e.getErrorCode() != null) {
+      return CommonResult.failed(e.getErrorCode());
+    }
+    return CommonResult.failed(e.getMessage());
   }
 
-
-  /**
-   * 处理其他异常
-   */
-  @ExceptionHandler(value = Exception.class)
   @ResponseBody
-  public Result<Object> exceptionHandler(HttpServletRequest req, Exception e) {
-    return Result.otherError(ErrorEnum.INTERNAL_SERVER_ERROR);
+  @ExceptionHandler(value = MethodArgumentNotValidException.class)
+  public CommonResult<Object> handleValidException(MethodArgumentNotValidException e){
+    BindingResult bindingResult = e.getBindingResult();
+    String message = null;
+    if (bindingResult.hasErrors()) {
+      FieldError fieldError = bindingResult.getFieldError();
+      if (fieldError != null) {
+        message = fieldError.getField() + fieldError.getDefaultMessage();
+      }
+    }
+    return CommonResult.validateFailed(message);
+  }
+
+  @ResponseBody
+  @ExceptionHandler(value = BindException.class)
+  public CommonResult<Object> handleValidException(BindException e) {
+    BindingResult bindingResult = e.getBindingResult();
+    String message = null;
+    if (bindingResult.hasErrors()){
+      FieldError fieldError = bindingResult.getFieldError();
+      if (fieldError != null) {
+        message = fieldError.getField() + fieldError.getDefaultMessage();
+      }
+    }
+    return CommonResult.validateFailed(message);
   }
 }
