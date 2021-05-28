@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class UserLoginParam {
+public class UserParam {
 
   @NotEmpty
   @Email

@@ -1,5 +1,7 @@
 package com.zhangrh.account.javaserver.service.impl;
 
+import java.util.Date;
+
 import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.UserMapper;
@@ -27,5 +29,22 @@ public class UserServiceImpl implements UserService {
     token = JwtTokenUtil.generateToken(user.getEmail());
     return token;
   }
-  
+
+  @Override
+  public User register(String email, String password) {
+    User user = new User();
+    if (userMapper.getUserByEmail(email) != null) {
+      Asserts.fail("邮箱已被注册");
+    }
+    try {
+      user.setEmail(email);
+      user.setPassword(password);
+      user.setCreateAt(new Date().getTime());
+      userMapper.insert(user);
+      return user;
+    } catch (Exception e) {
+      Asserts.fail("用户插入失败");
+    }
+    return null;
+  }
 }
