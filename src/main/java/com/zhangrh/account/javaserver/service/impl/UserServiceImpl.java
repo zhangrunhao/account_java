@@ -4,6 +4,7 @@ import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.UserMapper;
 import com.zhangrh.account.javaserver.service.UserService;
+import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,20 +15,17 @@ public class UserServiceImpl implements UserService {
   UserMapper userMapper;
 
   @Override
-  public User getUserById(long id) {
-    return userMapper.getById(id);
-  }
-
-  @Override
-  public User login(String email, String password) {
-    User user = null;
-    user = userMapper.getUserByEmail(email);
+  public String login(String email, String password) {
+    String token = null;
+    User user = userMapper.getUserByEmail(email);
     if (user == null) {
-      Asserts.fail("用户不存在");
-    } else if (!user.getPassword().equals(password)) {
-      Asserts.fail("密码错误");
+      Asserts.fail("用户名不存在");
     }
-    return user;
+    if (!user.getPassword().equals(password)) {
+      Asserts.fail("密码不正确");
+    }
+    token = JwtTokenUtil.generateToken(user.getEmail());
+    return token;
   }
   
 }

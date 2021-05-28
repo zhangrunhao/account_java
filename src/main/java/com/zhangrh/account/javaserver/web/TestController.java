@@ -1,18 +1,26 @@
 package com.zhangrh.account.javaserver.web;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
+import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
+
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api/test")
 @RestController
+@RequestMapping("/api/test")
 public class TestController {
 
-  @PostMapping("/session")
-  @ResponseBody
-  public String doSession() {
-    return "测试";
+  @RequestMapping(value = "/getToken", method = RequestMethod.GET)
+  public String doGetToken() {
+    return JwtTokenUtil.generateToken("zhangrhweb@163.com");
+  }
+
+  @RequestMapping(value = "/verifyToken", method = RequestMethod.POST)
+  public boolean doVerifyToken(
+    @RequestParam String token
+  ) {
+    return JwtTokenUtil.verifyToken(token);
   }
 }
