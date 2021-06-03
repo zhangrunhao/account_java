@@ -44,6 +44,11 @@ public class JwtTokenUtil {
     return token;
   }
 
+  /**
+   * 验证jwt token
+   * @param token
+   * @return
+   */
   public static boolean verifyToken(String token) {
     try {
       Algorithm algorithm = Algorithm.HMAC512(KEY_SECRET);
@@ -52,7 +57,7 @@ public class JwtTokenUtil {
         .build();
       DecodedJWT jwt = verifier.verify(token);
       Map<String, Claim> claims = jwt.getClaims();
-      if (claims == null) Asserts.fail("claims 为空");
+      if (claims == null) return false;
       return true;
     } catch (Exception e) {
       return false;
