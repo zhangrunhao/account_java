@@ -55,13 +55,13 @@ public class UserController {
     @Validated @RequestBody UserParam userLoginParam
   ) {
     String token = null;
-    try {
-      token = userService.login(userLoginParam.getEmail(), userLoginParam.getPassword());
-    } catch (Exception e) {
-      return CommonResult.failed(e.getMessage());
+    token = userService.login(userLoginParam.getEmail(), userLoginParam.getPassword());
+    if (token == null) {
+      return CommonResult.failed("用户名不存在或密码错误");    
+    } else {
+      Map<String, Object> map = new HashMap<>();
+      map.put("token", token);
+      return CommonResult.success(map);
     }
-    Map<String, Object> map = new HashMap<>();
-    map.put("token", token);
-    return CommonResult.success(map);
   }
 }
