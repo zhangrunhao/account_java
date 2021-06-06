@@ -1,7 +1,10 @@
 package com.zhangrh.account.javaserver.web;
 
+import java.util.List;
+
 import com.zhangrh.account.javaserver.api.CommonResult;
 import com.zhangrh.account.javaserver.dto.AccountAddParam;
+import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.service.AccountService;
 import com.zhangrh.account.javaserver.service.UserService;
@@ -47,6 +50,21 @@ public class AccountController {
       return CommonResult.success("账户创建成功");
     } else {
       return CommonResult.failed("创建失败");
+    }
+  }
+
+  @RequestMapping(value = "/list", method = RequestMethod.GET)
+  @ResponseBody
+  public CommonResult<List<Account>> doList(
+    @RequestHeader(value = "Authorization") String token
+  ) {
+    String email = JwtTokenUtil.getJwtValue(token, "email");
+    User user = userService.getUserFromEmail(email);
+    List<Account> list = accountService.list(user);
+    if (list == null) {
+      return CommonResult.failed("查询账户失败");
+    } else {
+      return CommonResult.success(list);
     }
   }
 }

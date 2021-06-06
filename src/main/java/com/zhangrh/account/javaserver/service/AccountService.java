@@ -1,8 +1,9 @@
 package com.zhangrh.account.javaserver.service;
 
-import java.util.Map;
+import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
+import com.zhangrh.account.javaserver.entity.User;
 
 public interface AccountService {
   /**
@@ -21,7 +22,7 @@ public interface AccountService {
    * @param user_id 用户id
    * @return 用户列表
    */
-  Map<String, Account> list(long user_id);
+  List<Account> list(User user);
 
   /**
    * 账户更新
@@ -39,5 +40,5 @@ public interface AccountService {
    * @param account_id 账户id
    * @return 是否删除成功
    */
-  boolean delete(long account_id);
+  boolean delete(User user);
 }

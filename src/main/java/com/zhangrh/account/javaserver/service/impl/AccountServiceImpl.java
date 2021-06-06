@@ -1,9 +1,10 @@
 package com.zhangrh.account.javaserver.service.impl;
 
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
+import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.mapper.AccountMapper;
 import com.zhangrh.account.javaserver.service.AccountService;
 
@@ -38,9 +39,15 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Map<String, Account> list(long user_id) {
-    // TODO Auto-generated method stub
-    return null;
+  public List<Account> list(User user) {
+    List<Account> list = null;
+    try {
+      list = accountMapper.selectList(user);
+    } catch (Exception e) {
+      LOGGER.warn("查询账户列表出错: " + e.getMessage());
+      return null;
+    }
+    return list;
   }
 
   @Override
@@ -50,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public boolean delete(long account_id) {
+  public boolean delete(User user) {
     // TODO Auto-generated method stub
     return false;
   }
