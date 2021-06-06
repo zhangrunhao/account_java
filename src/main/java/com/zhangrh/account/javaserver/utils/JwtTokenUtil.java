@@ -13,10 +13,14 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zhangrh.account.javaserver.exception.Asserts;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * JwtTokenUtil
  */
 public class JwtTokenUtil {
+  private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
 
   private static String KEY_SECRET = "secret"; // 服务端密钥
   /**
@@ -51,17 +55,40 @@ public class JwtTokenUtil {
    */
   public static boolean verifyToken(String token) {
     try {
-      Algorithm algorithm = Algorithm.HMAC512(KEY_SECRET);
-      JWTVerifier verifier = JWT.require(algorithm)
-        .withIssuer("SERVICE")
-        .build();
-      DecodedJWT jwt = verifier.verify(token);
-      Map<String, Claim> claims = jwt.getClaims();
+      Map<String, Claim> claims = parseToken(token);
       if (claims == null) return false;
       return true;
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public static Map<String, Claim> parseToken(String token) {
+    Map<String, Claim> claims = null;
+    try {
+      Algorithm algorithm = Algorithm.HMAC512(KEY_SECRET);
+      JWTVerifier verifier = JWT.require(algorithm)
+        .withIssuer("SERVICE")
+        .build();
+      DecodedJWT jwt = verifier.verify(token);
+      claims = jwt.getClaims();
+    } catch (Exception e) {
+      LOGGER.warn("token 解析失败: " + e.getMessage());
+      return null;
+    }
+    return claims;
+  }
+
+  /**
+   * 获取token参数
+   * @param token
+   * @return
+   */
+  public static String getJwtValue(String token, String key) {
+    Map<String, Claim> claims = parseToken(token);
+    if (claims == null) return null;
+    Claim claim = claims.get(key);
+    return claim.asString();
   }
 
   /**
