@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class UserParam {
 
-  @NotEmpty
-  @Email
+  @NotEmpty(message = "用户邮箱不可为空")
+  @Email(message = "邮箱格式不正确")
   private String email;
 
-  @NotEmpty
+  @NotEmpty(message = "用户密码不可为空")
   private String password;
 
   public String getEmail() {
