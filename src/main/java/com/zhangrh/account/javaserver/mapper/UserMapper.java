@@ -5,6 +5,8 @@ import com.zhangrh.account.javaserver.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 public interface UserMapper {
@@ -12,6 +14,9 @@ public interface UserMapper {
   User getById(@Param("id") long id);
 
   @Select("SELECT * FROM users WHERE email = #{email}")
+  @Results({
+    @Result(property = "usersId", column = "users_id")
+  })
   User getUserByEmail(@Param("email") String email);
 
   @Options(useGeneratedKeys = true, keyProperty = "usersId", keyColumn = "users_id")

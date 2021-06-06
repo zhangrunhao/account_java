@@ -23,12 +23,6 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @RequestMapping(value = "/hi", method = RequestMethod.POST)
-  @ResponseBody
-  public CommonResult<String> doHi() {
-    return CommonResult.success("测试");
-  }
-
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<User> doRegister(

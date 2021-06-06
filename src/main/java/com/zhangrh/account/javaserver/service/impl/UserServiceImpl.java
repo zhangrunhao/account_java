@@ -55,4 +55,10 @@ public class UserServiceImpl implements UserService {
     }
     return null;
   }
+
+  @Override
+  public User getUserFromEmail(String email) {
+    User user = userMapper.getUserByEmail(email);
+    return user;
+  }
 }
