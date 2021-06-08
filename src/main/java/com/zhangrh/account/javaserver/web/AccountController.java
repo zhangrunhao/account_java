@@ -2,6 +2,7 @@ package com.zhangrh.account.javaserver.web;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
+import com.zhangrh.account.javaserver.api.ResultCode;
 import com.zhangrh.account.javaserver.dto.AccountAddParam;
 import com.zhangrh.account.javaserver.dto.AccountUpdateParam;
 import com.zhangrh.account.javaserver.entity.Account;
@@ -73,24 +74,49 @@ public class AccountController {
   @ResponseBody
   public CommonResult<String> doUpdate(
     @RequestHeader(value = "Authorization") String token,
-    @Validated @RequestBody AccountUpdateParam accountAddParam
+    @Validated @RequestBody AccountUpdateParam accountUpdateParam
   ) {
     boolean flag;
     try {
       String email = JwtTokenUtil.getJwtValue(token, "email");
-      if (email == null) Asserts.fail("用户解析失败");
+      if (email == null) Asserts.fail(ResultCode.UNAUTHORIZED);
       User user = userService.getUserFromEmail(email);
       Account account = new Account();
-      account.setAccountId(accountAddParam.getAccountId());
-      account.setColor(accountAddParam.getColor());
-      account.setIcon(accountAddParam.getIcon());
-      account.setName(accountAddParam.getName());
-      account.setType(accountAddParam.getType());
+      account.setAccountId(accountUpdateParam.getAccountId());
+      account.setColor(accountUpdateParam.getColor());
+      account.setIcon(accountUpdateParam.getIcon());
+      account.setName(accountUpdateParam.getName());
+      account.setType(accountUpdateParam.getType());
       flag = accountService.update(account, user);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
     if (flag) return CommonResult.success("账户更新成功");
     return CommonResult.failed("账户更新失败");
+  }
+
+  @RequestMapping(value = "/delete", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> doDelete(
+    @RequestHeader(value = "Authorization") String token,
+    @Validated @RequestBody AccountUpdateParam accountUpdateParam
+  ) {
+    boolean flag;
+    try {
+      String email = JwtTokenUtil.getJwtValue(token, "email");
+      if (email == null) Asserts.fail(ResultCode.UNAUTHORIZED);
+      User user = userService.getUserFromEmail(email);
+      Account account = new Account();
+      account.setAccountId(accountUpdateParam.getAccountId());
+      account.setColor(accountUpdateParam.getColor());
+      account.setIcon(accountUpdateParam.getIcon());
+      account.setName(accountUpdateParam.getName());
+      account.setType(accountUpdateParam.getType());
+      flag = accountService.delete(account, user);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    if (flag) return CommonResult.success("账户删除成功");
+    return CommonResult.failed("账户删除失败");
   }
 }

@@ -52,11 +52,11 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public boolean update(Account account, User user) {
-    boolean flag;
+    boolean flag = false;
     try {
       account.setUpdateAt(new Date().getTime());
-      accountMapper.update(account, user);
-      flag = true;
+      int size = accountMapper.update(account, user);
+      if (size == 1) flag = true;
     } catch (Exception e) {
       flag = false;
       LOGGER.warn("账户更新失败: " + e.getMessage());
@@ -65,9 +65,17 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public boolean delete(User user) {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean delete(Account account, User user) {
+    boolean flag = false;
+    try {
+      account.setDeleteAt(new Date().getTime());
+      int size = accountMapper.delete(account, user);
+      if (size == 1) flag = true;
+    } catch (Exception e) {
+      flag = false;
+      LOGGER.warn("账户删除失败: " + e.getMessage());
+    }
+    return flag;
   }
   
 }

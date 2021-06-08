@@ -34,8 +34,9 @@ public interface AccountService {
 
   /**
    * 删除账户
-   * @param account_id 账户id
+   * @param account 账户
+   * @param user 用户
    * @return 是否删除成功
    */
-  boolean delete(User user);
+  boolean delete(Account account, User user);
 }
