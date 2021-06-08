@@ -51,9 +51,17 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public boolean update(long account_id, String icon, String name, String type, String color) {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean update(Account account, User user) {
+    boolean flag;
+    try {
+      account.setUpdateAt(new Date().getTime());
+      accountMapper.update(account, user);
+      flag = true;
+    } catch (Exception e) {
+      flag = false;
+      LOGGER.warn("账户更新失败: " + e.getMessage());
+    }
+    return flag;
   }
 
   @Override

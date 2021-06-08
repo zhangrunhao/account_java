@@ -25,15 +25,12 @@ public interface AccountService {
   List<Account> list(User user);
 
   /**
-   * 账户更新
-   * @param account_id 账户id
-   * @param icon 图标
-   * @param name 名称
-   * @param type 类型
-   * @param color 颜色
+   *  账户更新
+   * @param account 账户
+   * @param user 用户
    * @return 是否更新成功
    */
-  boolean update(long account_id, String icon, String name, String type, String color);
+  boolean update(Account account, User user);
 
   /**
    * 删除账户

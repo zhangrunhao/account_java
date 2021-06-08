@@ -10,16 +10,16 @@ public abstract class AbstractEntity {
   private long updateAt;
   private long deleteAt;
 
-  public long getDeleteAt() {
-    return deleteAt;
+  public String getDeleteAt() {
+    return new Timestamp(this.deleteAt).toString();
   }
 
   public void setDeleteAt(long deleteAt) {
     this.deleteAt = deleteAt;
   }
 
-  public long getUpdateAt() {
-    return updateAt;
+  public String getUpdateAt() {
+    return new Timestamp(this.updateAt).toString();
   }
 
   public void setUpdateAt(long updateAt) {

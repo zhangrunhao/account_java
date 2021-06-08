@@ -1,11 +1,12 @@
 package com.zhangrh.account.javaserver.web;
-
 import java.util.List;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
 import com.zhangrh.account.javaserver.dto.AccountAddParam;
+import com.zhangrh.account.javaserver.dto.AccountUpdateParam;
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.service.AccountService;
 import com.zhangrh.account.javaserver.service.UserService;
 import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
@@ -44,7 +45,7 @@ public class AccountController {
       User user = userService.getUserFromEmail(email);
       flag = accountService.add(user.getUsersId(), accountAddParam.getIcon(), accountAddParam.getName(), accountAddParam.getType(), accountAddParam.getColor());
     } catch (Exception e) {
-      return CommonResult.success("账户创建成功");
+      return CommonResult.failed("账户创建失败");
     }
     if (flag) {
       return CommonResult.success("账户创建成功");
@@ -66,5 +67,30 @@ public class AccountController {
     } else {
       return CommonResult.success(list);
     }
+  }
+
+  @RequestMapping(value = "/update", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> doUpdate(
+    @RequestHeader(value = "Authorization") String token,
+    @Validated @RequestBody AccountUpdateParam accountAddParam
+  ) {
+    boolean flag;
+    try {
+      String email = JwtTokenUtil.getJwtValue(token, "email");
+      if (email == null) Asserts.fail("用户解析失败");
+      User user = userService.getUserFromEmail(email);
+      Account account = new Account();
+      account.setAccountId(accountAddParam.getAccountId());
+      account.setColor(accountAddParam.getColor());
+      account.setIcon(accountAddParam.getIcon());
+      account.setName(accountAddParam.getName());
+      account.setType(accountAddParam.getType());
+      flag = accountService.update(account, user);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    if (flag) return CommonResult.success("账户更新成功");
+    return CommonResult.failed("账户更新失败");
   }
 }
