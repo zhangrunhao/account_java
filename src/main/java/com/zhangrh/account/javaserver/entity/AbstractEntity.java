@@ -11,6 +11,7 @@ public abstract class AbstractEntity {
   private long deleteAt;
 
   public String getDeleteAt() {
+    if (this.deleteAt == 0) return "";
     return new Timestamp(this.deleteAt).toString();
   }
 
@@ -19,6 +20,7 @@ public abstract class AbstractEntity {
   }
 
   public String getUpdateAt() {
+    if (this.updateAt == 0) return "";
     return new Timestamp(this.updateAt).toString();
   }
 
@@ -27,6 +29,7 @@ public abstract class AbstractEntity {
   }
 
   public String getCreateAt() {
+    if (this.createAt == 0) return "";
     return new Timestamp(this.createAt).toString();
   }
 
