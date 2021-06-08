@@ -4,6 +4,7 @@ import java.util.List;
 import com.zhangrh.account.javaserver.api.CommonResult;
 import com.zhangrh.account.javaserver.api.ResultCode;
 import com.zhangrh.account.javaserver.dto.AccountAddParam;
+import com.zhangrh.account.javaserver.dto.AccountDeleteParam;
 import com.zhangrh.account.javaserver.dto.AccountUpdateParam;
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.User;
@@ -99,7 +100,7 @@ public class AccountController {
   @ResponseBody
   public CommonResult<String> doDelete(
     @RequestHeader(value = "Authorization") String token,
-    @Validated @RequestBody AccountUpdateParam accountUpdateParam
+    @Validated @RequestBody AccountDeleteParam accountDeleteParam
   ) {
     boolean flag;
     try {
@@ -107,11 +108,7 @@ public class AccountController {
       if (email == null) Asserts.fail(ResultCode.UNAUTHORIZED);
       User user = userService.getUserFromEmail(email);
       Account account = new Account();
-      account.setAccountId(accountUpdateParam.getAccountId());
-      account.setColor(accountUpdateParam.getColor());
-      account.setIcon(accountUpdateParam.getIcon());
-      account.setName(accountUpdateParam.getName());
-      account.setType(accountUpdateParam.getType());
+      account.setAccountId(accountDeleteParam.getAccountId());
       flag = accountService.delete(account, user);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
