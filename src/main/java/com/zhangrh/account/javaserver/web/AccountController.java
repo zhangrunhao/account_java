@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -101,5 +102,19 @@ public class AccountController {
     }
     if (flag) return CommonResult.success("账户删除成功");
     return CommonResult.failed("账户删除失败");
+  }
+
+  @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
+  @ResponseBody
+  public CommonResult<Account> doGetAccount(
+    @RequestParam String accountId
+  ) {
+    User user = UserInfoUtil.getUser();
+    Account account = accountService.getAccountByAccountId(accountId, user);
+    if (account != null) {
+      return CommonResult.success(account);
+    } else {
+      return CommonResult.failed();
+    }
   }
 }

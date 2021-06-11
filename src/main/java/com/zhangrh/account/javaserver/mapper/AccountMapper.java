@@ -25,6 +25,9 @@ public interface AccountMapper {
   })
   List<Account> selectList(@Param("user") User user);
 
+  @Select("SELECT * FROM account_book WHERE account_book_id=#{accountId} AND users_id=#{user.usersId}")
+  Account getAccountByAccountId(@Param("accountId") String accountId, @Param("user") User user);
+
   @Update("UPDATE account_book SET icon=#{account.icon},name=#{account.name},type=#{account.type},color=#{account.color},update_at=#{account.updateAt} WHERE account_book_id=#{account.accountId} AND users_id=#{user.usersId} AND delete_at IS NULL")
   int update(@Param("account") Account account, @Param("user") User user);
 

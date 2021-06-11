@@ -39,4 +39,12 @@ public interface AccountService {
    * @return 是否删除成功
    */
   boolean delete(Account account, User user);
+
+  /**
+   * 根据账户id获取账户信息
+   * @param accountId 账户id
+   * @param user 用户
+   * @return 账户信息
+   */
+  Account getAccountByAccountId(String accountId, User user);
 }

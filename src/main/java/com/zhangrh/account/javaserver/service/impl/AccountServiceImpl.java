@@ -77,5 +77,16 @@ public class AccountServiceImpl implements AccountService {
     }
     return flag;
   }
+
+  @Override
+  public Account getAccountByAccountId(String accountId, User user) {
+    Account account = null;
+    try {
+      account = accountMapper.getAccountByAccountId(accountId, user);
+    } catch (Exception e) {
+      LOGGER.warn("账户信息查询失败: " + e.getMessage());
+    }
+    return account;
+  }
   
 }
