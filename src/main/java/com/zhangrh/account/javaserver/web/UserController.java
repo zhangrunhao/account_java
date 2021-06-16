@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
-import com.zhangrh.account.javaserver.dto.UserParam;
+import com.zhangrh.account.javaserver.request.UserLoginRegisterRequest;
 import com.zhangrh.account.javaserver.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ public class UserController {
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doRegister(
-    @Validated @RequestBody UserParam userRegisterParam
+    @Validated @RequestBody UserLoginRegisterRequest userRegisterRequest
   ) {
     try {
-      userService.register(userRegisterParam.getEmail(), userRegisterParam.getPassword());
+      userService.register(userRegisterRequest.getEmail(), userRegisterRequest.getPassword());
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -44,10 +44,10 @@ public class UserController {
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<Map<String, Object>> doLogin(
-    @Validated @RequestBody UserParam userLoginParam
+    @Validated @RequestBody UserLoginRegisterRequest userLoginRequest
   ) {
     String token = null;
-    token = userService.login(userLoginParam.getEmail(), userLoginParam.getPassword());
+    token = userService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
     if (token == null) {
       return CommonResult.failed("用户名不存在或密码错误");    
     } else {

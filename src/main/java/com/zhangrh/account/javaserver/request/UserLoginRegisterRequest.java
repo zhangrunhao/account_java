@@ -1,4 +1,4 @@
-package com.zhangrh.account.javaserver.dto;
+package com.zhangrh.account.javaserver.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class UserParam {
+public class UserLoginRegisterRequest {
 
   @NotEmpty(message = "用户邮箱不可为空")
   @Email(message = "邮箱格式不正确")

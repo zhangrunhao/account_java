@@ -1,25 +1,23 @@
-package com.zhangrh.account.javaserver.dto;
+package com.zhangrh.account.javaserver.request;
+
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
-public class AccountUpdateParam {
+import lombok.Data;
 
-  @NotNull(message = "账户id不可为空")
-  private Long accountId;
+@Data
+public class AccountAddRequest {
   @NotEmpty(message = "账户名称不可为空")
   private String name;
+
   @NotEmpty(message = "账户图标不可为空")
   private String icon;
+
   @NotEmpty(message = "账户颜色不可为空")
   private String color;
+
   @NotEmpty(message = "账户类型不可为空")
   private String type;
-  public long getAccountId() {
-    return accountId;
-  }
-  public void setAccountId(long accountId) {
-    this.accountId = accountId;
-  }
+
   public String getName() {
     return name;
   }
@@ -44,4 +42,5 @@ public class AccountUpdateParam {
   public void setName(String name) {
     this.name = name;
   }
+
 }

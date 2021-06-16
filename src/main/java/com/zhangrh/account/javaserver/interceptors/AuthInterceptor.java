@@ -24,15 +24,20 @@ public class AuthInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     String token = request.getHeader("Authorization");
-    if (!StringUtils.isEmpty(token)) {
-      if (JwtTokenUtil.verifyToken(token)) {
+    if (!StringUtils.isEmpty(token)) { // 判断token是否为空
+      if (JwtTokenUtil.verifyToken(token)) { // token是否验证通过
         String email = JwtTokenUtil.getJwtValue(token, "email");
         User user = userService.getUserFromEmail(email);
-        if (user == null) Asserts.fail(ResultCode.UNAUTHORIZED);
-        UserInfoUtil.setUser(user);
+        if (user != null) { // 是否能够根据邮箱正确查询到用户信息
+          UserInfoUtil.setUser(user);
+        } else {
+          Asserts.fail(ResultCode.UNAUTHORIZED);
+        }
       } else {
         Asserts.fail(ResultCode.UNAUTHORIZED);
       }
+    } else {
+      Asserts.fail(ResultCode.UNAUTHORIZED);
     }
     return HandlerInterceptor.super.preHandle(request, response, handler);
   }

@@ -1,18 +1,21 @@
 package com.zhangrh.account.javaserver.web;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
-import com.zhangrh.account.javaserver.dto.AccountAddParam;
-import com.zhangrh.account.javaserver.dto.AccountDeleteParam;
-import com.zhangrh.account.javaserver.dto.AccountUpdateParam;
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.request.AccountAddRequest;
+import com.zhangrh.account.javaserver.request.AccountDeleteRequest;
+import com.zhangrh.account.javaserver.request.AccountUpdateRequest;
+import com.zhangrh.account.javaserver.response.AccountResponse;
 import com.zhangrh.account.javaserver.service.AccountService;
 import com.zhangrh.account.javaserver.service.UserService;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,17 +39,17 @@ public class AccountController {
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doAdd(
-    @Validated @RequestBody AccountAddParam accountAddParam
+    @Validated @RequestBody AccountAddRequest accountAddRequest
   ) {
     boolean flag = false;
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
       account.setUsersId(user.getUsersId());
-      account.setIcon(accountAddParam.getIcon());
-      account.setColor(accountAddParam.getColor());
-      account.setName(accountAddParam.getName());
-      account.setType(accountAddParam.getType());
+      account.setIcon(accountAddRequest.getIcon());
+      account.setColor(accountAddRequest.getColor());
+      account.setName(accountAddRequest.getName());
+      account.setType(accountAddRequest.getType());
       flag = accountService.add(user, account);
     } catch (Exception e) {
       return CommonResult.failed("账户创建失败");
@@ -60,30 +63,32 @@ public class AccountController {
 
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   @ResponseBody
-  public CommonResult<List<Account>> doList() {
+  public CommonResult<List<AccountResponse>> doList() {
     User user = UserInfoUtil.getUser();
-    List<Account> list = accountService.list(user);
-    if (list == null) {
-      return CommonResult.failed("查询账户失败");
-    } else {
-      return CommonResult.success(list);
+    List<Account> accounts = accountService.list(user);
+    List<AccountResponse> accountResponses = new ArrayList<AccountResponse>();
+    for (Account account: accounts) {
+      AccountResponse accountResponse = new AccountResponse();
+      BeanUtils.copyProperties(account, accountResponse);
+      accountResponses.add(accountResponse);
     }
+    return CommonResult.success(accountResponses);
   }
 
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doUpdate(
-    @Validated @RequestBody AccountUpdateParam accountUpdateParam
+    @Validated @RequestBody AccountUpdateRequest accountUpdateRequest
   ) {
     boolean flag;
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
-      account.setAccountId(accountUpdateParam.getAccountId());
-      account.setColor(accountUpdateParam.getColor());
-      account.setIcon(accountUpdateParam.getIcon());
-      account.setName(accountUpdateParam.getName());
-      account.setType(accountUpdateParam.getType());
+      account.setAccountId(accountUpdateRequest.getAccountId());
+      account.setColor(accountUpdateRequest.getColor());
+      account.setIcon(accountUpdateRequest.getIcon());
+      account.setName(accountUpdateRequest.getName());
+      account.setType(accountUpdateRequest.getType());
       flag = accountService.update(user, account);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
@@ -95,13 +100,13 @@ public class AccountController {
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doDelete(
-    @Validated @RequestBody AccountDeleteParam accountDeleteParam
+    @Validated @RequestBody AccountDeleteRequest accountDeleteRequest
   ) {
     boolean flag;
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
-      account.setAccountId(accountDeleteParam.getAccountId());
+      account.setAccountId(accountDeleteRequest.getAccountId());
       flag = accountService.delete(user, account);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
@@ -112,13 +117,15 @@ public class AccountController {
 
   @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
   @ResponseBody
-  public CommonResult<Account> doGetAccount(
+  public CommonResult<AccountResponse> doGetAccount(
     @RequestParam String accountId
   ) {
     User user = UserInfoUtil.getUser();
     Account account = accountService.getAccountByAccountId(user, accountId);
     if (account != null) {
-      return CommonResult.success(account);
+      AccountResponse accountResponse = new AccountResponse();
+      BeanUtils.copyProperties(account, accountResponse);
+      return CommonResult.success(accountResponse);
     } else {
       return CommonResult.failed();
     }

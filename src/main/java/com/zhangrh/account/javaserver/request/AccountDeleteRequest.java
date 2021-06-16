@@ -1,8 +1,8 @@
-package com.zhangrh.account.javaserver.dto;
+package com.zhangrh.account.javaserver.request;
 
 import javax.validation.constraints.NotNull;
 
-public class AccountDeleteParam {
+public class AccountDeleteRequest {
   @NotNull(message = "账户id不可为空")
   private Long accountId;
 
