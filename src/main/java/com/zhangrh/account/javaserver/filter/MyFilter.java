@@ -20,12 +20,6 @@ public class MyFilter implements Filter{
   @Override
   public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
       throws IOException, ServletException {
-        // HttpServletRequest request = (HttpServletRequest) req;
-        // HttpServletResponse response = (HttpServletResponse) resp;
-        // String token = request.getHeader("Authorization");
-        // boolean flag = JwtTokenUtil.verifyToken(token);
-        // System.out.println(flag);
-        // chain.doFilter(request, response);
         chain.doFilter(req, resp);
   }
   
