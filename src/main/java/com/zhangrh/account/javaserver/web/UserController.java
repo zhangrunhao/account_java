@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
 import com.zhangrh.account.javaserver.dto.UserParam;
-import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +24,15 @@ public class UserController {
 
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   @ResponseBody
-  public CommonResult<User> doRegister(
+  public CommonResult<String> doRegister(
     @Validated @RequestBody UserParam userRegisterParam
   ) {
-    User user = null;
     try {
-      user = userService.register(userRegisterParam.getEmail(), userRegisterParam.getPassword());
+      userService.register(userRegisterParam.getEmail(), userRegisterParam.getPassword());
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
-    return CommonResult.success(user);
+    return CommonResult.success("注册成功");
   }
 
 

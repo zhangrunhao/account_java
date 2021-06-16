@@ -7,6 +7,7 @@ import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.UserMapper;
 import com.zhangrh.account.javaserver.service.UserService;
 import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
+import com.zhangrh.account.javaserver.utils.Md5Util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
       if (user == null) {
         Asserts.fail("用户名不存在");
       }
-      if (!user.getPassword().equals(password)) {
+      if (!user.getPassword().equals(Md5Util.getMd5(password))) {
         Asserts.fail("密码不正确");
       }
       token = JwtTokenUtil.generateToken(user.getEmail());
@@ -39,21 +40,19 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User register(String email, String password) {
+  public void register(String email, String password) {
     User user = new User();
     if (userMapper.getUserByEmail(email) != null) {
       Asserts.fail("邮箱已被注册");
     }
     try {
       user.setEmail(email);
-      user.setPassword(password);
+      user.setPassword(Md5Util.getMd5(password));
       user.setCreateAt(new Date().getTime());
       userMapper.insert(user);
-      return user;
     } catch (Exception e) {
       Asserts.fail("用户插入失败");
     }
-    return null;
   }
 
   @Override

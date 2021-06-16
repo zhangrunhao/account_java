@@ -25,6 +25,6 @@ public interface UserService {
    * @param password 密码
    * @return 用户信息
    */
-  User register(String email, String password);
+  void register(String email, String password);
 }
 
