@@ -21,14 +21,8 @@ public class AccountServiceImpl implements AccountService {
   AccountMapper accountMapper;
 
   @Override
-  public boolean add(long user_id, String icon, String name, String type, String color) {
+  public boolean add(User user, Account account) {
     try {
-      Account account = new Account();
-      account.setUsersId(user_id);
-      account.setIcon(icon);
-      account.setName(name);
-      account.setType(type);
-      account.setColor(color);
       account.setCreateAt(new Date().getTime());
       accountMapper.insert(account);
     } catch (Exception e) {
@@ -51,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public boolean update(Account account, User user) {
+  public boolean update(User user, Account account) {
     boolean flag = false;
     try {
       account.setUpdateAt(new Date().getTime());
@@ -65,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public boolean delete(Account account, User user) {
+  public boolean delete(User user, Account account) {
     boolean flag = false;
     try {
       account.setDeleteAt(new Date().getTime());
@@ -79,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Account getAccountByAccountId(String accountId, User user) {
+  public Account getAccountByAccountId(User user, String accountId) {
     Account account = null;
     try {
       account = accountMapper.getAccountByAccountId(accountId, user);

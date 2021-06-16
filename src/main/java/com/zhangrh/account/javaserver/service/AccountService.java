@@ -8,14 +8,11 @@ import com.zhangrh.account.javaserver.entity.User;
 public interface AccountService {
   /**
    * 添加账户
-   * @param user_id 用户id
-   * @param icon 图标
-   * @param name 账户名称
-   * @param type 账户类型 0 普通账户 / 1 负债账户
-   * @param color 颜色
+   * @param user 用户
+   * @param account 账户
    * @return 是否添加成功
    */
-  boolean add(long user_id, String icon, String name, String type, String color);
+  boolean add(User user, Account account);
 
   /**
    * 查询账户列表
@@ -26,25 +23,25 @@ public interface AccountService {
 
   /**
    *  账户更新
-   * @param account 账户
    * @param user 用户
+   * @param account 账户
    * @return 是否更新成功
    */
-  boolean update(Account account, User user);
+  boolean update(User user, Account account);
 
   /**
    * 删除账户
-   * @param account 账户
    * @param user 用户
+   * @param account 账户
    * @return 是否删除成功
    */
-  boolean delete(Account account, User user);
+  boolean delete(User user, Account account);
 
   /**
    * 根据账户id获取账户信息
-   * @param accountId 账户id
    * @param user 用户
+   * @param accountId 账户id
    * @return 账户信息
    */
-  Account getAccountByAccountId(String accountId, User user);
+  Account getAccountByAccountId(User user, String accountId);
 }

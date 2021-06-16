@@ -41,7 +41,13 @@ public class AccountController {
     boolean flag = false;
     try {
       User user = UserInfoUtil.getUser();
-      flag = accountService.add(user.getUsersId(), accountAddParam.getIcon(), accountAddParam.getName(), accountAddParam.getType(), accountAddParam.getColor());
+      Account account = new Account();
+      account.setUsersId(user.getUsersId());
+      account.setIcon(accountAddParam.getIcon());
+      account.setColor(accountAddParam.getColor());
+      account.setName(accountAddParam.getName());
+      account.setType(accountAddParam.getType());
+      flag = accountService.add(user, account);
     } catch (Exception e) {
       return CommonResult.failed("账户创建失败");
     }
@@ -78,7 +84,7 @@ public class AccountController {
       account.setIcon(accountUpdateParam.getIcon());
       account.setName(accountUpdateParam.getName());
       account.setType(accountUpdateParam.getType());
-      flag = accountService.update(account, user);
+      flag = accountService.update(user, account);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -96,7 +102,7 @@ public class AccountController {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
       account.setAccountId(accountDeleteParam.getAccountId());
-      flag = accountService.delete(account, user);
+      flag = accountService.delete(user, account);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -110,7 +116,7 @@ public class AccountController {
     @RequestParam String accountId
   ) {
     User user = UserInfoUtil.getUser();
-    Account account = accountService.getAccountByAccountId(accountId, user);
+    Account account = accountService.getAccountByAccountId(user, accountId);
     if (account != null) {
       return CommonResult.success(account);
     } else {
