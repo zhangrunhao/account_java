@@ -15,11 +15,11 @@ public interface UserMapper {
 
   @Select("SELECT * FROM users WHERE email = #{email}")
   @Results({
-    @Result(property = "usersId", column = "users_id")
+    @Result(property = "userId", column = "users_id")
   })
   User getUserByEmail(@Param("email") String email);
 
-  @Options(useGeneratedKeys = true, keyProperty = "usersId", keyColumn = "users_id")
+  @Options(useGeneratedKeys = true, keyProperty = "userId", keyColumn = "users_id")
   @Insert("INSERT INTO users (email,password,create_at) VALUES (#{user.email},#{user.password},#{user.createAt})")
   void insert(@Param("user") User user);
 

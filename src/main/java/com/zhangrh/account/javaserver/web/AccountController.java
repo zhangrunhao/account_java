@@ -45,7 +45,7 @@ public class AccountController {
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
-      account.setUsersId(user.getUsersId());
+      account.setUsersId(user.getUserId());
       account.setIcon(accountAddRequest.getIcon());
       account.setColor(accountAddRequest.getColor());
       account.setName(accountAddRequest.getName());

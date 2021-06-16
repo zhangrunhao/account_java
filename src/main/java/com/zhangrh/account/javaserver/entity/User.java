@@ -1,7 +1,7 @@
 package com.zhangrh.account.javaserver.entity;
 
 public class User extends AbstractEntity {
-  private long usersId;
+  private long userId;
   private String email;
   private String password;
 
@@ -9,12 +9,12 @@ public class User extends AbstractEntity {
     return email;
   }
 
-  public long getUsersId() {
-    return usersId;
+  public long getUserId() {
+    return userId;
   }
 
-  public void setUsersId(long usersId) {
-    this.usersId = usersId;
+  public void setUserId(long userId) {
+    this.userId = userId;
   }
 
   public String getPassword() {
