@@ -63,6 +63,11 @@ public class JwtTokenUtil {
     }
   }
 
+  /**
+   * 格式化token
+   * @param token
+   * @return
+   */
   public static Map<String, Claim> parseToken(String token) {
     Map<String, Claim> claims = null;
     try {

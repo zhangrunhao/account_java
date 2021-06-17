@@ -69,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Account getAccountByAccountId(User user, String accountId) {
+  public Account getAccountByAccountId(User user, long accountId) {
     Account account = null;
     try {
       account = accountMapper.getAccountByAccountId(accountId, user);

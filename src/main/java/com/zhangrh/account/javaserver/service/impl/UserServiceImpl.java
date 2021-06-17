@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-  private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
   @Autowired
   UserMapper userMapper;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
       token = JwtTokenUtil.generateToken(user.getEmail());
     } catch (Exception e) {
       Asserts.fail(e.getMessage());
-      LOG.warn("登录异常: " + e.getMessage());
+      LOGGER.warn("登录异常: " + e.getMessage());
     }
     return token;
   }
@@ -60,5 +60,16 @@ public class UserServiceImpl implements UserService {
   public User getUserFromEmail(String email) {
     User user = userMapper.getUserByEmail(email);
     return user;
+  }
+
+  @Override
+  public void deleteUserById(long id) {
+    try {
+      int size = userMapper.deleteUserById(id);
+      if (size != 1) throw new Exception("delete size is not 1");
+    } catch (Exception e) {
+      Asserts.fail("用户删除失败");
+      LOGGER.warn(e.getMessage());
+    }
   }
 }

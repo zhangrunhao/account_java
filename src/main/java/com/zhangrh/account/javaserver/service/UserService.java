@@ -6,10 +6,16 @@ public interface UserService {
 
   /**
    * 根据邮箱获取用户id
-   * @param email
-   * @return usersId
+   * @param email 邮箱
+   * @return user 用户
    */
   User getUserFromEmail(String email);
+
+  /**
+   * 根据id删除用户
+   * @param id 用户id
+   */
+  void deleteUserById(long id);
 
   /**
    * 登录功能

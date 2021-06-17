@@ -44,7 +44,7 @@ public class AccountController {
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
-      account.setUsersId(user.getUserId());
+      account.setUserId(user.getUserId());
       account.setIcon(accountAddRequest.getIcon());
       account.setColor(accountAddRequest.getColor());
       account.setName(accountAddRequest.getName());
@@ -109,7 +109,7 @@ public class AccountController {
   @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
   @ResponseBody
   public CommonResult<AccountResponse> doGetAccount(
-    @RequestParam String accountId
+    @RequestParam long accountId
   ) {
     User user = UserInfoUtil.getUser();
     Account account = accountService.getAccountByAccountId(user, accountId);

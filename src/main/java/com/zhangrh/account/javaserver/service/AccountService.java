@@ -43,5 +43,5 @@ public interface AccountService {
    * @param accountId 账户id
    * @return 账户信息
    */
-  Account getAccountByAccountId(User user, String accountId);
+  Account getAccountByAccountId(User user, long accountId);
 }

@@ -2,7 +2,7 @@ package com.zhangrh.account.javaserver.entity;
 
 public class Account extends AbstractEntity{
   private long accountId;
-  private long usersId;
+  private long userId;
   private String icon;
   private String name;
   private String type;
@@ -10,12 +10,15 @@ public class Account extends AbstractEntity{
   public long getAccountId() {
     return accountId;
   }
-  public long getUsersId() {
-    return usersId;
+
+  public long getUserId() {
+    return userId;
   }
-  public void setUsersId(long usersId) {
-    this.usersId = usersId;
+
+  public void setUserId(long userId) {
+    this.userId = userId;
   }
+
   public String getColor() {
     return color;
   }
