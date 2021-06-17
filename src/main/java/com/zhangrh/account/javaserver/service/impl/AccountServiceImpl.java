@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.AccountMapper;
 import com.zhangrh.account.javaserver.service.AccountService;
 
@@ -21,15 +22,14 @@ public class AccountServiceImpl implements AccountService {
   AccountMapper accountMapper;
 
   @Override
-  public boolean add(User user, Account account) {
+  public void add(User user, Account account) {
     try {
       account.setCreateAt(new Date().getTime());
       accountMapper.insert(account);
     } catch (Exception e) {
-      LOGGER.warn("用户创建账户失败", e);
-      return false;
+      Asserts.fail("用户创建账户失败");
+      LOGGER.warn(e.getMessage());
     }
-    return true;
   }
 
   @Override
@@ -38,38 +38,34 @@ public class AccountServiceImpl implements AccountService {
     try {
       list = accountMapper.selectList(user);
     } catch (Exception e) {
-      LOGGER.warn("查询账户列表出错: " + e.getMessage());
-      return null;
+      Asserts.fail("查询账户列表出错");
+      LOGGER.warn(e.getMessage());
     }
     return list;
   }
 
   @Override
-  public boolean update(User user, Account account) {
-    boolean flag = false;
+  public void update(User user, Account account) {
     try {
       account.setUpdateAt(new Date().getTime());
       int size = accountMapper.update(account, user);
-      if (size == 1) flag = true;
+      if (size != 1) throw new Exception("update row size is not 1");
     } catch (Exception e) {
-      flag = false;
-      LOGGER.warn("账户更新失败: " + e.getMessage());
+      Asserts.fail("更新失败");
+      LOGGER.warn(e.getMessage());
     }
-    return flag;
   }
 
   @Override
-  public boolean delete(User user, Account account) {
-    boolean flag = false;
+  public void delete(User user, Account account) {
     try {
       account.setDeleteAt(new Date().getTime());
       int size = accountMapper.delete(account, user);
-      if (size == 1) flag = true;
+      if (size == 1) throw new Exception("delete row size is not 1");
     } catch (Exception e) {
-      flag = false;
-      LOGGER.warn("账户删除失败: " + e.getMessage());
+      Asserts.fail("账户删除失败");
+      LOGGER.warn(e.getMessage());
     }
-    return flag;
   }
 
   @Override

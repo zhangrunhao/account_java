@@ -47,9 +47,13 @@ public class UserController {
     @Validated @RequestBody UserLoginRegisterRequest userLoginRequest
   ) {
     String token = null;
-    token = userService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+    try {
+      token = userService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
     if (token == null) {
-      return CommonResult.failed("用户名不存在或密码错误");    
+      return CommonResult.failed("token is null");
     } else {
       Map<String, Object> map = new HashMap<>();
       map.put("token", token);

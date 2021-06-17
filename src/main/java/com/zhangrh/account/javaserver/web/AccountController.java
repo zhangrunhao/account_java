@@ -41,7 +41,6 @@ public class AccountController {
   public CommonResult<String> doAdd(
     @Validated @RequestBody AccountAddRequest accountAddRequest
   ) {
-    boolean flag = false;
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
@@ -50,15 +49,11 @@ public class AccountController {
       account.setColor(accountAddRequest.getColor());
       account.setName(accountAddRequest.getName());
       account.setType(accountAddRequest.getType());
-      flag = accountService.add(user, account);
+      accountService.add(user, account);
     } catch (Exception e) {
-      return CommonResult.failed("账户创建失败");
+      return CommonResult.failed(e.getMessage());
     }
-    if (flag) {
-      return CommonResult.success("账户创建成功");
-    } else {
-      return CommonResult.failed("创建失败");
-    }
+    return CommonResult.success("账户创建成功");
   }
 
   @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -80,7 +75,6 @@ public class AccountController {
   public CommonResult<String> doUpdate(
     @Validated @RequestBody AccountUpdateRequest accountUpdateRequest
   ) {
-    boolean flag;
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
@@ -89,12 +83,11 @@ public class AccountController {
       account.setIcon(accountUpdateRequest.getIcon());
       account.setName(accountUpdateRequest.getName());
       account.setType(accountUpdateRequest.getType());
-      flag = accountService.update(user, account);
+      accountService.update(user, account);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
-    if (flag) return CommonResult.success("账户更新成功");
-    return CommonResult.failed("账户更新失败");
+    return CommonResult.success("账户更新成功");
   }
 
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -102,16 +95,14 @@ public class AccountController {
   public CommonResult<String> doDelete(
     @Validated @RequestBody AccountDeleteRequest accountDeleteRequest
   ) {
-    boolean flag;
     try {
       User user = UserInfoUtil.getUser();
       Account account = new Account();
       account.setAccountId(accountDeleteRequest.getAccountId());
-      flag = accountService.delete(user, account);
+      accountService.delete(user, account);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
-    if (flag) return CommonResult.success("账户删除成功");
     return CommonResult.failed("账户删除失败");
   }
 

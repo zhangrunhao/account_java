@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
       }
       token = JwtTokenUtil.generateToken(user.getEmail());
     } catch (Exception e) {
+      Asserts.fail(e.getMessage());
       LOG.warn("登录异常: " + e.getMessage());
     }
     return token;

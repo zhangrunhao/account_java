@@ -12,7 +12,7 @@ public interface AccountService {
    * @param account 账户
    * @return 是否添加成功
    */
-  boolean add(User user, Account account);
+  void add(User user, Account account);
 
   /**
    * 查询账户列表
@@ -27,7 +27,7 @@ public interface AccountService {
    * @param account 账户
    * @return 是否更新成功
    */
-  boolean update(User user, Account account);
+  void update(User user, Account account);
 
   /**
    * 删除账户
@@ -35,7 +35,7 @@ public interface AccountService {
    * @param account 账户
    * @return 是否删除成功
    */
-  boolean delete(User user, Account account);
+  void delete(User user, Account account);
 
   /**
    * 根据账户id获取账户信息
