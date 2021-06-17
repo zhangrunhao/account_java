@@ -15,7 +15,7 @@ public interface UserService {
    * 根据id删除用户
    * @param id 用户id
    */
-  void deleteUserById(long id);
+  void deleteUserFromDatabaseById(long id);
 
   /**
    * 登录功能

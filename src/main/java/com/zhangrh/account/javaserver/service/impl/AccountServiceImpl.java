@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
     try {
       account.setDeleteAt(new Date().getTime());
       int size = accountMapper.delete(account, user);
-      if (size == 1) throw new Exception("delete row size is not 1");
+      if (size != 1) throw new Exception("delete row size is not 1");
     } catch (Exception e) {
       Asserts.fail("账户删除失败");
       LOGGER.warn(e.getMessage());

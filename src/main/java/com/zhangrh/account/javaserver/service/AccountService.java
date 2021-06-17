@@ -44,4 +44,5 @@ public interface AccountService {
    * @return 账户信息
    */
   Account getAccountByAccountId(User user, long accountId);
+
 }

@@ -1,8 +1,12 @@
 package com.zhangrh.account.javaserver.service;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,34 @@ public class UserServiceTest {
   UserService userService;
   
   @Test
-  void test() {
-    // User user = userService.getUserById(1);
-    // assertEquals("1", user.getUsersId());
-    // assertEquals("1970-01-01 08:00:00.0", user.getCreateAt());
-    // assertEquals("zhangrhweb@163.com", user.getEmail());
+  void testGetUserFromEmail() {
+    String emailFalse = "zhangrhweb@false.com";
+    User userFalse = userService.getUserFromEmail(emailFalse);
+    assertNull(userFalse);
+
+    String trueEmail = "zhangrhweb@163.com";
+    User trueUser = userService.getUserFromEmail(trueEmail);
+    assertEquals(1, trueUser.getUserId());
+  }
+
+  @Test
+  void testRegisterAndLoginAndDeleteById() {
+    // 测试注册
+    String email = "test@test.com";
+    String password = "test@test.com";
+    userService.register(email, password);
+    User user = userService.getUserFromEmail(email);
+    assertNotNull(user);
+
+    // 测试登录
+    String token = userService.login(email, password);
+    assertTrue(JwtTokenUtil.verifyToken(token));
+    String emailFromToken = JwtTokenUtil.getJwtValue(token, "email");
+    assertEquals(email, emailFromToken);
+
+    // 测试删除
+    userService.deleteUserFromDatabaseById(user.getUserId());
+    User nullUser = userService.getUserFromEmail(email);
+    assertNull(nullUser);
   }
 }

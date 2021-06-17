@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void deleteUserById(long id) {
+  public void deleteUserFromDatabaseById(long id) {
     try {
-      int size = userMapper.deleteUserById(id);
+      int size = userMapper.deleteUserFromDatabaseById(id);
       if (size != 1) throw new Exception("delete size is not 1");
     } catch (Exception e) {
       Asserts.fail("用户删除失败");

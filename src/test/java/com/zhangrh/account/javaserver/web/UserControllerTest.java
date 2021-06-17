@@ -33,7 +33,7 @@ public class UserControllerTest {
     CommonResult<String> result =  userController.doRegister(userLoginRegisterRequest);
     assertEquals(200, result.getCode());
     User user = userService.getUserFromEmail(email);
-    userService.deleteUserById(user.getUserId());
+    userService.deleteUserFromDatabaseById(user.getUserId());
     User user2 = userService.getUserFromEmail(email);
     assertEquals(null, user2);
   }

@@ -11,13 +11,13 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 public interface UserMapper {
-  @Select("SELECT * FROM users WHERE users_id = #{id}")
+  @Select("SELECT * FROM users WHERE users_id = #{id} AND delete_at IS NULL")
   User getById(@Param("id") long id);
 
-  @Delete("DELETE FROM users WHERE users_id = #{id}")
-  int deleteUserById(@Param("id") long id);
+  @Delete("DELETE FROM users WHERE users_id = #{id} AND delete_at IS NULL")
+  int deleteUserFromDatabaseById(@Param("id") long id);
 
-  @Select("SELECT * FROM users WHERE email = #{email}")
+  @Select("SELECT * FROM users WHERE email = #{email} AND delete_at IS NULL")
   @Results({
     @Result(property = "userId", column = "users_id")
   })
