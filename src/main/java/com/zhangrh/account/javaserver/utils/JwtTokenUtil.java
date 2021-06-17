@@ -40,7 +40,7 @@ public class JwtTokenUtil {
       .withIssuer("SERVICE") // 签发人
       .withClaim("email", email)
       .withIssuedAt(new Date()) // 签发时间
-      .withExpiresAt(AddDate(null, 2*60)) // 过期时间
+      .withExpiresAt(AddDate(null, 60 * 12 * 5)) // 5天有效
       .sign(Algorithm.HMAC512(KEY_SECRET)); // 签发密钥
     } catch (Exception e) {
       Asserts.fail("token 生成失败");
