@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
       int size = accountMapper.update(account, user);
       if (size != 1) throw new Exception("update row size is not 1");
     } catch (Exception e) {
-      Asserts.fail("更新失败");
+      Asserts.fail("账户更新失败");
       LOGGER.warn(e.getMessage());
     }
   }
@@ -73,8 +73,10 @@ public class AccountServiceImpl implements AccountService {
     Account account = null;
     try {
       account = accountMapper.getAccountByAccountId(accountId, user);
+      if (account == null) throw new Exception("select account is null");
     } catch (Exception e) {
-      LOGGER.warn("账户信息查询失败: " + e.getMessage());
+      Asserts.fail("账户信息查询失败");
+      LOGGER.warn(e.getMessage());
     }
     return account;
   }

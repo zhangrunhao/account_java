@@ -2,19 +2,12 @@ package com.zhangrh.account.javaserver.response;
 
 public class AccountResponse {
   private long accountId;
-  private long userId;
   private String icon;
   private String name;
   private String type;
   private String color;
   public long getAccountId() {
     return accountId;
-  }
-  public long getUserId() {
-    return userId;
-  }
-  public void setUserId(long userId) {
-    this.userId = userId;
   }
   public String getColor() {
     return color;

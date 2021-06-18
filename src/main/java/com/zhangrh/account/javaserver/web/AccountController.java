@@ -10,7 +10,6 @@ import com.zhangrh.account.javaserver.request.AccountDeleteRequest;
 import com.zhangrh.account.javaserver.request.AccountUpdateRequest;
 import com.zhangrh.account.javaserver.response.AccountResponse;
 import com.zhangrh.account.javaserver.service.AccountService;
-import com.zhangrh.account.javaserver.service.UserService;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 
 import org.slf4j.Logger;
@@ -32,9 +31,6 @@ public class AccountController {
 
   @Autowired
   AccountService accountService;
-
-  @Autowired
-  UserService userService;
 
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   @ResponseBody
@@ -60,12 +56,16 @@ public class AccountController {
   @ResponseBody
   public CommonResult<List<AccountResponse>> doList() {
     User user = UserInfoUtil.getUser();
-    List<Account> accounts = accountService.list(user);
-    List<AccountResponse> accountResponses = new ArrayList<AccountResponse>();
-    for (Account account: accounts) {
-      AccountResponse accountResponse = new AccountResponse();
-      BeanUtils.copyProperties(account, accountResponse);
-      accountResponses.add(accountResponse);
+    List<AccountResponse> accountResponses = new ArrayList<>();
+    try {
+      List<Account> accounts = accountService.list(user);
+      for (Account account: accounts) {
+        AccountResponse accountResponse = new AccountResponse();
+        BeanUtils.copyProperties(account, accountResponse);
+        accountResponses.add(accountResponse);
+      }
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
     }
     return CommonResult.success(accountResponses);
   }
@@ -103,7 +103,7 @@ public class AccountController {
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
-    return CommonResult.failed("账户删除失败");
+    return CommonResult.success("账户删除成功");
   }
 
   @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
@@ -112,13 +112,15 @@ public class AccountController {
     @RequestParam long accountId
   ) {
     User user = UserInfoUtil.getUser();
-    Account account = accountService.getAccountByAccountId(user, accountId);
-    if (account != null) {
-      AccountResponse accountResponse = new AccountResponse();
+    Account account = null;
+    AccountResponse accountResponse = null;
+    try {
+      account = accountService.getAccountByAccountId(user, accountId);
+      accountResponse = new AccountResponse();
       BeanUtils.copyProperties(account, accountResponse);
-      return CommonResult.success(accountResponse);
-    } else {
-      return CommonResult.failed();
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
     }
+    return CommonResult.success(accountResponse);
   }
 }
