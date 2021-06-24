@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
       }
       token = JwtTokenUtil.generateToken(user.getEmail());
     } catch (Exception e) {
-      Asserts.fail(e.getMessage());
       LOGGER.warn("登录异常: " + e.getMessage());
+      Asserts.fail(e.getMessage());
     }
     return token;
   }
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
       int size = userMapper.deleteUserFromDatabaseById(id);
       if (size != 1) throw new Exception("delete size is not 1");
     } catch (Exception e) {
-      Asserts.fail("用户删除失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("用户删除失败");
     }
   }
 }

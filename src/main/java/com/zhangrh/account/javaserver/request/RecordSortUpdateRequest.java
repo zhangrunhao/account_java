@@ -1,10 +1,10 @@
 package com.zhangrh.account.javaserver.request;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 public class RecordSortUpdateRequest {
-  @NotNull(message = "需要修改的种类id不可为空")
+  @Min(value = 1, message = "recordSortId至少为1")
   private long recordSortId;
   @NotEmpty(message = "名称不可为空")
   private String name;

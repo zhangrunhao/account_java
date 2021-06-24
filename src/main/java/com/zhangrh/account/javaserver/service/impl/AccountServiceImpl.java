@@ -27,8 +27,8 @@ public class AccountServiceImpl implements AccountService {
       account.setCreateAt(new Date().getTime());
       accountMapper.insert(account);
     } catch (Exception e) {
-      Asserts.fail("用户创建账户失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("用户创建账户失败");
     }
   }
 
@@ -38,8 +38,8 @@ public class AccountServiceImpl implements AccountService {
     try {
       list = accountMapper.selectList(user);
     } catch (Exception e) {
-      Asserts.fail("查询账户列表出错");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("查询账户列表出错");
     }
     return list;
   }
@@ -51,8 +51,8 @@ public class AccountServiceImpl implements AccountService {
       int size = accountMapper.update(account, user);
       if (size != 1) throw new Exception("update row size is not 1");
     } catch (Exception e) {
-      Asserts.fail("账户更新失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("账户更新失败");
     }
   }
 
@@ -63,8 +63,8 @@ public class AccountServiceImpl implements AccountService {
       int size = accountMapper.delete(account, user);
       if (size != 1) throw new Exception("delete row size is not 1");
     } catch (Exception e) {
-      Asserts.fail("账户删除失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("账户删除失败");
     }
   }
 
@@ -75,8 +75,8 @@ public class AccountServiceImpl implements AccountService {
       account = accountMapper.getAccountByAccountId(accountId, user);
       if (account == null) throw new Exception("select account is null");
     } catch (Exception e) {
-      Asserts.fail("账户信息查询失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("账户信息查询失败");
     }
     return account;
   }

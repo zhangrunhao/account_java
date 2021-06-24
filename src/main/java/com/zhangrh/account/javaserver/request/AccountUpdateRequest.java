@@ -1,10 +1,9 @@
 package com.zhangrh.account.javaserver.request;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 public class AccountUpdateRequest {
-
-  @NotNull(message = "账户id不可为空")
+  @Min(value = 1, message = "accountId至少为1")
   private Long accountId;
   @NotEmpty(message = "账户名称不可为空")
   private String name;

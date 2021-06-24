@@ -1,9 +1,9 @@
 package com.zhangrh.account.javaserver.request;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Min;
 
 public class AccountDeleteRequest {
-  @NotNull(message = "账户id不可为空")
+  @Min(value = 1, message = "accountId至少为1")
   private Long accountId;
 
   public Long getAccountId() {

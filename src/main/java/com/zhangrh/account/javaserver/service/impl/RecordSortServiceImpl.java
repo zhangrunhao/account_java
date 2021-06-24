@@ -27,8 +27,8 @@ public class RecordSortServiceImpl implements RecordSortService {
       recordSort.setCreateAt(new Date().getTime());
       recordSortMapper.insert(recordSort);
     } catch (Exception e) {
-      Asserts.fail("用户创建收支记录种类失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("用户创建收支记录种类失败");
     }
   }
 
@@ -39,8 +39,8 @@ public class RecordSortServiceImpl implements RecordSortService {
       list = recordSortMapper.selectList(user);
       if (list == null) throw new Exception("record sort list is null");
     } catch (Exception e) {
-      Asserts.fail("查询收支记录种类列表出错");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("查询收支记录种类列表出错");
     }
     return list;
   }
@@ -50,10 +50,10 @@ public class RecordSortServiceImpl implements RecordSortService {
     try {
       recordSort.setUpdateAt(new Date().getTime());
       int size = recordSortMapper.update(recordSort, user);
-      if (size != 1) throw new Exception("update row size is not 1");
+      if (size != 1) throw new Exception("update record sort row size: " + size);
     } catch (Exception e) {
-      Asserts.fail("收支记录种类更新失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("收支记录种类更新失败");
     }
   }
 
@@ -63,8 +63,8 @@ public class RecordSortServiceImpl implements RecordSortService {
       recordSort.setDeleteAt(new Date().getTime());
       recordSortMapper.delete(recordSort, user);
     } catch (Exception e) {
-      Asserts.fail("收支记录种类删除失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("收支记录种类删除失败");
     }
   }
 
@@ -75,8 +75,8 @@ public class RecordSortServiceImpl implements RecordSortService {
       recordSort = recordSortMapper.getRecordSortById(recordSortId, user);
       if (recordSort == null) throw new Exception("get record sort by id is null");
     } catch (Exception e) {
-      Asserts.fail("收支记录种类查询失败");
       LOGGER.warn(e.getMessage());
+      Asserts.fail("收支记录种类查询失败");
     }
     return recordSort;
   }
