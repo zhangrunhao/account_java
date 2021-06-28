@@ -1,7 +1,6 @@
 package com.zhangrh.account.javaserver.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
@@ -42,7 +41,10 @@ public class RecordSortServiceTest {
     assertEquals(updateName, recordSort2.getName());
 
     recordSortService.delete(user, recordSort1); // delete()
-    RecordSort recordSort3 = recordSortService.getById(user, recordSort1.getRecordSortId());
-    assertNull(recordSort3);
+    try {
+      recordSortService.getById(user, recordSort1.getRecordSortId());
+    } catch (Exception e) {
+      assertEquals("收支记录种类查询失败", e.getMessage());
+    }
   }
 }

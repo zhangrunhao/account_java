@@ -1,7 +1,6 @@
 package com.zhangrh.account.javaserver.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
@@ -39,8 +38,11 @@ public class AccountServiceTest {
     assertEquals(account.getAccountId(), account2.getAccountId());
 
     accountService.delete(user, account);
-    Account account3 = accountService.getAccountByAccountId(user, account.getAccountId());
-    assertNull(account3);
+    try {
+      accountService.getAccountByAccountId(user, account.getAccountId());
+    } catch (Exception e) {
+      assertEquals("账户信息查询失败", e.getMessage());
+    }
   }
 
   @Test
