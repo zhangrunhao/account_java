@@ -24,7 +24,7 @@ public class RecordSortServiceImpl implements RecordSortService {
   @Override
   public void add(User user, RecordSort recordSort) {
     try {
-      recordSort.setCreateAt(new Date().getTime());
+      recordSort.setCreateAt(new Date());
       recordSortMapper.insert(recordSort);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -48,7 +48,7 @@ public class RecordSortServiceImpl implements RecordSortService {
   @Override
   public void update(User user, RecordSort recordSort) {
     try {
-      recordSort.setUpdateAt(new Date().getTime());
+      recordSort.setUpdateAt(new Date());
       int size = recordSortMapper.update(recordSort, user);
       if (size != 1) throw new Exception("update record sort row size: " + size);
     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class RecordSortServiceImpl implements RecordSortService {
   @Override
   public void delete(User user, RecordSort recordSort) {
     try {
-      recordSort.setDeleteAt(new Date().getTime());
+      recordSort.setDeleteAt(new Date());
       recordSortMapper.delete(recordSort, user);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());

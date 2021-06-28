@@ -29,7 +29,7 @@ public class RecordMapperTest {
     record.setRecordSortId(recordSortId);
     record.setAccountId(accountId);
     record.setRemark(remark);
-    record.setCreateAt(new Date().getTime());
+    record.setCreateAt(new Date());
     recordMapper.insert(record);
 
     User user = new User();
@@ -49,6 +49,7 @@ public class RecordMapperTest {
     long userId = 12;
     long accountId = 4;
     long recordSortId = 8;
+    Date date = new Date();
     String remark = "滴滴打车";
 
     Record record = new Record();
@@ -57,13 +58,15 @@ public class RecordMapperTest {
     record.setUserId(userId);
     record.setRecordSortId(recordSortId);
     record.setRemark(remark);
-    record.setUpdateAt(new Date().getTime());
+    record.setUpdateAt(date);
 
     int count = recordMapper.update(record);
     assertEquals(1, count);
 
     Record resultRecord = recordMapper.getRecordById(recordId);
-    assertEquals(record.getUpdateAt(), resultRecord.getUpdateAt());
+    assertEquals(date.getTime(), record.getUpdateAt().getTime());
+    assertEquals(record.getUpdateAt().getTime(), resultRecord.getUpdateAt().getTime());
+    assertEquals(date.getTime(), resultRecord.getUpdateAt().getTime());
 
     assertEquals(record.getRecordId(), resultRecord.getRecordId());
     assertEquals(record.getAccountId(), resultRecord.getAccountId());

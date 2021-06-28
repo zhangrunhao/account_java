@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     try {
       user.setEmail(email);
       user.setPassword(Md5Util.getMd5(password));
-      user.setCreateAt(new Date().getTime());
+      user.setCreateAt(new Date());
       userMapper.insert(user);
     } catch (Exception e) {
       Asserts.fail("用户插入失败");

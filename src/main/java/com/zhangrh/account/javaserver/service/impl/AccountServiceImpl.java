@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public void add(User user, Account account) {
     try {
-      account.setCreateAt(new Date().getTime());
+      account.setCreateAt(new Date());
       accountMapper.insert(account);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public void update(User user, Account account) {
     try {
-      account.setUpdateAt(new Date().getTime());
+      account.setUpdateAt(new Date());
       int size = accountMapper.update(account, user);
       if (size != 1) throw new Exception("update row size is not 1");
     } catch (Exception e) {
@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public void delete(User user, Account account) {
     try {
-      account.setDeleteAt(new Date().getTime());
+      account.setDeleteAt(new Date());
       int size = accountMapper.delete(account, user);
       if (size != 1) throw new Exception("delete row size is not 1");
     } catch (Exception e) {

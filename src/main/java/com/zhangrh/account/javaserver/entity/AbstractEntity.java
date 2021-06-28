@@ -1,39 +1,30 @@
 package com.zhangrh.account.javaserver.entity;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * AbstractEntity
  */
 public abstract class AbstractEntity {
-  private long createAt;
-  private long updateAt;
-  private long deleteAt;
-
-  public String getDeleteAt() {
-    if (this.deleteAt == 0) return "";
-    return new Timestamp(this.deleteAt).toString();
+  private Date createAt;
+  private Date updateAt;
+  private Date deleteAt;
+  public Date getCreateAt() {
+    return createAt;
   }
-
-  public void setDeleteAt(long deleteAt) {
+  public Date getDeleteAt() {
+    return deleteAt;
+  }
+  public void setDeleteAt(Date deleteAt) {
     this.deleteAt = deleteAt;
   }
-
-  public String getUpdateAt() {
-    if (this.updateAt == 0) return "";
-    return new Timestamp(this.updateAt).toString();
+  public Date getUpdateAt() {
+    return updateAt;
   }
-
-  public void setUpdateAt(long updateAt) {
+  public void setUpdateAt(Date updateAt) {
     this.updateAt = updateAt;
   }
-
-  public String getCreateAt() {
-    if (this.createAt == 0) return "";
-    return new Timestamp(this.createAt).toString();
-  }
-
-  public void setCreateAt(long createAt) {
+  public void setCreateAt(Date createAt) {
     this.createAt = createAt;
   }
 }
