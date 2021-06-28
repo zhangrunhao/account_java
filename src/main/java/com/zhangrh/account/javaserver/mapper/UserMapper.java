@@ -19,7 +19,10 @@ public interface UserMapper {
 
   @Select("SELECT * FROM users WHERE email = #{email} AND delete_at IS NULL")
   @Results({
-    @Result(property = "userId", column = "users_id")
+    @Result(property = "userId", column = "users_id"),
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
   })
   User getUserByEmail(@Param("email") String email);
 

@@ -39,7 +39,10 @@ public interface RecordMapper {
     @Result(property = "userId", column = "users_id"),
     @Result(property = "accountId", column = "account_book_id"),
     @Result(property = "recordId", column = "income_expend_record_id"),
-    @Result(property = "recordSortId", column = "income_expend_record_sort_id")
+    @Result(property = "recordSortId", column = "income_expend_record_sort_id"),
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
   })
   List<Record> selectListByUser(@Param("user") User user);
 }

@@ -22,13 +22,21 @@ public interface RecordSortMapper {
 
   @Select("SELECT * FROM income_expend_record_sort WHERE users_id=#{user.userId} AND delete_at IS NULL")
   @Results({
-    @Result(property = "recordSortId", column = "income_expend_record_sort_id")
+    @Result(property = "recordSortId", column = "income_expend_record_sort_id"),
+    @Result(property = "userId", column = "users_id"),
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
   })
   List<RecordSort> selectList(@Param("user") User user);
 
   @Select("SELECT * FROM income_expend_record_sort WHERE income_expend_record_sort_id=#{recordSortId} AND users_id=#{user.userId} AND delete_at IS NULL")
   @Results({
-    @Result(property = "recordSortId", column = "income_expend_record_sort_id")
+    @Result(property = "recordSortId", column = "income_expend_record_sort_id"),
+    @Result(property = "userId", column = "users_id"),
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
   })
   RecordSort getRecordSortById(@Param("recordSortId") long recordSortId, @Param("user") User user);
 

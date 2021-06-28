@@ -21,13 +21,19 @@ public interface AccountMapper {
 
   @Select("SELECT * FROM account_book WHERE users_id=#{user.userId} AND delete_at IS NULL")
   @Results({
-    @Result(property = "accountId", column = "account_book_id")
+    @Result(property = "accountId", column = "account_book_id"),
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
   })
   List<Account> selectList(@Param("user") User user);
 
   @Select("SELECT * FROM account_book WHERE account_book_id=#{accountId} AND users_id=#{user.userId} AND delete_at IS NULL")
   @Results({
-    @Result(property = "accountId", column = "account_book_id")
+    @Result(property = "accountId", column = "account_book_id"),
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
   })
   Account getAccountByAccountId(@Param("accountId") long accountId, @Param("user") User user);
 
