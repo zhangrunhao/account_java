@@ -1,13 +1,22 @@
 package com.zhangrh.account.javaserver.entity;
 
+import java.util.Date;
+
 public class Record extends AbstractEntity {
   private long recordId;
   private long userId;
   private long recordSortId;
   private long accountId;
   private String remark;
+  private Date spendTime;
   public long getRecordId() {
     return recordId;
+  }
+  public Date getSpendTime() {
+    return spendTime;
+  }
+  public void setSpendTime(Date spendTime) {
+    this.spendTime = spendTime;
   }
   public String getRemark() {
     return remark;
