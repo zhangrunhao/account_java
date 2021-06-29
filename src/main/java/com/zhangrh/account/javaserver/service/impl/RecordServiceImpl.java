@@ -1,57 +1,123 @@
 package com.zhangrh.account.javaserver.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.Record;
 import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.exception.Asserts;
+import com.zhangrh.account.javaserver.mapper.RecordMapper;
 import com.zhangrh.account.javaserver.service.RecordService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RecordServiceImpl implements RecordService {
+  private static final Logger LOGGER = LoggerFactory.getLogger(RecordServiceImpl.class);
+
+  @Autowired
+  RecordMapper recordMapper;
+
+  private static List<Record> filterDeletedData(List<Record> queryList) {
+    List<Record> list = new ArrayList<>();
+    for (Record record: queryList) {
+      if (record.getDeleteAt() == null) {
+        list.add(record);
+      }
+    }
+    return list;
+  }
 
   @Override
   public void add(Record record) {
-    
+    try {
+      record.setCreateAt(new Date());
+      recordMapper.insert(record);
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("收支记录创建失败");
+    }
   }
 
   @Override
   public void update(Record record) {
-    // TODO Auto-generated method stub
-    
+    try {
+      record.setUpdateAt(new Date());
+      int size = recordMapper.update(record);
+      if (size != 1) throw new Exception("record update row size is not 1");
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("收支记录更新失败");
+    }
   }
 
   @Override
   public void delete(Record record) {
-    // TODO Auto-generated method stub
-    
+    try {
+      record.setDeleteAt(new Date());
+      int size = recordMapper.delete(record);
+      if (size != 1) throw new Exception("record delete row size is not 1");
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("收支记录删除失败");
+    }
   }
 
   @Override
   public List<Record> getListByUser(User user) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Record> list = null;
+    try {
+      List<Record> queryList = recordMapper.queryListByUser(user);
+      list = filterDeletedData(queryList);
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("查询用户收支类表出错");
+    }
+    return list;
   }
 
   @Override
   public List<Record> getListByAccount(Account account) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Record> list = null;
+    try {
+      List<Record> queryList = recordMapper.queryListByAccount(account);
+      list = filterDeletedData(queryList);
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("查询用户收支类表出错");
+    }
+    return list;
   }
 
   @Override
-  public List<Record> getListByTime(Date fromDate, Date toDate) {
-    // TODO Auto-generated method stub
-    return null;
+  public List<Record> getListByAccountAndTime(Account account, Date fromDate, Date toDate) {
+    List<Record> list = null;
+    try {
+      List<Record> queryList = recordMapper.queryListByAccountAndTime(account, fromDate, toDate);
+      list = filterDeletedData(queryList);
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("查询用户收支类表出错");
+    }
+    return list;
   }
 
   @Override
   public Record getRecordById(long recordId) {
-    // TODO Auto-generated method stub
-    return null;
+    Record record = null;
+    try {
+      record = recordMapper.queryRecordById(recordId);
+      if (record.getDeleteAt() != null) return null;
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("收支记录查询失败");
+    }
+    return record;
   }
   
 }

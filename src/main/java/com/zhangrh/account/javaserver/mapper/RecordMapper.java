@@ -21,7 +21,7 @@ public interface RecordMapper {
   @Insert("INSERT INTO income_expend_record (users_id, income_expend_record_sort_id, account_book_id, remark, spend_time, create_at) VALUES (#{record.userId}, #{record.recordSortId}, #{record.accountId}, #{record.remark}, #{record.spendTime}, #{record.createAt})")
   void insert(@Param("record") Record record);
 
-  @Update("UPDATE income_expend_record SET users_id=#{record.userId}, income_expend_record_sort_id=#{record.recordSortId}, account_book_id=#{record.accountId}, remark=#{record.remark}, spend_time=#{record.spendTime} update_at=#{record.updateAt} WHERE income_expend_record_id=#{record.recordId}")
+  @Update("UPDATE income_expend_record SET users_id=#{record.userId}, income_expend_record_sort_id=#{record.recordSortId}, account_book_id=#{record.accountId}, remark=#{record.remark}, spend_time=#{record.spendTime}, update_at=#{record.updateAt} WHERE income_expend_record_id=#{record.recordId}")
   int update(@Param("record") Record record);
 
   @Update("UPDATE income_expend_record SET delete_at=#{record.deleteAt} WHERE income_expend_record_id=#{record.recordId}")
@@ -53,7 +53,7 @@ public interface RecordMapper {
   })
   List<Record> queryListByUser(@Param("user") User user);
 
-  @Select("SELECT * FROM income_expend_record WHERE users_id=#{account.userId} AND account_id=#{account.accountId}")
+  @Select("SELECT * FROM income_expend_record WHERE users_id=#{account.userId} AND account_book_id=#{account.accountId}")
   @Results({
     @Result(property = "userId", column = "users_id"),
     @Result(property = "spendTime", column = "spend_time"),

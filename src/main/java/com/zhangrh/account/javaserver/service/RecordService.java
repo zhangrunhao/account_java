@@ -19,7 +19,7 @@ public interface RecordService {
 
   List<Record> getListByAccount(Account account);
   
-  List<Record> getListByTime(Date fromDate, Date toDate);
+  List<Record> getListByAccountAndTime(Account account, Date fromDate, Date toDate);
 
   Record getRecordById(long recordId);
 

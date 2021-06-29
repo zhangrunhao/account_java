@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
       list = accountMapper.selectList(user);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
-      Asserts.fail("查询账户列表出错");
+      Asserts.fail("查询账户列表失败");
     }
     return list;
   }
@@ -73,7 +73,6 @@ public class AccountServiceImpl implements AccountService {
     Account account = null;
     try {
       account = accountMapper.getAccountByAccountId(accountId, user);
-      if (account == null) throw new Exception("select account is null");
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
       Asserts.fail("账户信息查询失败");
