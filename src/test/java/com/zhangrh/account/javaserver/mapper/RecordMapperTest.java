@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -29,12 +30,14 @@ public class RecordMapperTest {
     Date date = new Date();
     String remark = "看电影";
     Record record = new Record();
+    BigDecimal count = new BigDecimal("-22.22");
     record.setUserId(userId);
     record.setRecordSortId(recordSortId);
     record.setAccountId(accountId);
     record.setRemark(remark);
     record.setCreateAt(date);
     record.setSpendTime(date);
+    record.setCount(count);
     recordMapper.insert(record);
 
     User user = new User();
@@ -47,6 +50,7 @@ public class RecordMapperTest {
     assertEquals(accountId, lastRecord.getAccountId());
     assertEquals(remark, lastRecord.getRemark());
     assertEquals(date.getTime(), lastRecord.getSpendTime().getTime());
+    assertEquals(count, lastRecord.getCount());
 
     lastRecord.setDeleteAt(new Date());
     int deleteCount = recordMapper.delete(lastRecord);
@@ -64,6 +68,7 @@ public class RecordMapperTest {
     long recordSortId = 8;
     Date date = new Date();
     String remark = "滴滴打车";
+    BigDecimal count = new BigDecimal("11.53");
 
     Record record = new Record();
     record.setRecordId(recordId);
@@ -72,9 +77,10 @@ public class RecordMapperTest {
     record.setRecordSortId(recordSortId);
     record.setRemark(remark);
     record.setUpdateAt(date);
+    record.setCount(count);
 
-    int count = recordMapper.update(record);
-    assertEquals(1, count);
+    int size = recordMapper.update(record);
+    assertEquals(1, size);
 
     Record resultRecord = recordMapper.queryRecordById(recordId);
     assertEquals(date.getTime(), record.getUpdateAt().getTime());
@@ -86,6 +92,7 @@ public class RecordMapperTest {
     assertEquals(record.getRemark(), resultRecord.getRemark());
     assertEquals(record.getUserId(), resultRecord.getUserId());
     assertEquals(record.getRecordSortId(), resultRecord.getRecordSortId());
+    assertEquals(record.getCount().toString(), resultRecord.getCount().toString());
   }
 
   @Test

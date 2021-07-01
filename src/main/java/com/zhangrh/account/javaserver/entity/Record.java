@@ -1,5 +1,6 @@
 package com.zhangrh.account.javaserver.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Record extends AbstractEntity {
@@ -9,8 +10,15 @@ public class Record extends AbstractEntity {
   private long accountId;
   private String remark;
   private Date spendTime;
+  private BigDecimal count;
   public long getRecordId() {
     return recordId;
+  }
+  public BigDecimal getCount() {
+    return count;
+  }
+  public void setCount(BigDecimal count) {
+    this.count = count;
   }
   public Date getSpendTime() {
     return spendTime;

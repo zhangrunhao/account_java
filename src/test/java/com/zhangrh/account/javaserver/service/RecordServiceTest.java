@@ -51,7 +51,7 @@ public class RecordServiceTest {
     // update
     Record updateRecord = new Record();
     String updateRemark = "忘记了";
-    Date updateSpendTime = new Date(0);
+    Date updateSpendTime = new Date(1000000);
     updateRecord.setUserId(userId);
     updateRecord.setAccountId(accountId);
     updateRecord.setRecordSortId(recordSortId);

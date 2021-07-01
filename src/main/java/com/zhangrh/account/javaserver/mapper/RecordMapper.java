@@ -18,10 +18,10 @@ import org.apache.ibatis.annotations.Update;
 public interface RecordMapper {
   
   @Options(useGeneratedKeys = true, keyProperty = "recordId", keyColumn = "income_expend_record_id")
-  @Insert("INSERT INTO income_expend_record (users_id, income_expend_record_sort_id, account_book_id, remark, spend_time, create_at) VALUES (#{record.userId}, #{record.recordSortId}, #{record.accountId}, #{record.remark}, #{record.spendTime}, #{record.createAt})")
+  @Insert("INSERT INTO income_expend_record (users_id, income_expend_record_sort_id, account_book_id, remark, spend_time, count, create_at) VALUES (#{record.userId}, #{record.recordSortId}, #{record.accountId}, #{record.remark}, #{record.spendTime}, #{record.count}, #{record.createAt})")
   void insert(@Param("record") Record record);
 
-  @Update("UPDATE income_expend_record SET users_id=#{record.userId}, income_expend_record_sort_id=#{record.recordSortId}, account_book_id=#{record.accountId}, remark=#{record.remark}, spend_time=#{record.spendTime}, update_at=#{record.updateAt} WHERE income_expend_record_id=#{record.recordId}")
+  @Update("UPDATE income_expend_record SET users_id=#{record.userId}, income_expend_record_sort_id=#{record.recordSortId}, account_book_id=#{record.accountId}, remark=#{record.remark}, spend_time=#{record.spendTime}, count=#{record.count},update_at=#{record.updateAt} WHERE income_expend_record_id=#{record.recordId}")
   int update(@Param("record") Record record);
 
   @Update("UPDATE income_expend_record SET delete_at=#{record.deleteAt} WHERE income_expend_record_id=#{record.recordId}")
@@ -69,8 +69,8 @@ public interface RecordMapper {
   @Select(
   "SELECT * " +
   "FROM income_expend_record " +
-  "WHERE users_id=1 " +
-  "AND account_book_id=3 " +
+  "WHERE users_id=#{account.userId} " +
+  "AND account_book_id=#{account.accountId} " +
   "AND spend_time > #{fromDate} " +
   "AND spend_time < #{toDate}")
   @Results({
