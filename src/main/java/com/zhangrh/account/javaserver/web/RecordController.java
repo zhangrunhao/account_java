@@ -1,5 +1,6 @@
 package com.zhangrh.account.javaserver.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +48,7 @@ public class RecordController {
       record.setRecordSortId(request.getRecordSortId());
       record.setRemark(request.getRemark());
       record.setSpendTime(new Date(request.getSpendTimeStamp()));
-      record.setCount(request.getCount());
+      record.setCount(new BigDecimal(request.getCount()));
       recordService.add(record);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
@@ -64,7 +65,7 @@ public class RecordController {
       Record record = new Record();
       record.setUserId(UserInfoUtil.getUser().getUserId());
       record.setAccountId(request.getAccountId());
-      record.setCount(request.getCount());
+      record.setCount(new BigDecimal(request.getCount()));
       record.setRecordSortId(request.getRecordSortId());
       record.setRemark(request.getRemark());
       record.setSpendTime(new Date(request.getSpendTimeStamp()));

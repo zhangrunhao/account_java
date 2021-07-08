@@ -1,7 +1,5 @@
 package com.zhangrh.account.javaserver.request;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
@@ -19,15 +17,15 @@ public class RecordUpdateRequest {
   @Min(value = 1, message = "spendTimeStamp至少为1")
   private long spendTimeStamp;
   @NotEmpty(message = "金额不能为空")
-  private BigDecimal count;
+  private String count;
 
   public long getSpendTimeStamp() {
     return spendTimeStamp;
   }
-  public BigDecimal getCount() {
+  public String getCount() {
     return count;
   }
-  public void setCount(BigDecimal count) {
+  public void setCount(String count) {
     this.count = count;
   }
   public long getRecordId() {

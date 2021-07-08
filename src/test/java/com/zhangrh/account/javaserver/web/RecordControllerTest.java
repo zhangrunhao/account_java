@@ -2,7 +2,6 @@ package com.zhangrh.account.javaserver.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class RecordControllerTest {
     request.setAccountId(11);
     request.setRemark("打球");
     request.setSpendTimeStamp(1623468716);
-    request.setCount(new BigDecimal("-11.22"));
+    request.setCount("-11.22");
     CommonResult<String> result =  controller.doAdd(request);
     assertEquals(200, result.getCode());
     assertEquals("收支记录创建成功", result.getData());
@@ -53,7 +52,7 @@ public class RecordControllerTest {
     request.setAccountId(11);
     request.setRemark("打球update");
     request.setSpendTimeStamp(1623468716);
-    request.setCount(new BigDecimal("0.22"));
+    request.setCount("0.22");
     CommonResult<String> result = controller.doUpdate(request);
     assertEquals(200, result.getCode());
     assertEquals("收支记录修改成功", result.getData());

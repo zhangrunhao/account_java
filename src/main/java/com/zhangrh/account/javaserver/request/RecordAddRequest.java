@@ -1,7 +1,5 @@
 package com.zhangrh.account.javaserver.request;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
@@ -9,8 +7,6 @@ import lombok.Data;
 
 @Data
 public class RecordAddRequest {
-  @Min(value = 1, message = "usersId至少为1")
-  private long userId;
   @Min(value = 1, message = "recordSortId至少为1")
   private long recordSortId;
   @Min(value = 1, message = "accountId至少为1")
@@ -20,21 +16,15 @@ public class RecordAddRequest {
   @Min(value = 1, message = "spendTimeStamp至少为1")
   private long spendTimeStamp;
   @NotEmpty(message = "金额不可为空")
-  private BigDecimal count;
+  private String count;
   public long getSpendTimeStamp() {
     return spendTimeStamp;
   }
-  public BigDecimal getCount() {
+  public String getCount() {
     return count;
   }
-  public void setCount(BigDecimal count) {
+  public void setCount(String count) {
     this.count = count;
-  }
-  public long getUserId() {
-    return userId;
-  }
-  public void setUserId(long userId) {
-    this.userId = userId;
   }
   public long getRecordSortId() {
     return recordSortId;
