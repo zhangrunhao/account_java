@@ -4,7 +4,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 public class RecordSortUpdateRequest {
-  @Min(value = 1, message = "recordSortId至少为1")
+  @Min(value = 1, message = "不可为空")
   private long recordSortId;
   @NotEmpty(message = "名称不可为空")
   private String name;

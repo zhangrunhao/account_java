@@ -4,7 +4,7 @@ import javax.validation.constraints.Min;
 
 public class RecordSortDeleteRequest {
 
-  @Min(value = 1, message = "recordSortId至少为1")
+  @Min(value = 1, message = "不可为空")
   private long recordSortId;
 
   public long getRecordSortId() {

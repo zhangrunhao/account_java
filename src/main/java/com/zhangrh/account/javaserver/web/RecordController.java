@@ -107,7 +107,7 @@ public class RecordController {
     return CommonResult.success(responses);
   }
 
-  @RequestMapping(value = "getListByAccount", method = RequestMethod.GET)
+  @RequestMapping(value = "/getListByAccount", method = RequestMethod.GET)
   @ResponseBody
   public CommonResult<List<RecordResponse>> doGetListByAccount(
     @RequestParam long accountId
@@ -124,10 +124,12 @@ public class RecordController {
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
+    // TODO: 1. 如何让变成类似前端, 自己想要的格式
+    // TODO: 2. 如何直接通过两张表一起查询返回recordSort的相关信息
     return CommonResult.success(responses);
   }
 
-  @RequestMapping(value = "getListByAccountAndTime", method = RequestMethod.GET)
+  @RequestMapping(value = "/getListByAccountAndTime", method = RequestMethod.GET)
   @ResponseBody
   public CommonResult<List<RecordResponse>> doGetListByAccountAndTime(
     @RequestParam long accountId,
