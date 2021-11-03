@@ -1,6 +1,7 @@
 package com.zhangrh.account.javaserver.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.Record;
@@ -19,5 +20,7 @@ public interface RecordService {
   List<Record> getListByAccount(Account account);
 
   Record getRecordById(long recordId);
+
+  Map<String, List<Record>> getDateGroupRecordByUser(User user);
 
 }

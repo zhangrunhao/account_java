@@ -12,6 +12,7 @@ public class RecordResponse {
   private String remark;
   private long spendTimeStamp;
   private BigDecimal count;
+  private String type;
 
 
   public static RecordResponse recordEntityToRecordResponse(Record record) {
@@ -22,7 +23,17 @@ public class RecordResponse {
     response.setRemark(record.getRemark());
     response.setSpendTimeStamp(DateTimeUtil.LocalDateToMill(record.getSpendTime()));
     response.setCount(record.getCount());
+    String type = (record.getCount().signum() == 1) ? "income" : "expend";
+    response.setType(type);
     return response;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
   public BigDecimal getCount() {

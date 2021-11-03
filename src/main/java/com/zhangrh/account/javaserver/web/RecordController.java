@@ -3,6 +3,7 @@ package com.zhangrh.account.javaserver.web;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
 import com.zhangrh.account.javaserver.entity.Account;
@@ -11,6 +12,7 @@ import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.request.RecordAddRequest;
 import com.zhangrh.account.javaserver.request.RecordDeleteRequest;
 import com.zhangrh.account.javaserver.request.RecordUpdateRequest;
+import com.zhangrh.account.javaserver.response.RecordDateGroupResponse;
 import com.zhangrh.account.javaserver.response.RecordResponse;
 import com.zhangrh.account.javaserver.service.RecordService;
 import com.zhangrh.account.javaserver.utils.DateTimeUtil;
@@ -93,14 +95,18 @@ public class RecordController {
 
   @RequestMapping(value = "/getListByUser", method = RequestMethod.GET)
   @ResponseBody
-  public CommonResult<List<RecordResponse>> doGetListByUser() {
-    List<RecordResponse> responses = new ArrayList<>();
+  public CommonResult<List<RecordDateGroupResponse>> doGetListByUser() {
+    List<RecordDateGroupResponse> responses = new ArrayList<>();
     try {
       User user = UserInfoUtil.getUser();
-      List<Record> list = recordService.getListByUser(user);
-      for (Record record: list) {
-        responses.add(RecordResponse.recordEntityToRecordResponse(record));
-      }
+      Map<String, List<Record>>  rMap = recordService.getDateGroupRecordByUser(user);
+      rMap.forEach((key, value) -> {
+        List<RecordResponse> rList = new ArrayList<>();
+        for (Record record : value) {
+          rList.add(RecordResponse.recordEntityToRecordResponse(record));
+        }
+        responses.add(new RecordDateGroupResponse(key, rList));
+      });
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -124,8 +130,7 @@ public class RecordController {
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
-    // TODO: 1. 如何让变成类似前端, 自己想要的格式
-    // TODO: 2. 如何直接通过两张表一起查询返回recordSort的相关信息
+    // TODO: 如何直接通过两张表一起查询返回recordSort的相关信息
     return CommonResult.success(responses);
   }
 }

@@ -9,6 +9,7 @@ import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.request.RecordAddRequest;
 import com.zhangrh.account.javaserver.request.RecordDeleteRequest;
 import com.zhangrh.account.javaserver.request.RecordUpdateRequest;
+import com.zhangrh.account.javaserver.response.RecordDateGroupResponse;
 import com.zhangrh.account.javaserver.response.RecordResponse;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 
@@ -75,7 +76,7 @@ public class RecordControllerTest {
     User user = new User();
     user.setUserId(1);
     UserInfoUtil.setUser(user);
-    CommonResult<List<RecordResponse>> result = controller.doGetListByUser();
+    CommonResult<List<RecordDateGroupResponse>> result = controller.doGetListByUser();
     assertEquals(200, result.getCode());
   }
 

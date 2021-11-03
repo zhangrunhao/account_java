@@ -1,8 +1,11 @@
 package com.zhangrh.account.javaserver.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.Record;
@@ -106,5 +109,34 @@ public class RecordServiceImpl implements RecordService {
     }
     return record;
   }
-  
+
+  @Override
+  public Map<String, List<Record>> getDateGroupRecordByUser(User user) {
+    List<Record> records = null;
+    try {
+      List<Record> qList = recordMapper.queryListByUser(user);
+      records = filterDeletedData(qList);
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("查询用户收支类表出错");
+    }
+    return recordsSortGroupByDate(records);
+  }
+
+  private Map<String, List<Record>> recordsSortGroupByDate(List<Record> records) {
+    Map<String, List<Record>> result = new HashMap<>();
+    for (Record record : records) {
+      LocalDate spendDate = record.getSpendTime();
+      String dateStr = spendDate.toString();
+      List<Record> recordList = result.get(dateStr);
+      if (recordList == null) {
+        recordList = new ArrayList<>();
+        recordList.add(record);
+        result.put(dateStr, recordList);
+      } else {
+        recordList.add(record);
+      }
+    }
+    return result;
+  }
 }

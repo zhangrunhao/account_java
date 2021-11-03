@@ -82,4 +82,11 @@ public class RecordServiceTest {
     Record deletedRecord = recordService.getRecordById(accountListLastRecord.getRecordId());
     assertNull(deletedRecord);
   }
+
+  @Test
+  void testGetDateGroupRecordByUser() {
+    User user = new User();
+    user.setUserId(1);
+    recordService.getDateGroupRecordByUser(user);
+  }
 }
