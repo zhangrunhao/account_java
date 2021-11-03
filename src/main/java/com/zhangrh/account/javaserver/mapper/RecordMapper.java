@@ -1,6 +1,4 @@
 package com.zhangrh.account.javaserver.mapper;
-
-import java.util.Date;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.User;
@@ -65,27 +63,5 @@ public interface RecordMapper {
     @Result(property = "deleteAt", column = "delete_at"),
   })
   List<Record> queryListByAccount(@Param("account") Account account);
-
-  @Select(
-  "SELECT * " +
-  "FROM income_expend_record " +
-  "WHERE users_id=#{account.userId} " +
-  "AND account_book_id=#{account.accountId} " +
-  "AND spend_time > #{fromDate} " +
-  "AND spend_time < #{toDate}")
-  @Results({
-    @Result(property = "userId", column = "users_id"),
-    @Result(property = "accountId", column = "account_book_id"),
-    @Result(property = "recordId", column = "income_expend_record_id"),
-    @Result(property = "recordSortId", column = "income_expend_record_sort_id"),
-    @Result(property = "createAt", column = "create_at"),
-    @Result(property = "updateAt", column = "update_at"),
-    @Result(property = "deleteAt", column = "delete_at"),
-  })
-  List<Record> queryListByAccountAndTime(
-    @Param("account") Account account,
-    @Param("fromDate") Date fromDate,
-    @Param("toDate") Date toDate
-  );
 
 }

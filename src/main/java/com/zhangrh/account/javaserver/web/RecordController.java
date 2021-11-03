@@ -2,7 +2,6 @@ package com.zhangrh.account.javaserver.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
@@ -14,6 +13,7 @@ import com.zhangrh.account.javaserver.request.RecordDeleteRequest;
 import com.zhangrh.account.javaserver.request.RecordUpdateRequest;
 import com.zhangrh.account.javaserver.response.RecordResponse;
 import com.zhangrh.account.javaserver.service.RecordService;
+import com.zhangrh.account.javaserver.utils.DateTimeUtil;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class RecordController {
       record.setAccountId(request.getAccountId());
       record.setRecordSortId(request.getRecordSortId());
       record.setRemark(request.getRemark());
-      record.setSpendTime(new Date(request.getSpendTimeStamp()));
+      record.setSpendTime(DateTimeUtil.MillToLocalDate(request.getSpendTimeStamp()));
       record.setCount(new BigDecimal(request.getCount()));
       recordService.add(record);
     } catch (Exception e) {
@@ -55,20 +55,20 @@ public class RecordController {
     }
     return CommonResult.success("收支记录创建成功");
   }
-
+  
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doUpdate(
     @Validated @RequestBody RecordUpdateRequest request
-  ) {
-    try {
-      Record record = new Record();
-      record.setUserId(UserInfoUtil.getUser().getUserId());
-      record.setAccountId(request.getAccountId());
-      record.setCount(new BigDecimal(request.getCount()));
-      record.setRecordSortId(request.getRecordSortId());
-      record.setRemark(request.getRemark());
-      record.setSpendTime(new Date(request.getSpendTimeStamp()));
+    ) {
+      try {
+        Record record = new Record();
+        record.setUserId(UserInfoUtil.getUser().getUserId());
+        record.setAccountId(request.getAccountId());
+        record.setCount(new BigDecimal(request.getCount()));
+        record.setRecordSortId(request.getRecordSortId());
+        record.setRemark(request.getRemark());
+        record.setSpendTime(DateTimeUtil.MillToLocalDate(request.getSpendTimeStamp()));
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -126,28 +126,6 @@ public class RecordController {
     }
     // TODO: 1. 如何让变成类似前端, 自己想要的格式
     // TODO: 2. 如何直接通过两张表一起查询返回recordSort的相关信息
-    return CommonResult.success(responses);
-  }
-
-  @RequestMapping(value = "/getListByAccountAndTime", method = RequestMethod.GET)
-  @ResponseBody
-  public CommonResult<List<RecordResponse>> doGetListByAccountAndTime(
-    @RequestParam long accountId,
-    @RequestParam long fromTimeStamp,
-    @RequestParam long toTimeStamp
-  ) {
-    List<RecordResponse> responses = new ArrayList<>();
-    try {
-      Account account = new Account();
-      account.setUserId(UserInfoUtil.getUser().getUserId());
-      account.setAccountId(accountId);
-      List<Record> list = recordService.getListByAccountAndTime(account, new Date(fromTimeStamp), new Date(toTimeStamp));
-      for (Record record: list) {
-        responses.add(RecordResponse.recordEntityToRecordResponse(record));
-      }
-    } catch (Exception e) {
-      return CommonResult.failed(e.getMessage());
-    }
     return CommonResult.success(responses);
   }
 }

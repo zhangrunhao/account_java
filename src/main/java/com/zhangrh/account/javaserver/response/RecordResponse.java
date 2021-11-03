@@ -3,6 +3,7 @@ package com.zhangrh.account.javaserver.response;
 import java.math.BigDecimal;
 
 import com.zhangrh.account.javaserver.entity.Record;
+import com.zhangrh.account.javaserver.utils.DateTimeUtil;
 
 public class RecordResponse {
   private long recordId;
@@ -19,7 +20,7 @@ public class RecordResponse {
     response.setRecordSortId(record.getRecordSortId());
     response.setAccountId(record.getAccountId());
     response.setRemark(record.getRemark());
-    response.setSpendTimeStamp(record.getSpendTime().getTime());
+    response.setSpendTimeStamp(DateTimeUtil.LocalDateToMill(record.getSpendTime()));
     response.setCount(record.getCount());
     return response;
   }

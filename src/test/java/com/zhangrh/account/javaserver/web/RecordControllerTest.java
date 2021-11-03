@@ -2,7 +2,6 @@ package com.zhangrh.account.javaserver.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Date;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
@@ -86,15 +85,6 @@ public class RecordControllerTest {
     user.setUserId(1);
     UserInfoUtil.setUser(user);
     CommonResult<List<RecordResponse>> result = controller.doGetListByAccount(97);
-    assertEquals(200, result.getCode());
-  }
-
-  @Test
-  void testGetListByAccountAndTime() {
-    User user = new User();
-    user.setUserId(1);
-    UserInfoUtil.setUser(user);
-    CommonResult<List<RecordResponse>> result = controller.doGetListByAccountAndTime(97, 0, new Date().getTime());
     assertEquals(200, result.getCode());
   }
 }

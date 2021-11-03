@@ -116,6 +116,7 @@ public class AccountController {
     AccountResponse accountResponse = null;
     try {
       account = accountService.getAccountByAccountId(user, accountId);
+      // TODO: 如何在此处计算当前余额
       accountResponse = new AccountResponse();
       BeanUtils.copyProperties(account, accountResponse);
     } catch (Exception e) {

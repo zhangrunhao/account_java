@@ -5,12 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.Record;
 import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.utils.DateTimeUtil;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class RecordMapperTest {
     long userId = 1;
     long recordSortId = 2;
     long accountId = 3;
-    Date date = new Date();
+    LocalDateTime localDateTime = LocalDateTime.now();
+    LocalDate localDate = LocalDate.now();
     String remark = "看电影";
     Record record = new Record();
     BigDecimal count = new BigDecimal("-22.22");
@@ -35,8 +37,8 @@ public class RecordMapperTest {
     record.setRecordSortId(recordSortId);
     record.setAccountId(accountId);
     record.setRemark(remark);
-    record.setCreateAt(date);
-    record.setSpendTime(date);
+    record.setCreateAt(localDateTime);
+    record.setSpendTime(localDate);
     record.setCount(count);
     recordMapper.insert(record);
 
@@ -49,10 +51,10 @@ public class RecordMapperTest {
     assertEquals(recordSortId, lastRecord.getRecordSortId());
     assertEquals(accountId, lastRecord.getAccountId());
     assertEquals(remark, lastRecord.getRemark());
-    assertEquals(date.getTime(), lastRecord.getSpendTime().getTime());
+    assertEquals(localDate, lastRecord.getSpendTime());
     assertEquals(count, lastRecord.getCount());
 
-    lastRecord.setDeleteAt(new Date());
+    lastRecord.setDeleteAt(LocalDateTime.now());
     int deleteCount = recordMapper.delete(lastRecord);
     assertEquals(1, deleteCount);
 
@@ -62,30 +64,30 @@ public class RecordMapperTest {
 
   @Test
   void testUpdate() {
-    long recordId = 2;
+    long recordId = 114;
     long userId = 12;
     long accountId = 4;
     long recordSortId = 8;
-    Date date = new Date();
+    LocalDateTime localDateTime = LocalDateTime.now();
     String remark = "滴滴打车";
     BigDecimal count = new BigDecimal("11.53");
-
+    LocalDate spendDate = LocalDate.of(2010, 11, 01);
     Record record = new Record();
     record.setRecordId(recordId);
     record.setAccountId(accountId);
     record.setUserId(userId);
     record.setRecordSortId(recordSortId);
     record.setRemark(remark);
-    record.setUpdateAt(date);
+    record.setUpdateAt(localDateTime);
     record.setCount(count);
+    record.setSpendTime(spendDate);
 
     int size = recordMapper.update(record);
     assertEquals(1, size);
 
     Record resultRecord = recordMapper.queryRecordById(recordId);
-    assertEquals(date.getTime(), record.getUpdateAt().getTime());
-    assertEquals(record.getUpdateAt().getTime(), resultRecord.getUpdateAt().getTime());
-    assertEquals(date.getTime(), resultRecord.getUpdateAt().getTime());
+    assertTrue(DateTimeUtil.LocalDateTimeToMill(record.getUpdateAt()) - DateTimeUtil.LocalDateTimeToMill(resultRecord.getUpdateAt()) < 10);
+    assertEquals(spendDate, record.getSpendTime());
 
     assertEquals(record.getRecordId(), resultRecord.getRecordId());
     assertEquals(record.getAccountId(), resultRecord.getAccountId());
@@ -93,16 +95,5 @@ public class RecordMapperTest {
     assertEquals(record.getUserId(), resultRecord.getUserId());
     assertEquals(record.getRecordSortId(), resultRecord.getRecordSortId());
     assertEquals(record.getCount().toString(), resultRecord.getCount().toString());
-  }
-
-  @Test
-  void testQueryByTime() {
-    Account account = new Account();
-    account.setUserId(1);
-    account.setAccountId(3);
-    Date fromDate = new Date(0);
-    Date toDate = new Date();
-    List<Record> records = recordMapper.queryListByAccountAndTime(account, fromDate, toDate);
-    assertTrue(records.size() > 0);
   }
 }

@@ -1,30 +1,31 @@
 package com.zhangrh.account.javaserver.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * AbstractEntity
  */
 public abstract class AbstractEntity {
-  private Date createAt;
-  private Date updateAt;
-  private Date deleteAt;
-  public Date getCreateAt() {
+  private LocalDateTime createAt;
+  private LocalDateTime updateAt;
+  private LocalDateTime deleteAt;
+
+  public LocalDateTime getCreateAt() {
     return createAt;
   }
-  public Date getDeleteAt() {
+  public LocalDateTime getDeleteAt() {
     return deleteAt;
   }
-  public void setDeleteAt(Date deleteAt) {
+  public void setDeleteAt(LocalDateTime deleteAt) {
     this.deleteAt = deleteAt;
   }
-  public Date getUpdateAt() {
+  public LocalDateTime getUpdateAt() {
     return updateAt;
   }
-  public void setUpdateAt(Date updateAt) {
+  public void setUpdateAt(LocalDateTime updateAt) {
     this.updateAt = updateAt;
   }
-  public void setCreateAt(Date createAt) {
+  public void setCreateAt(LocalDateTime createAt) {
     this.createAt = createAt;
   }
 }

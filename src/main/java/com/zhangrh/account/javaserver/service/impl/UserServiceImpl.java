@@ -1,6 +1,5 @@
 package com.zhangrh.account.javaserver.service.impl;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.exception.Asserts;
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
     try {
       user.setEmail(email);
       user.setPassword(Md5Util.getMd5(password));
-      user.setCreateAt(new Date());
+      user.setCreateAt(LocalDateTime.now());
       userMapper.insert(user);
     } catch (Exception e) {
       Asserts.fail("用户插入失败");

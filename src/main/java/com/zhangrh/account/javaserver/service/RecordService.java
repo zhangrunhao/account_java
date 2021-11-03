@@ -1,6 +1,5 @@
 package com.zhangrh.account.javaserver.service;
 
-import java.util.Date;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
@@ -18,8 +17,6 @@ public interface RecordService {
   List<Record> getListByUser(User user);
 
   List<Record> getListByAccount(Account account);
-  
-  List<Record> getListByAccountAndTime(Account account, Date fromDate, Date toDate);
 
   Record getRecordById(long recordId);
 

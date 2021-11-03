@@ -1,8 +1,6 @@
-package com.zhangrh.account.javaserver.util;
+package com.zhangrh.account.javaserver.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import com.zhangrh.account.javaserver.utils.Md5Util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

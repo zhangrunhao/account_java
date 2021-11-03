@@ -1,7 +1,7 @@
 package com.zhangrh.account.javaserver.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
@@ -36,7 +36,7 @@ public class RecordServiceImpl implements RecordService {
   @Override
   public void add(Record record) {
     try {
-      record.setCreateAt(new Date());
+      record.setCreateAt(LocalDateTime.now());
       recordMapper.insert(record);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -47,7 +47,7 @@ public class RecordServiceImpl implements RecordService {
   @Override
   public void update(Record record) {
     try {
-      record.setUpdateAt(new Date());
+      record.setUpdateAt(LocalDateTime.now());
       int size = recordMapper.update(record);
       if (size != 1) throw new Exception("record update row size is not 1");
     } catch (Exception e) {
@@ -59,7 +59,7 @@ public class RecordServiceImpl implements RecordService {
   @Override
   public void delete(Record record) {
     try {
-      record.setDeleteAt(new Date());
+      record.setDeleteAt(LocalDateTime.now());
       int size = recordMapper.delete(record);
       if (size != 1) throw new Exception("record delete row size is not 1");
     } catch (Exception e) {
@@ -86,19 +86,6 @@ public class RecordServiceImpl implements RecordService {
     List<Record> list = null;
     try {
       List<Record> queryList = recordMapper.queryListByAccount(account);
-      list = filterDeletedData(queryList);
-    } catch (Exception e) {
-      LOGGER.warn(e.getMessage());
-      Asserts.fail("查询用户收支类表出错");
-    }
-    return list;
-  }
-
-  @Override
-  public List<Record> getListByAccountAndTime(Account account, Date fromDate, Date toDate) {
-    List<Record> list = null;
-    try {
-      List<Record> queryList = recordMapper.queryListByAccountAndTime(account, fromDate, toDate);
       list = filterDeletedData(queryList);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());

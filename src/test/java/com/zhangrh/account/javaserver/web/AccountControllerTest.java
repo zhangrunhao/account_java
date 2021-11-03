@@ -60,7 +60,7 @@ public class AccountControllerTest {
     user.setUserId(1);
     UserInfoUtil.setUser(user);
 
-    long accountId = 43;
+    long accountId = 114;
     String color = "#fff";
     String name = "update";
     String type = "normal";
@@ -84,7 +84,7 @@ public class AccountControllerTest {
     user.setUserId(1);
     UserInfoUtil.setUser(user);
 
-    long accountId = 43;
+    long accountId = 114;
     CommonResult<AccountResponse> result = accountController.doGetAccount(accountId);
     assertNotNull(result.getData());
 

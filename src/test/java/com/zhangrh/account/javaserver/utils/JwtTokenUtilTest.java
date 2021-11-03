@@ -1,9 +1,7 @@
-package com.zhangrh.account.javaserver.util;
+package com.zhangrh.account.javaserver.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

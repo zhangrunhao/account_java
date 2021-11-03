@@ -4,12 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.Record;
 import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.utils.DateTimeUtil;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class RecordServiceTest {
     long accountId = 3;
     long recordSortId = 2;
     String remark = "滴滴";
-    Date spendTime = new Date();
+    LocalDate spendTime = LocalDate.now();
     Record record = new Record();
     record.setUserId(userId);
     record.setAccountId(accountId);
@@ -42,16 +43,19 @@ public class RecordServiceTest {
     user.setUserId(userId);
     List<Record> userList = recordService.getListByUser(user);
     Record userListLastRecord = userList.get(userList.size() - 1);
-    assertTrue(spendTime.getTime() <= userListLastRecord.getCreateAt().getTime());
+
+    assertTrue(DateTimeUtil.LocalDateToMill(spendTime) <= DateTimeUtil.LocalDateTimeToMill(userListLastRecord.getCreateAt()));
+
     assertEquals(userId, userListLastRecord.getUserId());
     assertEquals(accountId, userListLastRecord.getAccountId());
     assertEquals(recordSortId, userListLastRecord.getRecordSortId());
-    assertEquals(spendTime.getTime(), userListLastRecord.getSpendTime().getTime());
+
+    assertEquals(DateTimeUtil.LocalDateToMill(spendTime), DateTimeUtil.LocalDateToMill(userListLastRecord.getSpendTime()));
 
     // update
     Record updateRecord = new Record();
     String updateRemark = "忘记了";
-    Date updateSpendTime = new Date(1000000);
+    LocalDate  updateSpendTime = LocalDate.of(2020, 01, 12);
     updateRecord.setUserId(userId);
     updateRecord.setAccountId(accountId);
     updateRecord.setRecordSortId(recordSortId);
@@ -66,19 +70,16 @@ public class RecordServiceTest {
     account.setUserId(userId);
     List<Record> accountList = recordService.getListByAccount(account);
     Record accountListLastRecord = accountList.get(accountList.size() - 1);
-    assertTrue(updateSpendTime. getTime() <= accountListLastRecord.getUpdateAt().getTime());
+    assertTrue(DateTimeUtil.LocalDateToMill(updateSpendTime) <= DateTimeUtil.LocalDateTimeToMill(accountListLastRecord.getUpdateAt()));
+
     assertEquals(userId, accountListLastRecord.getUserId());
     assertEquals(accountId, accountListLastRecord.getAccountId());
     assertEquals(recordSortId, accountListLastRecord.getRecordSortId());
-    assertEquals(updateSpendTime.getTime(), accountListLastRecord.getSpendTime().getTime());
+    assertEquals(updateSpendTime, accountListLastRecord.getSpendTime());
 
     // delete and get record by id
     recordService.delete(accountListLastRecord);
     Record deletedRecord = recordService.getRecordById(accountListLastRecord.getRecordId());
     assertNull(deletedRecord);
-
-    // query list by between
-    List<Record> betweenList = recordService.getListByAccountAndTime(account, new Date(300), new Date());
-    assertTrue(betweenList.size() > 0);
   }
 }

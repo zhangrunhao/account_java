@@ -1,6 +1,6 @@
 package com.zhangrh.account.javaserver.service.impl;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.RecordSort;
@@ -24,7 +24,7 @@ public class RecordSortServiceImpl implements RecordSortService {
   @Override
   public void add(User user, RecordSort recordSort) {
     try {
-      recordSort.setCreateAt(new Date());
+      recordSort.setCreateAt(LocalDateTime.now());
       recordSortMapper.insert(recordSort);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -48,7 +48,7 @@ public class RecordSortServiceImpl implements RecordSortService {
   @Override
   public void update(User user, RecordSort recordSort) {
     try {
-      recordSort.setUpdateAt(new Date());
+      recordSort.setUpdateAt(LocalDateTime.now());
       int size = recordSortMapper.update(recordSort, user);
       if (size != 1) throw new Exception("update record sort row size: " + size);
     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class RecordSortServiceImpl implements RecordSortService {
   @Override
   public void delete(User user, RecordSort recordSort) {
     try {
-      recordSort.setDeleteAt(new Date());
+      recordSort.setDeleteAt(LocalDateTime.now());
       recordSortMapper.delete(recordSort, user);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
