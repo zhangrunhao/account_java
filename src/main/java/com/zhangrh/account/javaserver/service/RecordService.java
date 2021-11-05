@@ -23,4 +23,6 @@ public interface RecordService {
 
   Map<String, List<Record>> getDateGroupRecordByUser(User user);
 
+  Map<String, List<Record>> getDateGroupRecordByAccount(Account account);
+
 }

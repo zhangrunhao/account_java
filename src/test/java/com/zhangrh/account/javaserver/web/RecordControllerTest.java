@@ -10,7 +10,6 @@ import com.zhangrh.account.javaserver.request.RecordAddRequest;
 import com.zhangrh.account.javaserver.request.RecordDeleteRequest;
 import com.zhangrh.account.javaserver.request.RecordUpdateRequest;
 import com.zhangrh.account.javaserver.response.RecordDateGroupResponse;
-import com.zhangrh.account.javaserver.response.RecordResponse;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 
 import org.junit.jupiter.api.Test;
@@ -85,7 +84,7 @@ public class RecordControllerTest {
     User user = new User();
     user.setUserId(1);
     UserInfoUtil.setUser(user);
-    CommonResult<List<RecordResponse>> result = controller.doGetListByAccount(97);
+    CommonResult<List<RecordDateGroupResponse>> result = controller.doGetListByAccount(97);
     assertEquals(200, result.getCode());
   }
 }

@@ -115,18 +115,22 @@ public class RecordController {
 
   @RequestMapping(value = "/getListByAccount", method = RequestMethod.GET)
   @ResponseBody
-  public CommonResult<List<RecordResponse>> doGetListByAccount(
+  public CommonResult<List<RecordDateGroupResponse>> doGetListByAccount(
     @RequestParam long accountId
   ) {
-    List<RecordResponse> responses = new ArrayList<>();
+    List<RecordDateGroupResponse> responses = new ArrayList<>();
     try {
       Account account = new Account();
       account.setUserId(UserInfoUtil.getUser().getUserId());
       account.setAccountId(accountId);
-      List<Record> list = recordService.getListByAccount(account);
-      for (Record record: list) {
-        responses.add(RecordResponse.recordEntityToRecordResponse(record));
-      }
+      Map<String, List<Record>>  rMap = recordService.getDateGroupRecordByAccount(account);
+      rMap.forEach((key, value) -> {
+        List<RecordResponse> rList = new ArrayList<>();
+        for (Record record : value) {
+          rList.add(RecordResponse.recordEntityToRecordResponse(record));
+        }
+        responses.add(new RecordDateGroupResponse(key, rList));
+      });
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }

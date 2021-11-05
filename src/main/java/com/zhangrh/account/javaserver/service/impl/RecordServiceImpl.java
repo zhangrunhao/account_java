@@ -112,15 +112,12 @@ public class RecordServiceImpl implements RecordService {
 
   @Override
   public Map<String, List<Record>> getDateGroupRecordByUser(User user) {
-    List<Record> records = null;
-    try {
-      List<Record> qList = recordMapper.queryListByUser(user);
-      records = filterDeletedData(qList);
-    } catch (Exception e) {
-      LOGGER.warn(e.getMessage());
-      Asserts.fail("查询用户收支类表出错");
-    }
-    return recordsSortGroupByDate(records);
+    return recordsSortGroupByDate(getListByUser(user));
+  }
+
+  @Override
+  public Map<String, List<Record>> getDateGroupRecordByAccount(Account account) {
+    return recordsSortGroupByDate(getListByAccount(account));
   }
 
   private Map<String, List<Record>> recordsSortGroupByDate(List<Record> records) {
