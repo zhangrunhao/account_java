@@ -25,7 +25,7 @@ public interface RecordMapper {
   @Update("UPDATE income_expend_record SET delete_at=#{record.deleteAt} WHERE income_expend_record_id=#{record.recordId}")
   int delete(@Param("record") Record record);
 
-  @Select("SELECT * FROM income_expend_record WHERE income_expend_record_id=#{recordId}")
+  @Select("SELECT * FROM v_record_sort_account WHERE income_expend_record_id=#{recordId}")
   @Results({
     @Result(property = "userId", column = "users_id"),
     @Result(property = "spendTime", column = "spend_time"),
@@ -35,10 +35,12 @@ public interface RecordMapper {
     @Result(property = "createAt", column = "create_at"),
     @Result(property = "updateAt", column = "update_at"),
     @Result(property = "deleteAt", column = "delete_at"),
+    @Result(property = "accountName", column = "account_name"),
+    @Result(property = "sortName", column = "sort_name"),
   })
   Record queryRecordById(@Param("recordId") long recordId);
 
-  @Select("SELECT * FROM income_expend_record WHERE users_id=#{user.userId}")
+  @Select("SELECT * FROM v_record_sort_account WHERE users_id=#{user.userId}")
   @Results({
     @Result(property = "userId", column = "users_id"),
     @Result(property = "accountId", column = "account_book_id"),
@@ -48,10 +50,12 @@ public interface RecordMapper {
     @Result(property = "createAt", column = "create_at"),
     @Result(property = "updateAt", column = "update_at"),
     @Result(property = "deleteAt", column = "delete_at"),
+    @Result(property = "accountName", column = "account_name"),
+    @Result(property = "sortName", column = "sort_name"),
   })
   List<Record> queryListByUser(@Param("user") User user);
 
-  @Select("SELECT * FROM income_expend_record WHERE users_id=#{account.userId} AND account_book_id=#{account.accountId}")
+  @Select("SELECT * FROM v_record_sort_account WHERE users_id=#{account.userId} AND account_book_id=#{account.accountId}")
   @Results({
     @Result(property = "userId", column = "users_id"),
     @Result(property = "spendTime", column = "spend_time"),
@@ -61,6 +65,8 @@ public interface RecordMapper {
     @Result(property = "createAt", column = "create_at"),
     @Result(property = "updateAt", column = "update_at"),
     @Result(property = "deleteAt", column = "delete_at"),
+    @Result(property = "accountName", column = "account_name"),
+    @Result(property = "sortName", column = "sort_name"),
   })
   List<Record> queryListByAccount(@Param("account") Account account);
 

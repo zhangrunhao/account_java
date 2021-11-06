@@ -14,6 +14,8 @@ public class RecordResponse {
   private BigDecimal count;
   private String type;
 
+  private String accountName;
+  private String sortName;
 
   public static RecordResponse recordEntityToRecordResponse(Record record) {
     RecordResponse response = new RecordResponse();
@@ -25,7 +27,25 @@ public class RecordResponse {
     response.setCount(record.getCount());
     String type = (record.getCount().signum() == 1) ? "income" : "expend";
     response.setType(type);
+    response.setAccountName(record.getAccountName());
+    response.setSortName(record.getSortName());
     return response;
+  }
+
+  public String getSortName() {
+    return sortName;
+  }
+
+  public void setSortName(String sortName) {
+    this.sortName = sortName;
+  }
+
+  public String getAccountName() {
+    return accountName;
+  }
+
+  public void setAccountName(String accountName) {
+    this.accountName = accountName;
   }
 
   public String getType() {

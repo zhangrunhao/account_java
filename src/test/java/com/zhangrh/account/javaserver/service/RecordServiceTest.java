@@ -64,7 +64,8 @@ public class RecordServiceTest {
     updateRecord.setRemark(updateRemark);
     updateRecord.setSpendTime(updateSpendTime);
     updateRecord.setRecordId(userListLastRecord.getRecordId());
-    record.setCount(new BigDecimal(20));
+    updateRecord
+    .setCount(new BigDecimal(20));
     recordService.update(updateRecord);
 
     // query list by account
