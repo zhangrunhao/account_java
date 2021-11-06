@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class RecordServiceTest {
     record.setRecordSortId(recordSortId);
     record.setRemark(remark);
     record.setSpendTime(spendTime);
+    record.setCount(new BigDecimal(10));
     recordService.add(record);
 
     // query list by user
@@ -62,6 +64,7 @@ public class RecordServiceTest {
     updateRecord.setRemark(updateRemark);
     updateRecord.setSpendTime(updateSpendTime);
     updateRecord.setRecordId(userListLastRecord.getRecordId());
+    record.setCount(new BigDecimal(20));
     recordService.update(updateRecord);
 
     // query list by account
