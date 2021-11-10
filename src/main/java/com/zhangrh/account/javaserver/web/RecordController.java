@@ -134,7 +134,6 @@ public class RecordController {
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
-    // TODO: 如何直接通过两张表一起查询返回recordSort的相关信息
     return CommonResult.success(responses);
   }
 }

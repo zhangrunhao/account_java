@@ -21,6 +21,7 @@ public interface AccountMapper {
 
   @Select("SELECT * FROM account_book WHERE users_id=#{user.userId} AND delete_at IS NULL")
   @Results({
+    @Result(property = "userId", column = "users_id"),
     @Result(property = "accountId", column = "account_book_id"),
     @Result(property = "createAt", column = "create_at"),
     @Result(property = "updateAt", column = "update_at"),
@@ -30,6 +31,7 @@ public interface AccountMapper {
 
   @Select("SELECT * FROM account_book WHERE account_book_id=#{accountId} AND users_id=#{user.userId} AND delete_at IS NULL")
   @Results({
+    @Result(property = "userId", column = "users_id"),
     @Result(property = "accountId", column = "account_book_id"),
     @Result(property = "createAt", column = "create_at"),
     @Result(property = "updateAt", column = "update_at"),

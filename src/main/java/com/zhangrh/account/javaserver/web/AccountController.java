@@ -62,6 +62,7 @@ public class AccountController {
       for (Account account: accounts) {
         AccountResponse accountResponse = new AccountResponse();
         BeanUtils.copyProperties(account, accountResponse);
+        accountResponse.setCount(accountService.calculateAccountBalance(account));
         accountResponses.add(accountResponse);
       }
     } catch (Exception e) {
@@ -116,9 +117,9 @@ public class AccountController {
     AccountResponse accountResponse = null;
     try {
       account = accountService.getAccountByAccountId(user, accountId);
-      // TODO: 如何在此处计算当前余额
       accountResponse = new AccountResponse();
       BeanUtils.copyProperties(account, accountResponse);
+      accountResponse.setCount(accountService.calculateAccountBalance(account));
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }

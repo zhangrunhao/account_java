@@ -1,5 +1,6 @@
 package com.zhangrh.account.javaserver.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
@@ -45,4 +46,11 @@ public interface AccountService {
    */
   Account getAccountByAccountId(User user, long accountId);
 
+
+  /**
+   * 计算账户余额
+   * @param account 账户
+   * @return 账户余额
+   */
+  BigDecimal calculateAccountBalance(Account account);
 }

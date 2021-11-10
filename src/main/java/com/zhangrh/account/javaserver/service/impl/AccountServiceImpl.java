@@ -1,12 +1,15 @@
 package com.zhangrh.account.javaserver.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
+import com.zhangrh.account.javaserver.entity.Record;
 import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.AccountMapper;
+import com.zhangrh.account.javaserver.mapper.RecordMapper;
 import com.zhangrh.account.javaserver.service.AccountService;
 
 import org.slf4j.Logger;
@@ -20,6 +23,19 @@ public class AccountServiceImpl implements AccountService {
 
   @Autowired
   AccountMapper accountMapper;
+
+  @Autowired
+  RecordMapper recordMapper;
+
+  @Override
+  public BigDecimal calculateAccountBalance(Account account) {
+    List<Record> records = recordMapper.queryListByAccount(account);
+    BigDecimal result = new BigDecimal(0);
+    for (Record record : records) {
+      result = result.add(record.getCount());
+    }
+    return result;
+  }
 
   @Override
   public void add(User user, Account account) {
@@ -79,5 +95,4 @@ public class AccountServiceImpl implements AccountService {
     }
     return account;
   }
-  
 }

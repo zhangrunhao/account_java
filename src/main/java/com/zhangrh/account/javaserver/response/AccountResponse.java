@@ -1,13 +1,22 @@
 package com.zhangrh.account.javaserver.response;
 
+import java.math.BigDecimal;
+
 public class AccountResponse {
   private long accountId;
   private String icon;
   private String name;
   private String type;
   private String color;
+  private BigDecimal count;
   public long getAccountId() {
     return accountId;
+  }
+  public BigDecimal getCount() {
+    return count;
+  }
+  public void setCount(BigDecimal count) {
+    this.count = count;
   }
   public String getColor() {
     return color;
