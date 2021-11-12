@@ -6,16 +6,21 @@ import javax.validation.constraints.NotEmpty;
 public class RecordUpdateRequest {
   @Min(value = 1, message = "recordId至少为1")
   private long recordId;
+
   @Min(value = 1, message = "usersId至少为1")
   private long userId;
+
   @Min(value = 1, message = "recordSortId至少为1")
   private long recordSortId;
+
   @Min(value = 1, message = "accountId至少为1")
   private long accountId;
-  @NotEmpty(message = "remark不可为空")
+
   private String remark;
+
   @Min(value = 1, message = "spendTimeStamp至少为1")
   private long spendTimeStamp;
+
   @NotEmpty(message = "金额不能为空")
   private String count;
 

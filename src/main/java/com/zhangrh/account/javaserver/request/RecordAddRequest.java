@@ -9,15 +9,19 @@ import lombok.Data;
 public class RecordAddRequest {
   @Min(value = 1, message = "花费种类至少为1")
   private long recordSortId;
+
   // TODO: 如何判断数字类型的id不为空
   @Min(value = 1, message = "账户id至少为1")
   private long accountId;
-  @NotEmpty(message = "备注不可为空")
+
   private String remark;
+
   @Min(value = 1, message = "花费时间至少为1")
   private long spendTimeStamp;
+
   @NotEmpty(message = "金额不可为空")
   private String count;
+
   public long getSpendTimeStamp() {
     return spendTimeStamp;
   }
