@@ -2,6 +2,7 @@ package com.zhangrh.account.javaserver.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +108,7 @@ public class RecordController {
         }
         responses.add(new RecordDateGroupResponse(key, rList));
       });
+      Collections.sort(responses);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -131,6 +133,7 @@ public class RecordController {
         }
         responses.add(new RecordDateGroupResponse(key, rList));
       });
+      Collections.sort(responses);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }

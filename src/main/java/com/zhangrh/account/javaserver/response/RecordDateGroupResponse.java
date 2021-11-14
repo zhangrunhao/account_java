@@ -1,8 +1,11 @@
 package com.zhangrh.account.javaserver.response;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public class RecordDateGroupResponse {
+import com.zhangrh.account.javaserver.utils.DateTimeUtil;
+
+public class RecordDateGroupResponse implements Comparable<RecordDateGroupResponse> {
   private String date;
   private List<RecordResponse> array;
 
@@ -22,5 +25,16 @@ public class RecordDateGroupResponse {
   }
   public void setDate(String date) {
     this.date = date;
+  }
+
+  @Override
+  public int compareTo(RecordDateGroupResponse o) {
+    long oMill = DateTimeUtil.LocalDateToMill(LocalDate.parse(o.date));
+    long thisMill = DateTimeUtil.LocalDateToMill(LocalDate.parse(this.date));
+    if ((oMill - thisMill) < 0) {
+      return -1;
+    } else {
+      return 1;
+    }
   }
 }
