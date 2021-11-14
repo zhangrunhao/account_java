@@ -1,0 +1,18 @@
+package com.zhangrh.account.javaserver.entity;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import lombok.Data;
+
+@Data 
+public class Trade extends AbstractEntity {
+  private long id;
+  private long userId;
+  private long accountId;
+  private long tradeCateId;
+  private BigDecimal money;
+  private String remark;
+  private LocalDate spendDate;
+  private String operate;
+}

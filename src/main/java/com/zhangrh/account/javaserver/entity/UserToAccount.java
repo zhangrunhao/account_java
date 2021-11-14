@@ -3,8 +3,8 @@ package com.zhangrh.account.javaserver.entity;
 import lombok.Data;
 
 @Data
-public class User extends AbstractEntity {
+public class UserToAccount {
   private long id;
-  private String email;
-  private String password;
+  private long userId;
+  private long accountId;
 }

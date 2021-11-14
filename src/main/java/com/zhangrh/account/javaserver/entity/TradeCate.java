@@ -3,10 +3,10 @@ package com.zhangrh.account.javaserver.entity;
 import lombok.Data;
 
 @Data
-public class Account extends AbstractEntity{
+public class TradeCate extends AbstractEntity {
   private long id;
   private String name;
-  private String type;
-  private String cate;
   private String icon;
+  private String type;
+  private String operate;
 }
