@@ -1,8 +1,5 @@
 package com.zhangrh.account.javaserver.web;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.zhangrh.account.javaserver.api.CommonResult;
 import com.zhangrh.account.javaserver.request.UserLoginRegisterRequest;
 import com.zhangrh.account.javaserver.service.UserService;
@@ -43,7 +40,7 @@ public class UserController {
    */
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   @ResponseBody
-  public CommonResult<Map<String, Object>> doLogin(
+  public CommonResult<String> doLogin(
     @Validated @RequestBody UserLoginRegisterRequest userLoginRequest
   ) {
     String token = null;
@@ -55,9 +52,7 @@ public class UserController {
     if (token == null) {
       return CommonResult.failed("token is null");
     } else {
-      Map<String, Object> map = new HashMap<>();
-      map.put("token", token);
-      return CommonResult.success(map);
+      return CommonResult.success(token);
     }
   }
 }

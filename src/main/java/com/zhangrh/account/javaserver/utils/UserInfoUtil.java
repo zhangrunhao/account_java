@@ -12,10 +12,4 @@ public class UserInfoUtil {
   public static void setUser(User user) {
     userLocal.set(user);
   }
-
-  public static void setDefaultTestUser(long userId) {
-    User user = new User();
-    user.setUserId(userId);
-    userLocal.set(user);
-  }
 }

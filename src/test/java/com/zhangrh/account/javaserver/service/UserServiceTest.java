@@ -26,7 +26,7 @@ public class UserServiceTest {
 
     String trueEmail = "zhangrhweb@163.com";
     User trueUser = userService.getUserFromEmail(trueEmail);
-    assertEquals(1, trueUser.getUserId());
+    assertEquals(1, trueUser.getId());
   }
 
   @Test
@@ -43,10 +43,5 @@ public class UserServiceTest {
     assertTrue(JwtTokenUtil.verifyToken(token));
     String emailFromToken = JwtTokenUtil.getJwtValue(token, "email");
     assertEquals(email, emailFromToken);
-
-    // 测试删除
-    userService.deleteUserFromDatabaseById(user.getUserId());
-    User nullUser = userService.getUserFromEmail(email);
-    assertNull(nullUser);
   }
 }

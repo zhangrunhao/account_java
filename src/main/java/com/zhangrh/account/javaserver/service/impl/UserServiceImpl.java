@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
   public String login(String email, String password) {
     String token = null;
     try {
-      User user = userMapper.getUserByEmail(email);
+      User user = userMapper.queryEmail(email);
       if (user == null) {
         Asserts.fail("用户名不存在");
       }
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public void register(String email, String password) {
     User user = new User();
-    if (userMapper.getUserByEmail(email) != null) {
+    if (userMapper.queryEmail(email) != null) {
       Asserts.fail("邮箱已被注册");
     }
     try {
@@ -57,18 +57,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getUserFromEmail(String email) {
-    User user = userMapper.getUserByEmail(email);
-    return user;
-  }
-
-  @Override
-  public void deleteUserFromDatabaseById(long id) {
+    User user = null;
     try {
-      int size = userMapper.deleteUserFromDatabaseById(id);
-      if (size != 1) throw new Exception("delete size is not 1");
+      user = userMapper.queryEmail(email);
     } catch (Exception e) {
-      LOGGER.warn(e.getMessage());
-      Asserts.fail("用户删除失败");
+      Asserts.fail("邮箱查询用户失败");
     }
+    return user;
   }
 }

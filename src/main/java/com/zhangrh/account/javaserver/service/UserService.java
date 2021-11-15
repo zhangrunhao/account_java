@@ -12,12 +12,6 @@ public interface UserService {
   User getUserFromEmail(String email);
 
   /**
-   * 根据id删除用户
-   * @param id 用户id
-   */
-  void deleteUserFromDatabaseById(long id);
-
-  /**
    * 登录功能
    * @param email 用户邮箱
    * @param password 用户密码

@@ -1,13 +1,9 @@
 package com.zhangrh.account.javaserver.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Map;
-
 import com.zhangrh.account.javaserver.api.CommonResult;
-import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.request.UserLoginRegisterRequest;
 import com.zhangrh.account.javaserver.service.UserService;
 
@@ -32,10 +28,6 @@ public class UserControllerTest {
     userLoginRegisterRequest.setPassword("zzz");
     CommonResult<String> result =  userController.doRegister(userLoginRegisterRequest);
     assertEquals(200, result.getCode());
-    User user = userService.getUserFromEmail(email);
-    userService.deleteUserFromDatabaseById(user.getUserId());
-    User user2 = userService.getUserFromEmail(email);
-    assertEquals(null, user2);
   }
 
   @Test
@@ -45,9 +37,8 @@ public class UserControllerTest {
     String password = "zhang.22";
     userLoginRegisterRequest.setEmail(email);
     userLoginRegisterRequest.setPassword(password);
-    CommonResult<Map<String, Object>> result = userController.doLogin(userLoginRegisterRequest);
-    assertNotNull(result);
+    CommonResult<String> result = userController.doLogin(userLoginRegisterRequest);
     assertEquals(200, result.getCode());
-    assertTrue(result.getData().get("token") instanceof String);
+    assertTrue(result.getData() instanceof String);
   }
 }
