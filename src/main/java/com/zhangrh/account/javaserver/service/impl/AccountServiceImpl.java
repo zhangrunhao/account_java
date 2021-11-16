@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
   public void add(AccountBo accountBo) {
     try {
       accountBo.setCreateAt(LocalDateTime.now());
-      Account account = AccountBo.toAccountEntity(accountBo);
+      Account account = accountBo.toAccountEntity();
       accountMapper.insert(account);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -44,7 +44,10 @@ public class AccountServiceImpl implements AccountService {
     try {
       List<Account> accounts = accountMapper.queryByUser(userBo.toUser());
       for (Account account : accounts) {
-        accountBos.add(new AccountBo(account));
+        if (account.getDeleteAt() == null) { // 排除已经删除的账户
+          // TODO:  此处统计交集记录, 并计算金额
+          accountBos.add(new AccountBo(account));
+        }
       }
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -54,19 +57,38 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
+  public AccountBo get(AccountBo accountBo) {
+    Account account = null;
+    try {
+      account = accountMapper.queryId(accountBo.getId());
+      if (account.getDeleteAt() != null) throw new Error("account is deleted");
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("查询账户信息失败");
+    }
+    return new AccountBo(account);
+  }
+
+  @Override
   public void update(AccountBo accountBo) {
+    try {
+      accountBo.setUpdateAt(LocalDateTime.now());
+      accountMapper.update(accountBo.toAccountEntity());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("账户更新失败");
+    }
   }
 
   @Override
   public void delete(AccountBo accountBo) {
-  }
-
-
-
-  @Override
-  public AccountBo get(AccountBo accountBo) {
-    // TODO Auto-generated method stub
-    return null;
+    try {
+      accountBo.setDeleteAt(LocalDateTime.now());
+      accountMapper.delete(accountBo.toAccountEntity());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("账户更新失败");
+    }
   }
 
 

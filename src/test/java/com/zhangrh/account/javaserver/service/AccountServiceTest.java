@@ -1,5 +1,6 @@
 package com.zhangrh.account.javaserver.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -33,53 +34,30 @@ public class AccountServiceTest {
     List<AccountBo> accountBos = accountService.list(new UserBo(1));
     assertTrue(accountBos.size() > 0);
   }
-  
-  // @Test
-  // void testAddAndListAndDelete() {
-  //   User user = new User();
-  //   user.setUserId(1);
-  //   Account account = new Account();
-  //   account.setUserId(user.getUserId());
-  //   account.setColor("#fff");
-  //   account.setIcon("http://aaa.com/b.png");
-  //   account.setName("testName");
-  //   account.setType("normal");
-  //   accountService.add(user, account);
 
-  //   List<Account> list = accountService.list(user);
-  //   Account account1 = list.get(list.size() - 1);
-  //   assertEquals(account.getAccountId(), account1.getAccountId());
+  @Test
+  void testUpdate() {
+    AccountBo accountBo = new AccountBo();
+    accountBo.setId(1);
+    accountBo.setUserId(1);
+    accountBo.setName("蚂蚁花呗");
+    accountBo.setIcon("HB://img.png");
+    accountBo.setCate(AccountCate.Debt);
+    accountService.update(accountBo);
+  }
 
-  //   Account account2 = accountService.getAccountByAccountId(user, account.getAccountId());
-  //   assertEquals(account.getAccountId(), account2.getAccountId());
+  @Test
+  void testDelete() {
+    AccountBo accountBo = new AccountBo();
+    accountBo.setId(2);
+    accountService.delete(accountBo);
+  }
 
-  //   accountService.delete(user, account);
-  //   try {
-  //     accountService.getAccountByAccountId(user, account.getAccountId());
-  //   } catch (Exception e) {
-  //     assertEquals("账户信息查询失败", e.getMessage());
-  //   }
-  // }
-
-  // @Test
-  // void testUpdate() {
-  //   User user = new User();
-  //   user.setUserId(1);
-  //   Account account = new Account();
-  //   account.setUserId(user.getUserId());
-  //   account.setColor("#fff");
-  //   account.setIcon("http://aaa.com/b.png");
-  //   account.setName("testName");
-  //   account.setType("normal");
-  //   accountService.add(user, account);
-
-  //   Account account1 = new Account();
-  //   String account1Name = "update" + Math.random();
-  //   BeanUtils.copyProperties(account, account1);
-  //   account1.setName(account1Name);
-  //   accountService.update(user, account1);
-
-  //   Account account2 = accountService.getAccountByAccountId(user, account1.getAccountId());
-  //   assertEquals(account1Name, account2.getName());
-  // }
+  @Test
+  void testGet() {
+    AccountBo accountBo = new AccountBo();
+    accountBo.setId(3);
+    accountBo = accountService.get(accountBo);
+    assertNotNull(accountBo.getUserId());
+  }
 }

@@ -34,16 +34,16 @@ public class AccountBo extends AbstractBo{
     setDeleteAt(account.getDeleteAt());
   }
 
-  public static Account toAccountEntity(AccountBo accountBo) {
+  public Account toAccountEntity() {
     Account account = new Account();
-    account.setId(accountBo.getId());
-    account.setUserId(accountBo.getUserId());
-    account.setName(accountBo.getName());
-    account.setCate(accountBo.getCate());
-    account.setIcon(accountBo.getIcon());
-    account.setCreateAt(accountBo.getCreateAt());
-    account.setDeleteAt(accountBo.getDeleteAt());
-    account.setUpdateAt(accountBo.getUpdateAt());
+    account.setId(this.getId());
+    account.setUserId(this.getUserId());
+    account.setName(this.getName());
+    account.setCate(this.getCate());
+    account.setIcon(this.getIcon());
+    account.setCreateAt(this.getCreateAt());
+    account.setDeleteAt(this.getDeleteAt());
+    account.setUpdateAt(this.getUpdateAt());
     return account;
   }
 }
