@@ -1,6 +1,6 @@
 package com.zhangrh.account.javaserver.service;
 
-import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.service.Bo.UserBo;
 
 public interface UserService {
 
@@ -9,7 +9,7 @@ public interface UserService {
    * @param email 邮箱
    * @return user 用户
    */
-  User getUserFromEmail(String email);
+  UserBo getUserFromEmail(String email);
 
   /**
    * 登录功能

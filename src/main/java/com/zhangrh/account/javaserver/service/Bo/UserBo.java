@@ -19,6 +19,12 @@ public class UserBo extends AbstractBo{
     this.id = id;
   }
 
+  public UserBo(User user) {
+    setId(user.getId());
+    setEmail(user.getEmail());
+    setPassword(user.getPassword());
+  }
+
   public User toUser() {
     User user = new User();
     user.setId(this.getId());

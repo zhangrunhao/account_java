@@ -5,6 +5,7 @@ import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.UserMapper;
 import com.zhangrh.account.javaserver.service.UserService;
+import com.zhangrh.account.javaserver.service.Bo.UserBo;
 import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
 import com.zhangrh.account.javaserver.utils.Md5Util;
 
@@ -50,19 +51,20 @@ public class UserServiceImpl implements UserService {
       user.setPassword(Md5Util.getMd5(password));
       user.setCreateAt(LocalDateTime.now());
       userMapper.insert(user);
+      // TODO: 插入成功后, 导入默认account和默认trade_cate
     } catch (Exception e) {
       Asserts.fail("用户插入失败");
     }
   }
 
   @Override
-  public User getUserFromEmail(String email) {
+  public UserBo getUserFromEmail(String email) {
     User user = null;
     try {
       user = userMapper.queryEmail(email);
     } catch (Exception e) {
       Asserts.fail("邮箱查询用户失败");
     }
-    return user;
+    return user == null ? null : new UserBo(user);
   }
 }

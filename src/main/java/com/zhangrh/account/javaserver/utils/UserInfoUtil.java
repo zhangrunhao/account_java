@@ -1,15 +1,15 @@
 package com.zhangrh.account.javaserver.utils;
 
-import com.zhangrh.account.javaserver.entity.User;
+import com.zhangrh.account.javaserver.service.Bo.UserBo;
 
 public class UserInfoUtil {
-  private static ThreadLocal<User> userLocal = new ThreadLocal<>();
+  private static ThreadLocal<UserBo> userLocal = new ThreadLocal<>();
 
-  public static User getUser() {
+  public static UserBo getUser() {
     return userLocal.get();
   }
 
-  public static void setUser(User user) {
+  public static void setUser(UserBo user) {
     userLocal.set(user);
   }
 }
