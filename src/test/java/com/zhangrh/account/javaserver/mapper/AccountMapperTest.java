@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDateTime;
 
 import com.zhangrh.account.javaserver.entity.Account;
+import com.zhangrh.account.javaserver.enums.AccountCate;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,30 +20,30 @@ public class AccountMapperTest {
 
   private String icon = "http://pic.616pic.com/ys_img/00/03/78/04RotuWM2Y.jpg";
   private String name = "微信";
-  private String type = "extra";
-  private String cate = "property";
+  private AccountCate cate = AccountCate.Property;
 
 
   @Test
   void testInsert() {
     Account account = new Account();
+    account.setUserId(1);
     account.setIcon(icon);
     account.setName(name);
-    account.setType(type);
     account.setCate(cate);
     account.setCreateAt(LocalDateTime.now());
-    int r = accountMapper.insert(account);
-    assertEquals(r, 1);
+    int res = accountMapper.insert(account);
+    assertEquals(1, res);
+    assertNotNull(account.getId());
   }
 
   @Test
   void testQueryId() {
     long id = 1;
     Account account =  accountMapper.queryId(id);
-    assertEquals(account.getCate(), cate);
+    assertEquals(1, account.getUserId());
     assertEquals(account.getName(), name);
-    assertEquals(account.getType(), type);
     assertEquals(account.getIcon(), icon);
+    assertEquals(account.getCate(), cate);
     assertNotNull(account.getCreateAt());
   }
 
@@ -50,9 +51,8 @@ public class AccountMapperTest {
   void testUpdate() {
     Account account = new Account();
     account.setId(1);
-    account.setIcon(icon);
+    account.setIcon("icon");
     account.setName(name);
-    account.setType(type);
     account.setCate(cate);
     account.setUpdateAt(LocalDateTime.now());
     int r = accountMapper.update(account);

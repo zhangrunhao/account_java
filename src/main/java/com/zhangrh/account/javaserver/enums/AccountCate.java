@@ -1,13 +1,13 @@
 package com.zhangrh.account.javaserver.enums;
 
-public enum AccountType implements BaseCodeEnum{
+public enum AccountCate implements BaseCodeEnum{
 
-  DefaultType(1), // 系统默认
-  Extra(2); // 用户扩展
+  Property(1), // 资产
+  Debt(2); // 负债
 
   private final int code;
 
-  AccountType(int code) {
+  AccountCate(int code) {
     this.code = code;
   }
 
