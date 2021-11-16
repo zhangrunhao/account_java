@@ -1,0 +1,30 @@
+package com.zhangrh.account.javaserver.enums;
+
+import lombok.Getter;
+
+public enum TradeOperation implements BaseCodeEnum{
+
+  Income(1, "add"), // 收入
+  Expend(2, "subtract"), // 指出
+  Transfer_in(3, "add"), // 转入
+  Transfer_out(4, "subtract"), // 转出
+  Borrow(5, "add"), // 借入
+  Lend(6, "subtract"), // 借出
+  Receive(7, "add"), // 收款
+  Repayment(8, "subtract"); // 还款
+
+  private final int code;
+  @Getter
+  private final String sign;
+
+
+  TradeOperation(int code, String sign) {
+    this.code = code;
+    this.sign = sign;
+  }
+
+  @Override
+  public int getCode() {
+    return this.code;
+  }
+}
