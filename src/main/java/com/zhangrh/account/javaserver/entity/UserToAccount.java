@@ -1,9 +1,11 @@
 package com.zhangrh.account.javaserver.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class UserToAccount {
+@Getter
+@Setter
+public class UserToAccount extends AbstractEntity {
   private long id;
   private long userId;
   private long accountId;

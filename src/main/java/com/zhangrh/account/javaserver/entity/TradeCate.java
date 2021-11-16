@@ -1,8 +1,10 @@
 package com.zhangrh.account.javaserver.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class TradeCate extends AbstractEntity {
   private long id;
   private String name;
