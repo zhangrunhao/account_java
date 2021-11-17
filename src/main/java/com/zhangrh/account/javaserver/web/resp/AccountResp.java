@@ -1,8 +1,6 @@
-package com.zhangrh.account.javaserver.response;
+package com.zhangrh.account.javaserver.web.resp;
 
 import java.math.BigDecimal;
-
-import com.zhangrh.account.javaserver.enums.AccountCate;
 import com.zhangrh.account.javaserver.service.Bo.AccountBo;
 
 import lombok.Getter;
@@ -10,21 +8,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AccountResponse {
+public class AccountResp {
   private long id;
   private String icon;
   private String name;
-  private AccountCate cate;
+  private int cate;
   private BigDecimal money;
 
-  public AccountResponse() {
+  public AccountResp() {
   }
 
-  public AccountResponse(AccountBo bo) {
+  public AccountResp(AccountBo bo) {
     setId(bo.getId());
     setIcon(bo.getIcon());
     setName(bo.getName());
-    setCate(bo.getCate());
+    setCate(bo.getCate().getCode());
     setMoney(bo.getMoney());
   }
 }

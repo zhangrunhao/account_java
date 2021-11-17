@@ -15,4 +15,13 @@ public enum AccountCate implements BaseCodeEnum{
   public int getCode() {
     return this.code;
   }
+
+  public static AccountCate getByCode(int code) {
+    for (AccountCate accountCate: AccountCate.values()) {
+      if (code == accountCate.code) {
+        return accountCate;
+      }
+    }
+    return null;
+  }
 }

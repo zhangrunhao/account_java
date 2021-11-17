@@ -1,19 +1,18 @@
 package com.zhangrh.account.javaserver.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
-import com.zhangrh.account.javaserver.entity.Account;
-import com.zhangrh.account.javaserver.entity.User;
-import com.zhangrh.account.javaserver.request.AccountAddRequest;
-import com.zhangrh.account.javaserver.request.AccountUpdateRequest;
-import com.zhangrh.account.javaserver.response.AccountResponse;
 import com.zhangrh.account.javaserver.service.AccountService;
+import com.zhangrh.account.javaserver.service.Bo.UserBo;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
+import com.zhangrh.account.javaserver.web.req.AccountAddReq;
+import com.zhangrh.account.javaserver.web.req.AccountDeleteReq;
+import com.zhangrh.account.javaserver.web.req.AccountUpdateReq;
+import com.zhangrh.account.javaserver.web.resp.AccountResp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,74 +20,57 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class AccountControllerTest {
-  
+
   @Autowired
   AccountController accountController;
 
   @Autowired
   AccountService accountService;
 
+
   @Test
   void testDoAdd() {
-    User user = new User();
-    user.setUserId(1);
-    UserInfoUtil.setUser(user);
-
-    AccountAddRequest accountAddRequest = new AccountAddRequest();
-    accountAddRequest.setColor("#fff");
-    accountAddRequest.setIcon("www.baidu.com/1.png");
-    accountAddRequest.setName("支付宝");
-    accountAddRequest.setType("normal");
-    CommonResult<String> result =  accountController.doAdd(accountAddRequest);
+    UserInfoUtil.setUser(new UserBo(1));
+    AccountAddReq req = new AccountAddReq();
+    req.setName("微信");
+    req.setIcon("http://pic.616pic.com/ys_bnew_img/00/13/14/56S1GVSgRJ.jpg");
+    req.setCate(1);
+    CommonResult<String> result =  accountController.doAdd(req);
     assertEquals(200, result.getCode());
   }
 
   @Test
   void testDoList() {
-    User user = new User();
-    user.setUserId(1);
-    UserInfoUtil.setUser(user);
-
-    CommonResult<List<AccountResponse>> result = accountController.doList();
+    UserInfoUtil.setUser(new UserBo(1));
+    CommonResult<List<AccountResp>> result = accountController.doList();
     assertEquals(200, result.getCode());
     assertTrue(result.getData().size() > 0);
   }
 
   @Test
   void testDoUpdate() {
-    User user = new User();
-    user.setUserId(1);
-    UserInfoUtil.setUser(user);
+    UserInfoUtil.setUser(new UserBo(1));
+    AccountUpdateReq req = new AccountUpdateReq();
+    req.setId((long) 5);
+    req.setCate(2);
+    req.setName("微信");
+    req.setIcon("http://pic.616pic.com/ys_bnew_img/00/13/14/56S1GVSgRJ.jpg");
 
-    long accountId = 123;
-    String color = "#fff";
-    String name = "update";
-    String type = "normal";
-    String icon = "https://baidu.com/1.png" + Math.random();
-    AccountUpdateRequest accountUpdateRequest = new AccountUpdateRequest();
-    accountUpdateRequest.setAccountId(accountId);
-    accountUpdateRequest.setColor(color);
-    accountUpdateRequest.setName(name);
-    accountUpdateRequest.setType(type);
-    accountUpdateRequest.setIcon(icon);
-    CommonResult<String> result =  accountController.doUpdate(accountUpdateRequest);
+    CommonResult<String> result =  accountController.doUpdate(req);
     assertEquals(200, result.getCode());
-    
-    Account account = accountService.getAccountByAccountId(user, accountId);
-    assertEquals(icon, account.getIcon());
+  }
+
+  @Test
+  void testDoDelete() {
+    AccountDeleteReq req = new AccountDeleteReq();
+    req.setId((long) 6);
+    CommonResult<String> result = accountController.doDelete(req);
+    assertEquals(200, result.getCode());
   }
 
   @Test
   void testDoGetAccount() {
-    User user = new User();
-    user.setUserId(1);
-    UserInfoUtil.setUser(user);
-
-    long accountId = 123;
-    CommonResult<AccountResponse> result = accountController.doGetAccount(accountId);
-    assertNotNull(result.getData());
-
-    String color = "#fff";
-    assertEquals(color, result.getData().getColor());
+    CommonResult<AccountResp> result = accountController.doGetAccount(6);
+    assertEquals(200, result.getCode());
   }
 }
