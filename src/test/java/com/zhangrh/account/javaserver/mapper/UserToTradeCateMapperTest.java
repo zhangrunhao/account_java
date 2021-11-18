@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class UserToTraceCateMapperTest {
+public class UserToTradeCateMapperTest {
 
   @Autowired
   UserToTradeCateMapper userToTradeCateMapper;
@@ -40,8 +40,9 @@ public class UserToTraceCateMapperTest {
   @Test
   void testDelete() {
     UserToTradeCate userToTradeCate = new UserToTradeCate();
-    userToTradeCate.setId(1);
     userToTradeCate.setDeleteAt(LocalDateTime.now());
+    userToTradeCate.setUserId(1);
+    userToTradeCate.setTradeCateId(1);
     int r = userToTradeCateMapper.delete(userToTradeCate);
     assertEquals(1, r);
   }

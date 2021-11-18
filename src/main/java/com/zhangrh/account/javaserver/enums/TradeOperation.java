@@ -27,4 +27,13 @@ public enum TradeOperation implements BaseCodeEnum{
   public int getCode() {
     return this.code;
   }
+
+  public static TradeOperation getByCode(int code) {
+    for (TradeOperation operation: TradeOperation.values()) {
+      if (code == operation.code) {
+        return operation;
+      }
+    }
+    return null;
+  }
 }

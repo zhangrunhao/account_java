@@ -1,8 +1,8 @@
 package com.zhangrh.account.javaserver.web;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
-import com.zhangrh.account.javaserver.request.UserLoginRegisterRequest;
 import com.zhangrh.account.javaserver.service.UserService;
+import com.zhangrh.account.javaserver.web.req.UserLoginRegisterRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

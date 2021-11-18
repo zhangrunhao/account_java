@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.zhangrh.account.javaserver.api.CommonResult;
-import com.zhangrh.account.javaserver.request.UserLoginRegisterRequest;
 import com.zhangrh.account.javaserver.service.UserService;
+import com.zhangrh.account.javaserver.web.req.UserLoginRegisterRequest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.zhangrh.account.javaserver.request;
+package com.zhangrh.account.javaserver.web.req;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

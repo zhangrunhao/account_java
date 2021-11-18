@@ -1,4 +1,4 @@
-package com.zhangrh.account.javaserver.response;
+package com.zhangrh.account.javaserver.web.resp;
 
 public class UserResponse {
   private String email;

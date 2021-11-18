@@ -19,7 +19,7 @@ public interface UserToTradeCateMapper {
   @Insert("INSERT INTO user_to_trade_cate (user_id, trade_cate_id, create_at) VALUES (#{p.userId}, #{p.tradeCateId}, #{p.createAt})")
   int insert(@Param("p") UserToTradeCate userToTradeCate);
 
-  @Select("SELECT * FROM user_to_trade_cate WHERE id=#{user.id}")
+  @Select("SELECT * FROM user_to_trade_cate WHERE user_id=#{user.id}")
   @Results({
     @Result(property = "userId", column = "user_id"),
     @Result(property = "tradeCateId", column = "trade_cate_id"),
@@ -29,6 +29,6 @@ public interface UserToTradeCateMapper {
   })
   List<UserToTradeCate> queryUser(@Param("user") User user);
 
-  @Update("UPDATE user_to_trade_cate SET delete_at=#{p.deleteAt} WHERE id=#{p.id}")
+  @Update("UPDATE user_to_trade_cate SET delete_at=#{p.deleteAt} WHERE user_id=#{p.userId} AND trade_cate_id=#{p.tradeCateId}")
   int delete(@Param("p") UserToTradeCate userToTradeCate);
 }
