@@ -1,0 +1,117 @@
+package com.zhangrh.account.javaserver.service.impl;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.zhangrh.account.javaserver.entity.Trade;
+import com.zhangrh.account.javaserver.exception.Asserts;
+import com.zhangrh.account.javaserver.mapper.TradeMapper;
+import com.zhangrh.account.javaserver.service.TradeService;
+import com.zhangrh.account.javaserver.service.Bo.AccountBo;
+import com.zhangrh.account.javaserver.service.Bo.TradeBo;
+import com.zhangrh.account.javaserver.service.Bo.UserBo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class TradeServiceImpl implements TradeService {
+  private static final Logger LOGGER = LoggerFactory.getLogger(TradeServiceImpl.class);
+
+  @Autowired
+  TradeMapper tradeMapper;
+
+  @Override
+  public void add(TradeBo tradeBo) {
+    try {
+      tradeBo.setCreateAt(LocalDateTime.now());
+      tradeMapper.insert(tradeBo.toTrade());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("交易记录添加失败");
+    }
+  }
+
+  @Override
+  public void update(TradeBo tradeBo) {
+    try {
+      tradeBo.setUpdateAt(LocalDateTime.now());
+      tradeMapper.update(tradeBo.toTrade());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("交易记录更新失败");
+    }
+  }
+
+  @Override
+  public void delete(TradeBo tradeBo) {
+    try {
+      tradeBo.setDeleteAt(LocalDateTime.now());
+      tradeMapper.delete(tradeBo.toTrade());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("交易记录删除失败");
+    }
+  }
+
+  @Override
+  public TradeBo query(TradeBo tradeBo) {
+    Trade trade = new Trade();
+    try {
+      trade = tradeMapper.queryById(tradeBo.toTrade());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("单条交易记录查询失败");
+    }
+    return new TradeBo(trade);
+  }
+
+  @Override
+  public List<TradeBo> list(UserBo userBo) {
+    List<TradeBo> tradeBos = new ArrayList<>();
+    try {
+      List<Trade> trades = tradeMapper.queryByUser(userBo.toUser());
+      for (Trade trade : trades) {
+        if (trade.getDeleteAt() == null) {
+          tradeBos.add(new TradeBo(trade));
+        }
+      }
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("交易记录按用户查询失败");
+    }
+    return tradeBos;
+  }
+
+  @Override
+  public List<TradeBo> list(AccountBo accountBo) {
+    List<TradeBo> tradeBos = new ArrayList<>();
+    try {
+      List<Trade> trades = tradeMapper.queryByAccount(accountBo.toAccountEntity());
+      for (Trade trade : trades) {
+        if (trade.getDeleteAt() == null) {
+          tradeBos.add(new TradeBo(trade));
+        }
+      }
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("交易记录按用户查询失败");
+    }
+    return tradeBos;
+  }
+
+  @Override
+  public List<TradeBo> listSortByDate(AccountBo accountBo) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<TradeBo> listSortByDat(UserBo userBo) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+}
