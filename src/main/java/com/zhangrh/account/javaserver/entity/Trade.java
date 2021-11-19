@@ -3,6 +3,8 @@ package com.zhangrh.account.javaserver.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.zhangrh.account.javaserver.enums.TradeOperation;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +18,5 @@ public class Trade extends AbstractEntity {
   private BigDecimal money;
   private String remark;
   private LocalDate spendDate;
-  private String operate;
+  private TradeOperation operate;
 }
