@@ -1,6 +1,7 @@
 package com.zhangrh.account.javaserver.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.zhangrh.account.javaserver.service.Bo.AccountBo;
 import com.zhangrh.account.javaserver.service.Bo.TradeBo;
@@ -20,7 +21,7 @@ public interface TradeService {
 
   List<TradeBo> list(AccountBo accountBo);
 
-  List<TradeBo> listSortByDat(UserBo userBo);
+  Map<String, List<TradeBo>> listSortByDate(UserBo userBo);
 
-  List<TradeBo> listSortByDate(AccountBo accountBo);
+  Map<String, List<TradeBo>> listSortByDate(AccountBo accountBo);
 }

@@ -1,8 +1,11 @@
 package com.zhangrh.account.javaserver.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.zhangrh.account.javaserver.entity.Trade;
 import com.zhangrh.account.javaserver.exception.Asserts;
@@ -104,14 +107,29 @@ public class TradeServiceImpl implements TradeService {
   }
 
   @Override
-  public List<TradeBo> listSortByDate(AccountBo accountBo) {
-    // TODO Auto-generated method stub
+  public Map<String, List<TradeBo>> listSortByDate(AccountBo accountBo) {
     return null;
   }
 
   @Override
-  public List<TradeBo> listSortByDat(UserBo userBo) {
-    // TODO Auto-generated method stub
-    return null;
+  public Map<String, List<TradeBo>> listSortByDate(UserBo userBo) {
+    return sortTradeByDate(list(userBo));
+  }
+
+  private Map<String, List<TradeBo>> sortTradeByDate(List<TradeBo> tradeBos) {
+    Map<String, List<TradeBo>> result = new HashMap<>();
+    for (TradeBo tradeBo : tradeBos) {
+      LocalDate spendDate = tradeBo.getSpendDate();
+      String dateStr = spendDate.toString();
+      List<TradeBo> tradeBoDateList = result.get(dateStr);
+      if (tradeBoDateList == null) {
+        tradeBoDateList = new ArrayList<>();
+        tradeBoDateList.add(tradeBo);
+        result.put(dateStr, tradeBoDateList);
+      } else {
+        tradeBoDateList.add(tradeBo);
+      }
+    }
+    return result;
   }
 }
