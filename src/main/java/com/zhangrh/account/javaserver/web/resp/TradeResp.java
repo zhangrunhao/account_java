@@ -1,6 +1,5 @@
 package com.zhangrh.account.javaserver.web.resp;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.zhangrh.account.javaserver.service.Bo.TradeBo;
@@ -14,7 +13,7 @@ public class TradeResp {
   private long id;
   private long accountId;
   private long tradeCateId;
-  private BigDecimal money;
+  private String money;
   private String remark;
   private LocalDate spendDate;
   private int operate;
@@ -26,7 +25,7 @@ public class TradeResp {
     setId(bo.getId());
     setAccountId(bo.getAccountId());
     setTradeCateId(bo.getTradeCateId());
-    setMoney(bo.getMoney());
+    setMoney(bo.getMoney().toString());
     setRemark(bo.getRemark());
     setSpendDate(bo.getSpendDate());
     setOperate(bo.getOperate().getCode());

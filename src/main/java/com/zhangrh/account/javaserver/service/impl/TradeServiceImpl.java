@@ -108,7 +108,7 @@ public class TradeServiceImpl implements TradeService {
 
   @Override
   public Map<String, List<TradeBo>> listSortByDate(AccountBo accountBo) {
-    return null;
+    return sortTradeByDate(list(accountBo));
   }
 
   @Override
