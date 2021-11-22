@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.zhangrh.account.javaserver.entity.Trade;
 import com.zhangrh.account.javaserver.entity.ViewTradeCateAccount;
 import com.zhangrh.account.javaserver.enums.TradeOperation;
 import com.zhangrh.account.javaserver.exception.Asserts;
@@ -94,14 +93,14 @@ public class TradeServiceImpl implements TradeService {
 
   @Override
   public TradeBo query(TradeBo tradeBo) {
-    Trade trade = new Trade();
+    ViewTradeCateAccount viewTradeCateAccount = null;
     try {
-      trade = tradeMapper.queryById(tradeBo.toTrade());
+      viewTradeCateAccount = viewTradeCateAccountMapper.queryByTradeId(tradeBo.getTradeId());
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
       Asserts.fail("单条交易记录查询失败");
     }
-    return new TradeBo(trade);
+    return new TradeBo(viewTradeCateAccount);
   }
 
   @Override

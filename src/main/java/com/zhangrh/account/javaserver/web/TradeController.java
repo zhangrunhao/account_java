@@ -38,6 +38,22 @@ public class TradeController {
   @Autowired
   TradeService tradeService;
 
+  @RequestMapping(value = "/getDetail", method = RequestMethod.GET)
+  @ResponseBody
+  public CommonResult<TradeResp> doGetDetail(@RequestParam long id) {
+    TradeResp resp = null;
+    try {
+      TradeBo tradeBo = new TradeBo();
+      tradeBo.setTradeId(id);
+      tradeBo.setId(id);
+      tradeBo = tradeService.query(tradeBo);
+      resp = new TradeResp(tradeBo);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success(resp);
+  }
+
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doAdd(@Validated @RequestBody TradeAddReq req) {

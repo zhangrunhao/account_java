@@ -5,7 +5,7 @@ import lombok.Getter;
 public enum TradeOperation implements BaseCodeEnum{
 
   Income(1, "add"), // 收入
-  Expend(2, "subtract"), // 指出
+  Expend(2, "subtract"), // 支出
   Transfer_In(3, "add"), // 转入
   Transfer_Out(4, "subtract"), // 转出
   Borrow(5, "add"), // 借入

@@ -23,7 +23,7 @@ public interface ViewTradeCateAccountMapper {
             @Result(property = "tradeCateIcon", column = "trade_cate_icon"),
             @Result(property = "createAt", column = "create_at"), @Result(property = "updateAt", column = "update_at"),
             @Result(property = "deleteAt", column = "delete_at"), })
-    List<ViewTradeCateAccount> queryByTradeId(@Param("id") long id);
+    ViewTradeCateAccount queryByTradeId(@Param("id") long id);
 
     @Select("SELECT * FROM v_trade_cate_account WHERE account_id=#{id}")
     @Results({ @Result(property = "tradeId", column = "trade_id"), @Result(property = "userId", column = "users_id"),
