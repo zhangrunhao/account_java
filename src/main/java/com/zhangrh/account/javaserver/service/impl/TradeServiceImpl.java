@@ -162,7 +162,7 @@ public class TradeServiceImpl implements TradeService {
     try {
       List<ViewTradeCateAccount> trades = viewTradeCateAccountMapper.queryByUserId(userBo.getId());
       for (ViewTradeCateAccount trade : trades) {
-        if (trade.getDeleteAt() == null) {
+        if (trade.getDeleteAt() == null && (trade.getOperate() == TradeOperation.Expend || trade.getOperate() == TradeOperation.Income)) {
           tradeBos.add(new TradeBo(trade));
         }
       }
