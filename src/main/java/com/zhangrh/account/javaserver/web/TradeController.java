@@ -14,6 +14,7 @@ import com.zhangrh.account.javaserver.service.Bo.UserBo;
 import com.zhangrh.account.javaserver.utils.DateTimeUtil;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 import com.zhangrh.account.javaserver.web.req.TradeAddReq;
+import com.zhangrh.account.javaserver.web.req.TradeDeleteReq;
 import com.zhangrh.account.javaserver.web.req.TradeTransferReq;
 import com.zhangrh.account.javaserver.web.resp.TradeDateSortResp;
 import com.zhangrh.account.javaserver.web.resp.TradeResp;
@@ -45,7 +46,6 @@ public class TradeController {
     try {
       TradeBo tradeBo = new TradeBo();
       tradeBo.setTradeId(id);
-      tradeBo.setId(id);
       tradeBo = tradeService.query(tradeBo);
       resp = new TradeResp(tradeBo);
     } catch (Exception e) {
@@ -97,6 +97,20 @@ public class TradeController {
     }
     return CommonResult.success("添加成功");
   }
+
+  @RequestMapping(value = "/delete", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> doDelete(@Validated @RequestBody TradeDeleteReq req) {
+    try {
+      TradeBo tradeBo = new TradeBo();
+      tradeBo.setTradeId(req.getId());
+      tradeService.delete(tradeBo);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success("添加成功");
+  }
+
 
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   @ResponseBody

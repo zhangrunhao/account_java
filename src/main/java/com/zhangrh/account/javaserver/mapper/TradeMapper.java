@@ -61,6 +61,6 @@ public interface TradeMapper {
   })
   List<Trade> queryByUser(@Param("u") User user);
 
-  @Update("UPDATE trade SET delete_at=#{p.deleteAt} WHERE id=#{p.id};")
-  int delete(@Param("p") Trade trade);
+  @Update("UPDATE trade SET delete_at=#{t.deleteAt} WHERE id=#{t.id};")
+  int delete(@Param("t") Trade trade);
 }

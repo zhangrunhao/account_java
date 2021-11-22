@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TradeResp {
-  private long id;
+  private long tradeId;
   private long accountId;
   private long tradeCateId;
   private String money;
@@ -29,7 +29,6 @@ public class TradeResp {
 
   public TradeResp(TradeBo bo) {
     BeanUtils.copyProperties(bo, this);
-    this.setId(bo.getTradeId());
     this.setMoney(bo.getMoney().toString());
     this.setTradeCateId(bo.getTradeCateId());
     this.setOperate(bo.getOperate().getCode());

@@ -7,11 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zhangrh.account.javaserver.entity.Account;
+import com.zhangrh.account.javaserver.entity.Trade;
+import com.zhangrh.account.javaserver.entity.Transfer;
 import com.zhangrh.account.javaserver.entity.ViewTradeCateAccount;
 import com.zhangrh.account.javaserver.enums.TradeOperation;
 import com.zhangrh.account.javaserver.exception.Asserts;
+import com.zhangrh.account.javaserver.mapper.AccountMapper;
 import com.zhangrh.account.javaserver.mapper.TradeCateMapper;
 import com.zhangrh.account.javaserver.mapper.TradeMapper;
+import com.zhangrh.account.javaserver.mapper.TransferMapper;
 import com.zhangrh.account.javaserver.mapper.ViewTradeCateAccountMapper;
 import com.zhangrh.account.javaserver.service.TradeService;
 import com.zhangrh.account.javaserver.service.Bo.AccountBo;
@@ -35,7 +40,13 @@ public class TradeServiceImpl implements TradeService {
   TradeCateMapper tradeCateMapper;
 
   @Autowired
+  TransferMapper transferMapper;
+
+  @Autowired
   ViewTradeCateAccountMapper viewTradeCateAccountMapper;
+
+  @Autowired
+  AccountMapper accountMapper;
 
   @Override
   public void add(TradeBo tradeBo) {
@@ -52,17 +63,36 @@ public class TradeServiceImpl implements TradeService {
   @Transactional
   public void transfer(TradeBo outTradeBo, TradeBo inTradeBo) {
     try {
+      // outTrade
       outTradeBo.setCreateAt(LocalDateTime.now());
       long outTradeCateId = tradeCateMapper.queryOperate(TradeOperation.Transfer_Out.getCode()).getId();
       outTradeBo.setTradeCateId(outTradeCateId);
       outTradeBo.setOperate(TradeOperation.Transfer_Out);
-      tradeMapper.insert(outTradeBo.toTrade());
-
+      Trade outTrade = outTradeBo.toTrade();
+      Account outAccount = accountMapper.queryId(outTrade.getAccountId());
+      
+      // inTrade
       inTradeBo.setCreateAt(LocalDateTime.now());
       long inTradeCateId = tradeCateMapper.queryOperate(TradeOperation.Transfer_In.getCode()).getId();
       inTradeBo.setTradeCateId(inTradeCateId);
       inTradeBo.setOperate(TradeOperation.Transfer_In);
-      tradeMapper.insert(inTradeBo.toTrade());
+      Trade inTrade = inTradeBo.toTrade();
+      Account inAccount = accountMapper.queryId(inTrade.getAccountId());
+
+      // remark
+      String remark = outAccount.getName() + " -> " + inAccount.getName();
+      outTrade.setRemark(remark);
+      inTrade.setRemark(remark);
+
+      tradeMapper.insert(outTrade);
+      tradeMapper.insert(inTrade);
+
+      // transfer
+      Transfer transfer = new Transfer();
+      transfer.setCreateAt(LocalDateTime.now());
+      transfer.setOutTradeId(outTrade.getId());
+      transfer.setInTradeId(inTrade.getId());
+      transferMapper.insert(transfer);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
       Asserts.fail("转账交易记录添加失败");
@@ -81,10 +111,33 @@ public class TradeServiceImpl implements TradeService {
   }
 
   @Override
+  @Transactional
   public void delete(TradeBo tradeBo) {
     try {
-      tradeBo.setDeleteAt(LocalDateTime.now());
-      tradeMapper.delete(tradeBo.toTrade());
+      Trade trade = tradeMapper.queryById(tradeBo.toTrade());
+      TradeOperation operation = trade.getOperate();
+      if (operation == TradeOperation.Expend || operation == TradeOperation.Income) { // 收入 支出
+        trade.setDeleteAt(LocalDateTime.now());
+        tradeMapper.delete(trade);
+      } else if (operation == TradeOperation.Transfer_In || operation == TradeOperation.Transfer_Out) { // 转入 转出
+        // 查询转账关联信息
+        Transfer transfer = null;
+        if (operation == TradeOperation.Transfer_In) {
+          transfer = transferMapper.queryByInTradeId(trade.getId());
+        } else {
+          transfer = transferMapper.queryByOutTradeId(trade.getId());
+        }
+        // 删除两条记录
+        Trade deleTrade = new Trade();
+        deleTrade.setDeleteAt(LocalDateTime.now());
+        deleTrade.setId(transfer.getInTradeId());
+        tradeMapper.delete(deleTrade);
+        deleTrade.setId(transfer.getOutTradeId());
+        tradeMapper.delete(deleTrade);
+        // 删除转账关联信息
+        transfer.setDeleteAt(LocalDateTime.now());
+        transferMapper.delete(transfer);
+      }
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
       Asserts.fail("交易记录删除失败");

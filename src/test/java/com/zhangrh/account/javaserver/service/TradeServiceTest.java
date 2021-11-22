@@ -40,7 +40,7 @@ public class TradeServiceTest {
   @Test
   void testUpdate() {
     TradeBo tradeBo = new TradeBo();
-    tradeBo.setId(3);
+    tradeBo.setTradeId(3);
     tradeBo.setAccountId(2);
     tradeBo.setMoney(BigDecimal.valueOf(20));
     tradeBo.setOperate(TradeOperation.Lend);
@@ -54,7 +54,7 @@ public class TradeServiceTest {
   @Test
   void testDelete() {
     TradeBo tradeBo = new TradeBo();
-    tradeBo.setId(3);
+    tradeBo.setTradeId(3);
     tradeService.delete(tradeBo);
   }
 
@@ -68,7 +68,7 @@ public class TradeServiceTest {
   @Test
   void testQueryById() {
     TradeBo tradeBo = new TradeBo();
-    tradeBo.setId(1);
+    tradeBo.setTradeId(1);
     tradeBo = tradeService.query(tradeBo);
     assertTrue(new BigDecimal(33).equals(tradeBo.getMoney()));
   }

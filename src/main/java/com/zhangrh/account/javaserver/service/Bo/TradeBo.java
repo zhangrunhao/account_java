@@ -15,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TradeBo extends AbstractBo{
-  private long id;
   private long tradeId;
   private long userId;
   private long accountId;
@@ -39,7 +38,6 @@ public class TradeBo extends AbstractBo{
 
   public TradeBo(ViewTradeCateAccount viewTradeCateAccount) {
     BeanUtils.copyProperties(viewTradeCateAccount, this);
-    this.setId(viewTradeCateAccount.getTradeId());
   }
 
   public Trade toTrade() {
