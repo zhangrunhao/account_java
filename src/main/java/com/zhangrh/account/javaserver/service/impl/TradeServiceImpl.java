@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.zhangrh.account.javaserver.entity.Trade;
+import com.zhangrh.account.javaserver.entity.ViewTradeCateAccount;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.TradeMapper;
+import com.zhangrh.account.javaserver.mapper.ViewTradeCateAccountMapper;
 import com.zhangrh.account.javaserver.service.TradeService;
 import com.zhangrh.account.javaserver.service.Bo.AccountBo;
 import com.zhangrh.account.javaserver.service.Bo.TradeBo;
@@ -26,6 +28,9 @@ public class TradeServiceImpl implements TradeService {
 
   @Autowired
   TradeMapper tradeMapper;
+
+  @Autowired
+  ViewTradeCateAccountMapper viewTradeCateAccountMapper;
 
   @Override
   public void add(TradeBo tradeBo) {
@@ -76,8 +81,8 @@ public class TradeServiceImpl implements TradeService {
   public List<TradeBo> list(UserBo userBo) {
     List<TradeBo> tradeBos = new ArrayList<>();
     try {
-      List<Trade> trades = tradeMapper.queryByUser(userBo.toUser());
-      for (Trade trade : trades) {
+      List<ViewTradeCateAccount> trades = viewTradeCateAccountMapper.queryByUserId(userBo.getId());
+      for (ViewTradeCateAccount trade : trades) {
         if (trade.getDeleteAt() == null) {
           tradeBos.add(new TradeBo(trade));
         }
@@ -93,15 +98,15 @@ public class TradeServiceImpl implements TradeService {
   public List<TradeBo> list(AccountBo accountBo) {
     List<TradeBo> tradeBos = new ArrayList<>();
     try {
-      List<Trade> trades = tradeMapper.queryByAccount(accountBo.toAccountEntity());
-      for (Trade trade : trades) {
+      List<ViewTradeCateAccount> trades = viewTradeCateAccountMapper.queryByAccountId(accountBo.getId());
+      for (ViewTradeCateAccount trade : trades) {
         if (trade.getDeleteAt() == null) {
           tradeBos.add(new TradeBo(trade));
         }
       }
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
-      Asserts.fail("交易记录按用户查询失败");
+      Asserts.fail("交易记录按账户查询失败");
     }
     return tradeBos;
   }

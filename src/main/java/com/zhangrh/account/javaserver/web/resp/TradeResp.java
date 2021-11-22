@@ -17,6 +17,8 @@ public class TradeResp {
   private String remark;
   private LocalDate spendDate;
   private int operate;
+  private String tradeCateName;
+  private String accountName;
 
   public TradeResp() {
   }
@@ -29,5 +31,7 @@ public class TradeResp {
     setRemark(bo.getRemark());
     setSpendDate(bo.getSpendDate());
     setOperate(bo.getOperate().getCode());
+    setTradeCateName(bo.getTradeCateName());
+    setAccountName(bo.getAccountName());
   }
 }

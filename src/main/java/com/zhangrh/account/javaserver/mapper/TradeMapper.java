@@ -33,9 +33,7 @@ public interface TradeMapper {
       @Result(property = "spendDate", column = "spend_date"),
       @Result(property = "createAt", column = "create_at"),
       @Result(property = "updateAt", column = "update_at"),
-      @Result(property = "deleteAt", column = "delete_at"),
-      @Result(property = "accountName", column = "account_name"),
-      @Result(property = "sortName", column = "sort_name")
+      @Result(property = "deleteAt", column = "delete_at")
   })
   Trade queryById(@Param("t") Trade trade);
 
@@ -47,9 +45,7 @@ public interface TradeMapper {
       @Result(property = "spendDate", column = "spend_date"),
       @Result(property = "createAt", column = "create_at"),
       @Result(property = "updateAt", column = "update_at"),
-      @Result(property = "deleteAt", column = "delete_at"),
-      @Result(property = "accountName", column = "account_name"),
-      @Result(property = "sortName", column = "sort_name")
+      @Result(property = "deleteAt", column = "delete_at")
   })
   List<Trade> queryByAccount(@Param("a") Account account);
 
@@ -61,9 +57,7 @@ public interface TradeMapper {
       @Result(property = "spendDate", column = "spend_date"),
       @Result(property = "createAt", column = "create_at"),
       @Result(property = "updateAt", column = "update_at"),
-      @Result(property = "deleteAt", column = "delete_at"),
-      @Result(property = "accountName", column = "account_name"),
-      @Result(property = "sortName", column = "sort_name")
+      @Result(property = "deleteAt", column = "delete_at")
   })
   List<Trade> queryByUser(@Param("u") User user);
 
