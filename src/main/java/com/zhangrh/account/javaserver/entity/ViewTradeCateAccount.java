@@ -20,6 +20,8 @@ public class ViewTradeCateAccount extends AbstractEntity {
   private LocalDate spendDate;
   private TradeOperation operate;
   private String accountName;
+  private String accountIcon;
   private String tradeCateName;
+  private String tradeCateIcon;
 }
 

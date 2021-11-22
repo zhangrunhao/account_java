@@ -26,6 +26,8 @@ public class TradeBo extends AbstractBo{
   private TradeOperation operate;
   private String accountName;
   private String tradeCateName;
+  private String accountIcon;
+  private String tradeCateIcon;
 
   public TradeBo() {
   }

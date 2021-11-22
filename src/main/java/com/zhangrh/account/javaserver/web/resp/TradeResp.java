@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import com.zhangrh.account.javaserver.service.Bo.TradeBo;
 
+import org.springframework.beans.BeanUtils;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,19 +21,17 @@ public class TradeResp {
   private int operate;
   private String tradeCateName;
   private String accountName;
+  private String accountIcon;
+  private String tradeCateIcon;
 
   public TradeResp() {
   }
 
   public TradeResp(TradeBo bo) {
-    setId(bo.getId());
-    setAccountId(bo.getAccountId());
-    setTradeCateId(bo.getTradeCateId());
-    setMoney(bo.getMoney().toString());
-    setRemark(bo.getRemark());
-    setSpendDate(bo.getSpendDate());
-    setOperate(bo.getOperate().getCode());
-    setTradeCateName(bo.getTradeCateName());
-    setAccountName(bo.getAccountName());
+    BeanUtils.copyProperties(bo, this);
+    this.setId(bo.getTradeId());
+    this.setMoney(bo.getMoney().toString());
+    this.setTradeCateId(bo.getTradeCateId());
+    this.setOperate(bo.getOperate().getCode());
   }
 }

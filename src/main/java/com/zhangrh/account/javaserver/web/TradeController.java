@@ -14,6 +14,7 @@ import com.zhangrh.account.javaserver.service.Bo.UserBo;
 import com.zhangrh.account.javaserver.utils.DateTimeUtil;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 import com.zhangrh.account.javaserver.web.req.TradeAddReq;
+import com.zhangrh.account.javaserver.web.req.TradeTransferReq;
 import com.zhangrh.account.javaserver.web.resp.TradeDateSortResp;
 import com.zhangrh.account.javaserver.web.resp.TradeResp;
 
@@ -39,9 +40,7 @@ public class TradeController {
 
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   @ResponseBody
-  public CommonResult<String> doAdd(
-    @Validated @RequestBody TradeAddReq req
-  ) {
+  public CommonResult<String> doAdd(@Validated @RequestBody TradeAddReq req) {
     try {
       UserBo userBo = UserInfoUtil.getUser();
       TradeBo tradeBo = new TradeBo();
@@ -53,6 +52,30 @@ public class TradeController {
       tradeBo.setRemark(req.getRemark());
       tradeBo.setSpendDate(DateTimeUtil.MillToLocalDate(req.getSpendDate()));
       tradeService.add(tradeBo);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success("添加成功");
+  }
+
+  @RequestMapping(value = "/transfer", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> doTransfer(@Validated @RequestBody TradeTransferReq req) {
+    try {
+      UserBo userBo = UserInfoUtil.getUser();
+      // out trade
+      TradeBo outTradeBo = new TradeBo();
+      outTradeBo.setUserId(userBo.getId());
+      outTradeBo.setAccountId(req.getOutAccountId());
+      outTradeBo.setMoney(new BigDecimal(req.getMoney()));
+      outTradeBo.setSpendDate(DateTimeUtil.MillToLocalDate(req.getSpendDate()));
+      // in trade
+      TradeBo inTradeBo = new TradeBo();
+      inTradeBo.setUserId(userBo.getId());
+      inTradeBo.setAccountId(req.getInAccountId());
+      inTradeBo.setMoney(new BigDecimal(req.getMoney()));
+      inTradeBo.setSpendDate(DateTimeUtil.MillToLocalDate(req.getSpendDate()));
+      tradeService.transfer(outTradeBo, inTradeBo);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -84,9 +107,7 @@ public class TradeController {
 
   @RequestMapping(value = "/listByAccount", method = RequestMethod.GET)
   @ResponseBody
-  public CommonResult<List<TradeDateSortResp>> doListByAccount(
-    @RequestParam long id
-  ) {
+  public CommonResult<List<TradeDateSortResp>> doListByAccount(@RequestParam long id) {
     AccountBo accountBo = new AccountBo();
     accountBo.setId(id);
     List<TradeDateSortResp> resps = new ArrayList<>();

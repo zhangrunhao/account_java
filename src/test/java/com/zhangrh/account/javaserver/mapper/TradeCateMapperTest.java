@@ -58,4 +58,10 @@ public class TradeCateMapperTest {
     int r = tradeCateMapper.delete(tradeCate);
     assertEquals(1, r);
   }
+
+  @Test
+  void testQueryOperate() {
+    TradeCate tradeCate = tradeCateMapper.queryOperate(TradeOperation.Receive.getCode());
+    assertEquals(15, tradeCate.getId());
+  }
 }

@@ -24,6 +24,15 @@ public interface TradeCateMapper {
   })
   TradeCate queryId(@Param("tradeCate") TradeCate tradeCate);
 
+
+  @Select("SELECT * FROM trade_cate WHERE operate=#{operate}")
+  @Results({
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
+  })
+  TradeCate queryOperate(@Param("operate") int operate);
+
   @Update("UPDATE trade_cate SET name=#{tradeCate.name},icon=#{tradeCate.icon},type=#{tradeCate.type},operate=#{tradeCate.operate}, update_at=#{tradeCate.updateAt} WHERE id=#{tradeCate.id}")
   int update(@Param("tradeCate") TradeCate tradeCate);
 

@@ -11,6 +11,8 @@ public interface TradeService {
 
   void add(TradeBo tradeBo);
 
+  void transfer(TradeBo outTradeBo, TradeBo inTradeBo);
+
   void update(TradeBo tradeBo);
 
   void delete(TradeBo tradeBo);
