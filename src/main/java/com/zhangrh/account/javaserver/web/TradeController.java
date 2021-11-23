@@ -2,6 +2,7 @@ package com.zhangrh.account.javaserver.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 import com.zhangrh.account.javaserver.web.req.TradeAddReq;
 import com.zhangrh.account.javaserver.web.req.TradeDeleteReq;
 import com.zhangrh.account.javaserver.web.req.TradeTransferReq;
+import com.zhangrh.account.javaserver.web.req.TradeUpdateReq;
 import com.zhangrh.account.javaserver.web.resp.TradeDateSortResp;
 import com.zhangrh.account.javaserver.web.resp.TradeResp;
 
@@ -74,7 +76,7 @@ public class TradeController {
     return CommonResult.success("添加成功");
   }
 
-  @RequestMapping(value = "/transfer", method = RequestMethod.POST)
+  @RequestMapping(value = "/addTransfer", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doTransfer(@Validated @RequestBody TradeTransferReq req) {
     try {
@@ -111,6 +113,26 @@ public class TradeController {
     return CommonResult.success("添加成功");
   }
 
+  @RequestMapping(value = "/update", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> doUpdate(@Validated @RequestBody TradeUpdateReq req) {
+    try {
+      UserBo userBo = UserInfoUtil.getUser();
+      TradeBo tradeBo = new TradeBo();
+      tradeBo.setUserId(userBo.getId());
+      tradeBo.setTradeId(req.getId());
+      tradeBo.setAccountId(req.getAccountId());
+      tradeBo.setMoney(new BigDecimal(req.getMoney()));
+      tradeBo.setOperate(TradeOperation.getByCode(req.getOperate()));
+      tradeBo.setTradeCateId(req.getTradeCateId());
+      tradeBo.setRemark(req.getRemark());
+      tradeBo.setSpendDate(DateTimeUtil.MillToLocalDate(req.getSpendDate()));
+      tradeService.update(tradeBo);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success("更新成功");
+  }
 
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   @ResponseBody
@@ -129,6 +151,7 @@ public class TradeController {
         sortResp.setTrades(rList);
         resps.add(sortResp);
       });
+      Collections.sort(resps);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }
@@ -153,6 +176,7 @@ public class TradeController {
         sortResp.setTrades(rList);
         resps.add(sortResp);
       });
+      Collections.sort(resps);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
     }

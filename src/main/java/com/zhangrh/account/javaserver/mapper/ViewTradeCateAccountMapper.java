@@ -14,7 +14,7 @@ public interface ViewTradeCateAccountMapper {
     @Select("SELECT * FROM v_trade_cate_account WHERE trade_id=#{id}")
     @Results({ @Result(property = "tradeId", column = "trade_id"), @Result(property = "userId", column = "users_id"),
             @Result(property = "accountId", column = "account_id"),
-            @Result(property = "tradeCateId", column = "trace_cate_id"), @Result(property = "money", column = "money"),
+            @Result(property = "tradeCateId", column = "trade_cate_id"), @Result(property = "money", column = "money"),
             @Result(property = "remark", column = "remark"), @Result(property = "spendDate", column = "spend_date"),
             @Result(property = "operate", column = "operate"),
             @Result(property = "accountName", column = "account_name"),
@@ -28,7 +28,7 @@ public interface ViewTradeCateAccountMapper {
     @Select("SELECT * FROM v_trade_cate_account WHERE account_id=#{id}")
     @Results({ @Result(property = "tradeId", column = "trade_id"), @Result(property = "userId", column = "users_id"),
             @Result(property = "accountId", column = "account_id"),
-            @Result(property = "tradeCateId", column = "trace_cate_id"), @Result(property = "money", column = "money"),
+            @Result(property = "tradeCateId", column = "trade_cate_id"), @Result(property = "money", column = "money"),
             @Result(property = "remark", column = "remark"), @Result(property = "spendDate", column = "spend_date"),
             @Result(property = "operate", column = "operate"),
             @Result(property = "accountName", column = "account_name"),
@@ -42,7 +42,7 @@ public interface ViewTradeCateAccountMapper {
     @Select("SELECT * FROM v_trade_cate_account WHERE user_id=#{id}")
     @Results({ @Result(property = "tradeId", column = "trade_id"), @Result(property = "userId", column = "users_id"),
             @Result(property = "accountId", column = "account_id"),
-            @Result(property = "tradeCateId", column = "trace_cate_id"), @Result(property = "money", column = "money"),
+            @Result(property = "tradeCateId", column = "trade_cate_id"), @Result(property = "money", column = "money"),
             @Result(property = "remark", column = "remark"), @Result(property = "spendDate", column = "spend_date"),
             @Result(property = "operate", column = "operate"),
             @Result(property = "accountName", column = "account_name"),
