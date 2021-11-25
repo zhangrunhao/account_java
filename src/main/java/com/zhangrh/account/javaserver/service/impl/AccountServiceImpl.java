@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
+import com.zhangrh.account.javaserver.entity.AccountDefault;
 import com.zhangrh.account.javaserver.exception.Asserts;
+import com.zhangrh.account.javaserver.mapper.AccountDefaultMapper;
 import com.zhangrh.account.javaserver.mapper.AccountMapper;
 import com.zhangrh.account.javaserver.service.AccountService;
 import com.zhangrh.account.javaserver.service.TradeService;
@@ -28,10 +30,12 @@ public class AccountServiceImpl implements AccountService {
   AccountMapper accountMapper;
 
   @Autowired
+  AccountDefaultMapper accountDefaultMapper;
+
+  @Autowired
   TradeService tradeService;
 
   @Override
-  @Transactional
   public void add(AccountBo accountBo) {
     try {
       accountBo.setCreateAt(LocalDateTime.now());
@@ -41,6 +45,27 @@ public class AccountServiceImpl implements AccountService {
       LOGGER.warn(e.getMessage());
       Asserts.fail("用户创建账户失败");
     }
+  }
+
+  @Override
+  @Transactional
+  public void addDefault(UserBo userBo) {
+    try {
+      Account account = new Account();
+      account.setUserId(userBo.getId());
+      account.setCreateAt(LocalDateTime.now());
+      List<AccountDefault> defaults = accountDefaultMapper.query();
+      for (AccountDefault accountDefault : defaults) {
+        account.setName(accountDefault.getName());
+        account.setIcon(accountDefault.getIcon());
+        account.setCate(accountDefault.getCate());
+        accountMapper.insert(account);
+      }
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("插入默认账户失败");
+    }
+
   }
 
   @Override

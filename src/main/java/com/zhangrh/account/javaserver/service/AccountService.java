@@ -11,9 +11,14 @@ public interface AccountService {
    * 添加账户
    * @param user 用户
    * @param accountBo 账户
-   * @return 是否添加成功
    */
   void add(AccountBo accountBo);
+
+  /**
+   * 添加默认账户
+   * @param userBo 用户
+   */
+  void addDefault(UserBo userBo);
 
   /**
    * 查询账户列表

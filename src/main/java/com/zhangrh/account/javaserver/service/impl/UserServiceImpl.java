@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.UserMapper;
+import com.zhangrh.account.javaserver.service.AccountService;
 import com.zhangrh.account.javaserver.service.UserService;
 import com.zhangrh.account.javaserver.service.Bo.UserBo;
 import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   UserMapper userMapper;
+
+  @Autowired
+  AccountService accountService;
 
   @Override
   public String login(String email, String password) {
@@ -41,6 +46,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public void register(String email, String password) {
     User user = new User();
     if (userMapper.queryEmail(email) != null) {
@@ -51,7 +57,8 @@ public class UserServiceImpl implements UserService {
       user.setPassword(Md5Util.getMd5(password));
       user.setCreateAt(LocalDateTime.now());
       userMapper.insert(user);
-      // TODO: 插入成功后, 导入默认account和默认trade_cate
+      // TODO: 插入成功后, 导入默认trade_cate
+      accountService.addDefault(new UserBo(user));
     } catch (Exception e) {
       Asserts.fail("用户插入失败");
     }
