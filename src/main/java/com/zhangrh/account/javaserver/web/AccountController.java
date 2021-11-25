@@ -1,4 +1,5 @@
 package com.zhangrh.account.javaserver.web;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,15 +52,16 @@ public class AccountController {
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doAdd(
-    @Validated @RequestBody AccountAddReq accountAddReq
+    @Validated @RequestBody AccountAddReq req
   ) {
     try {
       UserBo userBo = UserInfoUtil.getUser();
       AccountBo accountBo = new AccountBo();
       accountBo.setUserId(userBo.getId());
-      accountBo.setName(accountAddReq.getName());
-      accountBo.setIcon(accountAddReq.getIcon());
-      accountBo.setCate(AccountCate.getByCode(accountAddReq.getCate()));
+      accountBo.setName(req.getName());
+      accountBo.setIcon(req.getIcon());
+      accountBo.setMoney(new BigDecimal(req.getMoney()));
+      accountBo.setCate(AccountCate.getByCode(req.getCate()));
       accountService.add(accountBo);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());
@@ -82,6 +84,7 @@ public class AccountController {
       account.setName(req.getName());
       account.setCate(AccountCate.getByCode(req.getCate()));
       account.setIcon(req.getIcon());
+      account.setMoney(new BigDecimal(req.getMoney()));
       accountService.update(account);
     } catch (Exception e) {
       return CommonResult.failed(e.getMessage());

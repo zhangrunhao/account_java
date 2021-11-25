@@ -11,7 +11,9 @@ public enum TradeOperation implements BaseCodeEnum{
   Borrow(5, "add"), // 借入
   Lend(6, "subtract"), // 借出
   Receive(7, "add"), // 收款
-  Repayment(8, "subtract"); // 还款
+  Repayment(8, "subtract"), // 还款
+  Init(9, "add"), // 初始化
+  Flat(10, "subtract"); // 初始化
 
   private final int code;
   @Getter

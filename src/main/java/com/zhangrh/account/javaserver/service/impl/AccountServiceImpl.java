@@ -1,15 +1,20 @@
 package com.zhangrh.account.javaserver.service.impl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.zhangrh.account.javaserver.entity.Account;
 import com.zhangrh.account.javaserver.entity.AccountDefault;
+import com.zhangrh.account.javaserver.entity.Trade;
+import com.zhangrh.account.javaserver.enums.TradeOperation;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.AccountDefaultMapper;
 import com.zhangrh.account.javaserver.mapper.AccountMapper;
+import com.zhangrh.account.javaserver.mapper.TradeCateMapper;
+import com.zhangrh.account.javaserver.mapper.TradeMapper;
 import com.zhangrh.account.javaserver.service.AccountService;
 import com.zhangrh.account.javaserver.service.TradeService;
 import com.zhangrh.account.javaserver.service.Bo.AccountBo;
@@ -33,14 +38,34 @@ public class AccountServiceImpl implements AccountService {
   AccountDefaultMapper accountDefaultMapper;
 
   @Autowired
+  TradeCateMapper tradeCateMapper;
+
+  @Autowired
+  TradeMapper tradeMapper;
+
+  @Autowired
   TradeService tradeService;
 
   @Override
+  @Transactional
   public void add(AccountBo accountBo) {
     try {
+      // 创建账户
       accountBo.setCreateAt(LocalDateTime.now());
       Account account = accountBo.toAccountEntity();
       accountMapper.insert(account);
+      // 创建初始记录
+      Trade trade = new Trade();
+      trade.setCreateAt(LocalDateTime.now());
+      trade.setUserId(accountBo.getUserId());
+      trade.setAccountId(account.getId());
+      long initCateId = tradeCateMapper.queryOperate(TradeOperation.Init.getCode()).getId();
+      trade.setTradeCateId(initCateId);
+      trade.setMoney(accountBo.getMoney());
+      trade.setOperate(TradeOperation.Init);
+      trade.setRemark("初始金额");
+      trade.setSpendDate(LocalDate.now());
+      tradeMapper.insert(trade);
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
       Asserts.fail("用户创建账户失败");
@@ -104,10 +129,28 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
+  @Transactional
   public void update(AccountBo accountBo) {
     try {
       accountBo.setUpdateAt(LocalDateTime.now());
       accountMapper.update(accountBo.toAccountEntity());
+      // 查看金额是否一致.
+      BigDecimal oldMoney = calculateBalance(accountBo);
+      BigDecimal newMoney = accountBo.getMoney();
+      if (!oldMoney.equals(newMoney)) {
+        BigDecimal diff = oldMoney.subtract(newMoney);
+        Trade trade = new Trade();
+        trade.setCreateAt(LocalDateTime.now());
+        trade.setUserId(accountBo.getUserId());
+        trade.setAccountId(accountBo.getId());
+        long flatCateId = tradeCateMapper.queryOperate(TradeOperation.Flat.getCode()).getId();
+        trade.setTradeCateId(flatCateId);
+        trade.setMoney(diff);
+        trade.setOperate(TradeOperation.Flat);
+        trade.setRemark("平帐");
+        trade.setSpendDate(LocalDate.now());
+        tradeMapper.insert(trade);
+      }
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
       Asserts.fail("账户更新失败");

@@ -7,5 +7,5 @@ public class AccountAddReq {
   private String name;
   private String icon;
   private int cate;
-
+  private String money;
 }

@@ -8,4 +8,5 @@ public class AccountUpdateReq {
   private String name;
   private String icon;
   private int cate;
+  private String money;
 }
