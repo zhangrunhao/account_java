@@ -1,5 +1,7 @@
 package com.zhangrh.account.javaserver.mapper;
 
+import java.util.List;
+
 import com.zhangrh.account.javaserver.entity.TradeCate;
 
 import org.apache.ibatis.annotations.Insert;
@@ -32,6 +34,14 @@ public interface TradeCateMapper {
     @Result(property = "deleteAt", column = "delete_at"),
   })
   TradeCate queryOperate(@Param("operate") int operate);
+
+  @Select("SELECT * FROM trade_cate WHERE type=#{type}")
+  @Results({
+    @Result(property = "createAt", column = "create_at"),
+    @Result(property = "updateAt", column = "update_at"),
+    @Result(property = "deleteAt", column = "delete_at"),
+  })
+  List<TradeCate> queryType(@Param("type") int type);
 
   @Update("UPDATE trade_cate SET name=#{tradeCate.name},icon=#{tradeCate.icon},type=#{tradeCate.type},operate=#{tradeCate.operate}, update_at=#{tradeCate.updateAt} WHERE id=#{tradeCate.id}")
   int update(@Param("tradeCate") TradeCate tradeCate);

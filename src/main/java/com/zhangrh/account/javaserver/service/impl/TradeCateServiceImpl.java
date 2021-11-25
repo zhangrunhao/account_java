@@ -48,6 +48,24 @@ public class TradeCateServiceImpl implements TradeCateService {
   }
 
   @Override
+  @Transactional
+  public void addDefault(UserBo userBo) {
+    try {
+      List<TradeCate> defaultList = tradeCateMapper.queryType(TradeCateType.Default.getCode());
+      UserToTradeCate userToTradeCate = new UserToTradeCate();
+      userToTradeCate.setUserId(userBo.getId());
+      userToTradeCate.setCreateAt(LocalDateTime.now());
+      for (TradeCate tradeCate : defaultList) {
+        userToTradeCate.setTradeCateId(tradeCate.getId());
+        userToTradeCateMapper.insert(userToTradeCate);
+      }
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("创建默认交易种类失败");
+    }
+  }
+
+  @Override
   public List<TradeCateBo> list(UserBo userBo) {
     List<TradeCateBo> tradeCateBos = new ArrayList<>();
     try {

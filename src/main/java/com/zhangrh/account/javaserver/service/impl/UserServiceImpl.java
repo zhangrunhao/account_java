@@ -5,6 +5,7 @@ import com.zhangrh.account.javaserver.entity.User;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.UserMapper;
 import com.zhangrh.account.javaserver.service.AccountService;
+import com.zhangrh.account.javaserver.service.TradeCateService;
 import com.zhangrh.account.javaserver.service.UserService;
 import com.zhangrh.account.javaserver.service.Bo.UserBo;
 import com.zhangrh.account.javaserver.utils.JwtTokenUtil;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   AccountService accountService;
+
+  @Autowired
+  TradeCateService tradeCateService;
 
   @Override
   public String login(String email, String password) {
@@ -57,8 +61,8 @@ public class UserServiceImpl implements UserService {
       user.setPassword(Md5Util.getMd5(password));
       user.setCreateAt(LocalDateTime.now());
       userMapper.insert(user);
-      // TODO: 插入成功后, 导入默认trade_cate
       accountService.addDefault(new UserBo(user));
+      tradeCateService.addDefault(new UserBo(user));
     } catch (Exception e) {
       Asserts.fail("用户插入失败");
     }
