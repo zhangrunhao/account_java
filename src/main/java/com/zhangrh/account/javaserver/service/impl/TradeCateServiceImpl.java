@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.zhangrh.account.javaserver.entity.Trade;
 import com.zhangrh.account.javaserver.entity.TradeCate;
 import com.zhangrh.account.javaserver.entity.UserToTradeCate;
 import com.zhangrh.account.javaserver.enums.TradeCateType;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.TradeCateMapper;
+import com.zhangrh.account.javaserver.mapper.TradeMapper;
 import com.zhangrh.account.javaserver.mapper.UserToTradeCateMapper;
 import com.zhangrh.account.javaserver.service.TradeCateService;
 import com.zhangrh.account.javaserver.service.Bo.TradeCateBo;
@@ -29,6 +31,9 @@ public class TradeCateServiceImpl implements TradeCateService {
 
   @Autowired
   UserToTradeCateMapper userToTradeCateMapper;
+
+  @Autowired
+  TradeMapper tradeMapper;
 
   @Override
   @Transactional
@@ -98,6 +103,7 @@ public class TradeCateServiceImpl implements TradeCateService {
     try {
       switch (tradeCateBo.getType()) {
       case Default:
+        long oldTradeCateId = tradeCateBo.getTradeCateId();
         // 删除关系
         tradeCateBo.setDeleteAt(LocalDateTime.now());
         UserToTradeCate userToTradeCate = tradeCateBo.toUserToTradeCate();
@@ -108,8 +114,17 @@ public class TradeCateServiceImpl implements TradeCateService {
         tradeCate = tradeCateBo.toTradeCate();
         tradeCateMapper.insert(tradeCate);
         // 用户和新种类建立关系
-        tradeCateBo.setTradeCateId(tradeCate.getId());
+        long newTradeCateId = tradeCate.getId();
+        tradeCateBo.setTradeCateId(newTradeCateId);
         userToTradeCateMapper.insert(tradeCateBo.toUserToTradeCate());
+        // 并更改所有trade, 为新的trade-cate类型
+        Trade oldTrade = new Trade();
+        oldTrade.setTradeCateId(oldTradeCateId);
+        Trade newTrade = new Trade();
+        newTrade.setTradeCateId(newTradeCateId);
+        newTrade.setUpdateAt(LocalDateTime.now());
+        newTrade.setUserId(tradeCateBo.getUserId());
+        tradeMapper.updateTradeCateId(oldTrade, newTrade);
         break;
       case Extra:
         // 直接更新

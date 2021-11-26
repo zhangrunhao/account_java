@@ -24,6 +24,8 @@ public interface TradeMapper {
   @Update("UPDATE trade SET user_id=#{p.userId}, account_id=#{p.accountId}, trade_cate_id=#{p.tradeCateId}, money=#{p.money}, remark=#{p.remark}, spend_date=#{p.spendDate}, operate=#{p.operate}, update_at=#{p.updateAt} WHERE id=#{p.id};")
   int update(@Param("p") Trade trade);
 
+  @Update("UPDATE trade SET  trade_cate_id=#{n.tradeCateId}, update_at=#{n.updateAt} WHERE user_id=#{n.userId} AND trade_cate_id=#{o.tradeCateId};")
+  int updateTradeCateId(@Param("o") Trade oldTrade, @Param("n") Trade newTrade);
 
   @Select("SELECT * FROM trade WHERE id=#{t.id}")
   @Results({
