@@ -138,7 +138,7 @@ public class AccountServiceImpl implements AccountService {
       BigDecimal oldMoney = calculateBalance(accountBo);
       BigDecimal newMoney = accountBo.getMoney();
       if (!oldMoney.equals(newMoney)) {
-        BigDecimal diff = oldMoney.subtract(newMoney);
+        BigDecimal diff = newMoney.subtract(oldMoney);
         Trade trade = new Trade();
         trade.setCreateAt(LocalDateTime.now());
         trade.setUserId(accountBo.getUserId());
