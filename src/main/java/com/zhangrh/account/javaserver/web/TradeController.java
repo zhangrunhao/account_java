@@ -76,6 +76,46 @@ public class TradeController {
     return CommonResult.success("添加成功");
   }
 
+  @RequestMapping(value = "/addBorrowLend", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> doBorrowLend(@Validated @RequestBody TradeAddReq req) {
+    try {
+      UserBo userBo = UserInfoUtil.getUser();
+      TradeBo tradeBo = new TradeBo();
+      tradeBo.setUserId(userBo.getId());
+      tradeBo.setAccountId(req.getAccountId());
+      tradeBo.setMoney(new BigDecimal(req.getMoney()));
+      tradeBo.setOperate(TradeOperation.getByCode(req.getOperate()));
+      tradeBo.setRemark(req.getRemark());
+      tradeBo.setSpendDate(DateTimeUtil.MillToLocalDate(req.getSpendDate()));
+      tradeService.addBorrowLend(tradeBo);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success("添加成功");
+  }
+
+  @RequestMapping(value = "/updateBorrowLend", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> doUpdateBorrowLend(@Validated @RequestBody TradeUpdateReq req) {
+    try {
+      UserBo userBo = UserInfoUtil.getUser();
+      TradeBo tradeBo = new TradeBo();
+      tradeBo.setTradeId(req.getId());
+      tradeBo.setUserId(userBo.getId());
+      tradeBo.setAccountId(req.getAccountId());
+      tradeBo.setMoney(new BigDecimal(req.getMoney()));
+      tradeBo.setOperate(TradeOperation.getByCode(req.getOperate()));
+      tradeBo.setRemark(req.getRemark());
+      tradeBo.setSpendDate(DateTimeUtil.MillToLocalDate(req.getSpendDate()));
+      tradeService.updateBorrowLend(tradeBo);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success("添加成功");
+  }
+
+
   @RequestMapping(value = "/addTransfer", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doTransfer(@Validated @RequestBody TradeTransferReq req) {

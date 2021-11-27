@@ -13,6 +13,10 @@ public interface TradeService {
 
   void transfer(TradeBo outTradeBo, TradeBo inTradeBo);
 
+  void addBorrowLend(TradeBo tradeBo);
+
+  void updateBorrowLend(TradeBo tradeBo);
+
   void update(TradeBo tradeBo);
 
   void delete(TradeBo tradeBo);

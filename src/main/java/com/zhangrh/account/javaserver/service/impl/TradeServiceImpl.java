@@ -70,7 +70,7 @@ public class TradeServiceImpl implements TradeService {
       outTradeBo.setOperate(TradeOperation.Transfer_Out);
       Trade outTrade = outTradeBo.toTrade();
       Account outAccount = accountMapper.queryId(outTrade.getAccountId());
-      
+
       // inTrade
       inTradeBo.setCreateAt(LocalDateTime.now());
       long inTradeCateId = tradeCateMapper.queryOperate(TradeOperation.Transfer_In.getCode()).getId();
@@ -137,6 +137,10 @@ public class TradeServiceImpl implements TradeService {
         // 删除转账关联信息
         transfer.setDeleteAt(LocalDateTime.now());
         transferMapper.delete(transfer);
+      } else if (operation == TradeOperation.Borrow || operation == TradeOperation.Lend) { // 借入 借出
+        // TODO: 如果删除 借出借出, 就删除所有相关的还款收款, 并删除下所有关联记录
+      } else if (operation == TradeOperation.Repayment || operation == TradeOperation.Receive) { // 还款 收款
+        // TODO: 如果删除 还款收款, 就顺带删除下关联记录
       }
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -162,7 +166,8 @@ public class TradeServiceImpl implements TradeService {
     try {
       List<ViewTradeCateAccount> trades = viewTradeCateAccountMapper.queryByUserId(userBo.getId());
       for (ViewTradeCateAccount trade : trades) {
-        if (trade.getDeleteAt() == null && (trade.getOperate() == TradeOperation.Expend || trade.getOperate() == TradeOperation.Income)) {
+        if (trade.getDeleteAt() == null
+            && (trade.getOperate() == TradeOperation.Expend || trade.getOperate() == TradeOperation.Income)) {
           tradeBos.add(new TradeBo(trade));
         }
       }
@@ -215,5 +220,32 @@ public class TradeServiceImpl implements TradeService {
       }
     }
     return result;
+  }
+
+  @Override
+  @Transactional
+  public void addBorrowLend(TradeBo tradeBo) {
+    try {
+      long tradeCateId = tradeCateMapper.queryOperate(tradeBo.getOperate().getCode()).getId();
+      tradeBo.setCreateAt(LocalDateTime.now());
+      tradeBo.setTradeCateId(tradeCateId);
+      tradeMapper.insert(tradeBo.toTrade());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("借入借出记录添加失败");
+    }
+  }
+
+  @Override
+  public void updateBorrowLend(TradeBo tradeBo) {
+    try {
+      long tradeCateId = tradeCateMapper.queryOperate(tradeBo.getOperate().getCode()).getId();
+      tradeBo.setTradeCateId(tradeCateId);
+      tradeBo.setUpdateAt(LocalDateTime.now());
+      tradeMapper.update(tradeBo.toTrade());
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("借入借出记录更新失败");
+    }
   }
 }
