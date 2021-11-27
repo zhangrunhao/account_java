@@ -198,6 +198,29 @@ public class TradeController {
     return CommonResult.success(resps);
   }
 
+  @RequestMapping(value = "/listByOperate", method = RequestMethod.GET)
+  @ResponseBody
+  public CommonResult<List<TradeDateSortResp>> doListByOperate(@RequestParam int operate) {
+    List<TradeDateSortResp> resps = new ArrayList<>();
+    try {
+      Map<String, List<TradeBo>> rMap = tradeService.listSortByDate(TradeOperation.getByCode(operate));
+      rMap.forEach((key, value) -> {
+        List<TradeResp> rList = new ArrayList<>();
+        for (TradeBo tradeBo : value) {
+          rList.add(new TradeResp(tradeBo));
+        }
+        TradeDateSortResp sortResp = new TradeDateSortResp();
+        sortResp.setDate(key);
+        sortResp.setTrades(rList);
+        resps.add(sortResp);
+      });
+      Collections.sort(resps);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success(resps);
+  }
+
   @RequestMapping(value = "/listByAccount", method = RequestMethod.GET)
   @ResponseBody
   public CommonResult<List<TradeDateSortResp>> doListByAccount(@RequestParam long id) {

@@ -22,6 +22,7 @@ import com.zhangrh.account.javaserver.service.TradeService;
 import com.zhangrh.account.javaserver.service.Bo.AccountBo;
 import com.zhangrh.account.javaserver.service.Bo.TradeBo;
 import com.zhangrh.account.javaserver.service.Bo.UserBo;
+import com.zhangrh.account.javaserver.utils.UserInfoUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -196,6 +197,29 @@ public class TradeServiceImpl implements TradeService {
   }
 
   @Override
+  public List<TradeBo> list(TradeOperation tradeOperation) {
+    List<TradeBo> tradeBos = new ArrayList<>();
+    try {
+      List<ViewTradeCateAccount> trades = viewTradeCateAccountMapper.queryByOperation(UserInfoUtil.getUser().getId(), tradeOperation.getCode());
+      for (ViewTradeCateAccount trade : trades) {
+        if (trade.getDeleteAt() == null) {
+          tradeBos.add(new TradeBo(trade));
+        }
+      }
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("交易记录按账户查询失败");
+    }
+    return tradeBos;
+  }
+
+
+  @Override
+  public Map<String, List<TradeBo>> listSortByDate(TradeOperation tradeOperation) {
+    return sortTradeByDate(list(tradeOperation));
+  }
+
+  @Override
   public Map<String, List<TradeBo>> listSortByDate(AccountBo accountBo) {
     return sortTradeByDate(list(accountBo));
   }
@@ -248,4 +272,5 @@ public class TradeServiceImpl implements TradeService {
       Asserts.fail("借入借出记录更新失败");
     }
   }
+
 }

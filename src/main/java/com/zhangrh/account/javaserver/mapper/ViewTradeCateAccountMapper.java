@@ -52,4 +52,19 @@ public interface ViewTradeCateAccountMapper {
             @Result(property = "createAt", column = "create_at"), @Result(property = "updateAt", column = "update_at"),
             @Result(property = "deleteAt", column = "delete_at"), })
     List<ViewTradeCateAccount> queryByUserId(@Param("id") long id);
+
+
+    @Select("SELECT * FROM v_trade_cate_account WHERE user_id=#{u} and operate=#{o}")
+    @Results({ @Result(property = "tradeId", column = "trade_id"), @Result(property = "userId", column = "users_id"),
+            @Result(property = "accountId", column = "account_id"),
+            @Result(property = "tradeCateId", column = "trade_cate_id"), @Result(property = "money", column = "money"),
+            @Result(property = "remark", column = "remark"), @Result(property = "spendDate", column = "spend_date"),
+            @Result(property = "operate", column = "operate"),
+            @Result(property = "accountName", column = "account_name"),
+            @Result(property = "tradeCateName", column = "trade_cate_name"),
+            @Result(property = "accountIcon", column = "account_icon"),
+            @Result(property = "tradeCateIcon", column = "trade_cate_icon"),
+            @Result(property = "createAt", column = "create_at"), @Result(property = "updateAt", column = "update_at"),
+            @Result(property = "deleteAt", column = "delete_at"), })
+    List<ViewTradeCateAccount> queryByOperation(@Param("u") long userId, @Param("o") int operate);
 }
