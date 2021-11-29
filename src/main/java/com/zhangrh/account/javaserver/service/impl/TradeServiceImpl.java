@@ -226,6 +226,7 @@ public class TradeServiceImpl implements TradeService {
           tradeOperation.getCode());
       for (ViewTradeCateAccount trade : trades) {
         if (trade.getDeleteAt() == null) {
+          //TODO: 应该计算剩余金额, 并展示
           tradeBos.add(new TradeBo(trade));
         }
       }

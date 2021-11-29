@@ -16,6 +16,7 @@ import com.zhangrh.account.javaserver.mapper.AccountMapper;
 import com.zhangrh.account.javaserver.mapper.TradeCateMapper;
 import com.zhangrh.account.javaserver.mapper.TradeMapper;
 import com.zhangrh.account.javaserver.service.AccountService;
+import com.zhangrh.account.javaserver.service.CommonService;
 import com.zhangrh.account.javaserver.service.TradeService;
 import com.zhangrh.account.javaserver.service.Bo.AccountBo;
 import com.zhangrh.account.javaserver.service.Bo.TradeBo;
@@ -30,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AccountServiceImpl implements AccountService {
   private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+
+  @Autowired
+  CommonService commonService;
 
   @Autowired
   AccountMapper accountMapper;
@@ -101,7 +105,9 @@ public class AccountServiceImpl implements AccountService {
       for (Account account : accounts) {
         if (account.getDeleteAt() == null) { // 排除已经删除的账户
           AccountBo accountBo = new AccountBo(account);
-          accountBo.setMoney(calculateBalance(accountBo));
+          List<TradeBo> tradeBos = tradeService.list(accountBo);
+          BigDecimal money = commonService.calculateBalance(tradeBos);
+          accountBo.setMoney(money);
           accountBos.add(accountBo);
         }
       }
@@ -118,7 +124,9 @@ public class AccountServiceImpl implements AccountService {
     try {
       account = accountMapper.queryId(accountBo.getId());
       accountBo = new AccountBo(account);
-      accountBo.setMoney(calculateBalance(accountBo));
+      List<TradeBo> tradeBos = tradeService.list(accountBo);
+      BigDecimal money = commonService.calculateBalance(tradeBos);
+      accountBo.setMoney(money);
       if (account.getDeleteAt() != null)
         throw new Error("account is deleted");
     } catch (Exception e) {
@@ -135,7 +143,9 @@ public class AccountServiceImpl implements AccountService {
       accountBo.setUpdateAt(LocalDateTime.now());
       accountMapper.update(accountBo.toAccountEntity());
       // 查看金额是否一致.
-      BigDecimal oldMoney = calculateBalance(accountBo);
+      List<TradeBo> tradeBos = tradeService.list(accountBo);
+      BigDecimal oldMoney = commonService.calculateBalance(tradeBos);
+
       BigDecimal newMoney = accountBo.getMoney();
       if (!oldMoney.equals(newMoney)) {
         BigDecimal diff = newMoney.subtract(oldMoney);
@@ -166,23 +176,5 @@ public class AccountServiceImpl implements AccountService {
       LOGGER.warn(e.getMessage());
       Asserts.fail("账户更新失败");
     }
-  }
-
-  @Override
-  public BigDecimal calculateBalance(AccountBo accountBo) {
-    List<TradeBo> tradeBos = tradeService.list(accountBo);
-    BigDecimal result = new BigDecimal(0);
-    for (TradeBo tradeBo : tradeBos) {
-      BigDecimal money = tradeBo.getMoney();
-      switch (tradeBo.getOperate().getSign()) {
-      case "subtract":
-        result = result.subtract(money);
-        break;
-      case "add":
-        result = result.add(money);
-        break;
-      }
-    }
-    return result;
   }
 }
