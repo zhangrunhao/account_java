@@ -14,6 +14,7 @@ import com.zhangrh.account.javaserver.service.Bo.TradeBo;
 import com.zhangrh.account.javaserver.service.Bo.UserBo;
 import com.zhangrh.account.javaserver.utils.DateTimeUtil;
 import com.zhangrh.account.javaserver.utils.UserInfoUtil;
+import com.zhangrh.account.javaserver.web.req.RepaymentReceiveAddReq;
 import com.zhangrh.account.javaserver.web.req.TradeAddReq;
 import com.zhangrh.account.javaserver.web.req.TradeDeleteReq;
 import com.zhangrh.account.javaserver.web.req.TradeTransferReq;
@@ -95,6 +96,25 @@ public class TradeController {
     return CommonResult.success("添加成功");
   }
 
+  @RequestMapping(value = "/addRepaymentReceive", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult<String> addRepaymentReceive(@Validated @RequestBody RepaymentReceiveAddReq req) {
+    try {
+      UserBo userBo = UserInfoUtil.getUser();
+      TradeBo tradeBo = new TradeBo();
+      tradeBo.setUserId(userBo.getId());
+      tradeBo.setAccountId(req.getAccountId());
+      tradeBo.setMoney(new BigDecimal(req.getMoney()));
+      tradeBo.setOperate(TradeOperation.getByCode(req.getOperate()));
+      tradeBo.setRemark(req.getRemark());
+      tradeBo.setSpendDate(DateTimeUtil.MillToLocalDate(req.getSpendDate()));
+      tradeService.addRepaymentReceive(tradeBo, req.getTargetTradeId());
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success("添加成功");
+  }
+
   @RequestMapping(value = "/updateBorrowLend", method = RequestMethod.POST)
   @ResponseBody
   public CommonResult<String> doUpdateBorrowLend(@Validated @RequestBody TradeUpdateReq req) {
@@ -114,7 +134,6 @@ public class TradeController {
     }
     return CommonResult.success("添加成功");
   }
-
 
   @RequestMapping(value = "/addTransfer", method = RequestMethod.POST)
   @ResponseBody
@@ -220,6 +239,31 @@ public class TradeController {
     }
     return CommonResult.success(resps);
   }
+
+
+  @RequestMapping(value = "/listByBorrowLendId", method = RequestMethod.GET)
+  @ResponseBody
+  public CommonResult<List<TradeDateSortResp>> listByBorrowLendId(@RequestParam long id) {
+    List<TradeDateSortResp> resps = new ArrayList<>();
+    try {
+      Map<String, List<TradeBo>> rMap = tradeService.listByBorrowLendId(id);
+      rMap.forEach((key, value) -> {
+        List<TradeResp> rList = new ArrayList<>();
+        for (TradeBo tradeBo : value) {
+          rList.add(new TradeResp(tradeBo));
+        }
+        TradeDateSortResp sortResp = new TradeDateSortResp();
+        sortResp.setDate(key);
+        sortResp.setTrades(rList);
+        resps.add(sortResp);
+      });
+      Collections.sort(resps);
+    } catch (Exception e) {
+      return CommonResult.failed(e.getMessage());
+    }
+    return CommonResult.success(resps);
+  }
+
 
   @RequestMapping(value = "/listByAccount", method = RequestMethod.GET)
   @ResponseBody

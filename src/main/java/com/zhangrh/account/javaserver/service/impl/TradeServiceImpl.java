@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.zhangrh.account.javaserver.entity.Account;
+import com.zhangrh.account.javaserver.entity.BorrowLend;
 import com.zhangrh.account.javaserver.entity.Trade;
 import com.zhangrh.account.javaserver.entity.Transfer;
 import com.zhangrh.account.javaserver.entity.ViewTradeCateAccount;
 import com.zhangrh.account.javaserver.enums.TradeOperation;
 import com.zhangrh.account.javaserver.exception.Asserts;
 import com.zhangrh.account.javaserver.mapper.AccountMapper;
+import com.zhangrh.account.javaserver.mapper.BorrowLendMapper;
 import com.zhangrh.account.javaserver.mapper.TradeCateMapper;
 import com.zhangrh.account.javaserver.mapper.TradeMapper;
 import com.zhangrh.account.javaserver.mapper.TransferMapper;
@@ -48,6 +50,9 @@ public class TradeServiceImpl implements TradeService {
 
   @Autowired
   AccountMapper accountMapper;
+
+  @Autowired
+  BorrowLendMapper borrowLendMapper;
 
   @Override
   public void add(TradeBo tradeBo) {
@@ -261,6 +266,28 @@ public class TradeServiceImpl implements TradeService {
   }
 
   @Override
+  @Transactional
+  public void addRepaymentReceive(TradeBo tradeBo, long targetTradeId) {
+    try {
+      long tradeCateId = tradeCateMapper.queryOperate(tradeBo.getOperate().getCode()).getId();
+      tradeBo.setCreateAt(LocalDateTime.now());
+      tradeBo.setTradeCateId(tradeCateId);
+      Trade trade = tradeBo.toTrade();
+      tradeMapper.insert(trade);
+
+      // TODO: 应该统计当前目标的金额, 再对比下提供了多少钱, 是否超出, 导致不合理
+      BorrowLend borrowLend = new BorrowLend();
+      borrowLend.setCreateAt(LocalDateTime.now());
+      borrowLend.setBorrowLendTradeId(targetTradeId);
+      borrowLend.setRepaymentReceiveTradeId(trade.getId());
+      borrowLendMapper.insert(borrowLend);
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("借入借出记录添加失败");
+    }
+  }
+
+  @Override
   public void updateBorrowLend(TradeBo tradeBo) {
     try {
       long tradeCateId = tradeCateMapper.queryOperate(tradeBo.getOperate().getCode()).getId();
@@ -273,4 +300,23 @@ public class TradeServiceImpl implements TradeService {
     }
   }
 
+  @Override
+  @Transactional
+  public Map<String, List<TradeBo>> listByBorrowLendId(long borrowLendId) {
+    List<TradeBo> trades = new ArrayList<>();
+    try {
+      BorrowLend borrowLend = new BorrowLend();
+      borrowLend.setBorrowLendTradeId(borrowLendId);
+      List<BorrowLend> list = borrowLendMapper.queryBorrowLend(borrowLend);
+
+      for (BorrowLend borrowLend2 : list) {
+        ViewTradeCateAccount trade =  viewTradeCateAccountMapper.queryByTradeId(borrowLend2.getRepaymentReceiveTradeId());
+        trades.add(new TradeBo(trade));
+      }
+    } catch (Exception e) {
+      LOGGER.warn(e.getMessage());
+      Asserts.fail("查询借入借出记录列表失败");
+    }
+    return sortTradeByDate(trades);
+  }
 }

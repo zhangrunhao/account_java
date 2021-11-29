@@ -18,7 +18,7 @@ public interface BorrowLendMapper {
   @Insert("INSERT INTO borrow_lend (borrow_lend_trade_id, repayment_receive_trade_id, create_at) VALUES (#{p.borrowLendTradeId}, #{p.repaymentReceiveTradeId}, #{p.createAt})")
   int insert(@Param("p") BorrowLend borrowLend);
 
-  @Select("SELECT * FROM borrow_lend WHERE borrow_lend_trade_id=#{borrowLend.borrowLendTradeId}")
+  @Select("SELECT * FROM borrow_lend WHERE borrow_lend_trade_id=#{p.borrowLendTradeId}")
   @Results({
     @Result(property = "borrowLendTradeId", column = "borrow_lend_trade_id"),
     @Result(property = "repaymentReceiveTradeId", column = "repayment_receive_trade_id"),

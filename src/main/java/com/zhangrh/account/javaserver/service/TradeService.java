@@ -16,6 +16,8 @@ public interface TradeService {
 
   void addBorrowLend(TradeBo tradeBo);
 
+  void addRepaymentReceive(TradeBo tradeBo, long targetTradeId);
+
   void updateBorrowLend(TradeBo tradeBo);
 
   void update(TradeBo tradeBo);
@@ -29,6 +31,8 @@ public interface TradeService {
   List<TradeBo> list(AccountBo accountBo);
 
   List<TradeBo> list(TradeOperation tradeOperation);
+
+  Map<String, List<TradeBo>> listByBorrowLendId(long borrowLendId);
 
   Map<String, List<TradeBo>> listSortByDate(UserBo userBo);
 
