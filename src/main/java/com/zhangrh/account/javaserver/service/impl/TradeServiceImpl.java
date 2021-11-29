@@ -144,9 +144,26 @@ public class TradeServiceImpl implements TradeService {
         transfer.setDeleteAt(LocalDateTime.now());
         transferMapper.delete(transfer);
       } else if (operation == TradeOperation.Borrow || operation == TradeOperation.Lend) { // 借入 借出
-        // TODO: 如果删除 借出借出, 就删除所有相关的还款收款, 并删除下所有关联记录
+        trade.setDeleteAt(LocalDateTime.now());
+        tradeMapper.delete(trade);
+        BorrowLend borrowLend = new BorrowLend();
+        borrowLend.setBorrowLendTradeId(tradeBo.getTradeId());
+        List<BorrowLend> borrowLends = borrowLendMapper.queryBorrowLend(borrowLend);
+        for (BorrowLend borrowLend2 : borrowLends) {
+          Trade repayReceiveTrade = new Trade();
+          repayReceiveTrade.setDeleteAt(LocalDateTime.now());
+          repayReceiveTrade.setId(borrowLend2.getRepaymentReceiveTradeId());
+          tradeMapper.delete(repayReceiveTrade);
+        }
+        borrowLend.setDeleteAt(LocalDateTime.now());
+        borrowLendMapper.deleteByBorrowLend(borrowLend);
       } else if (operation == TradeOperation.Repayment || operation == TradeOperation.Receive) { // 还款 收款
-        // TODO: 如果删除 还款收款, 就顺带删除下关联记录
+        trade.setDeleteAt(LocalDateTime.now());
+        tradeMapper.delete(trade);
+        BorrowLend borrowLend = new BorrowLend();
+        borrowLend.setDeleteAt(LocalDateTime.now());
+        borrowLend.setRepaymentReceiveTradeId(trade.getId());
+        borrowLendMapper.deleteByRepaymentReceive(borrowLend);
       }
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
@@ -205,7 +222,8 @@ public class TradeServiceImpl implements TradeService {
   public List<TradeBo> list(TradeOperation tradeOperation) {
     List<TradeBo> tradeBos = new ArrayList<>();
     try {
-      List<ViewTradeCateAccount> trades = viewTradeCateAccountMapper.queryByOperation(UserInfoUtil.getUser().getId(), tradeOperation.getCode());
+      List<ViewTradeCateAccount> trades = viewTradeCateAccountMapper.queryByOperation(UserInfoUtil.getUser().getId(),
+          tradeOperation.getCode());
       for (ViewTradeCateAccount trade : trades) {
         if (trade.getDeleteAt() == null) {
           tradeBos.add(new TradeBo(trade));
@@ -217,7 +235,6 @@ public class TradeServiceImpl implements TradeService {
     }
     return tradeBos;
   }
-
 
   @Override
   public Map<String, List<TradeBo>> listSortByDate(TradeOperation tradeOperation) {
@@ -310,8 +327,13 @@ public class TradeServiceImpl implements TradeService {
       List<BorrowLend> list = borrowLendMapper.queryBorrowLend(borrowLend);
 
       for (BorrowLend borrowLend2 : list) {
-        ViewTradeCateAccount trade =  viewTradeCateAccountMapper.queryByTradeId(borrowLend2.getRepaymentReceiveTradeId());
-        trades.add(new TradeBo(trade));
+        if (borrowLend2.getDeleteAt() == null) {
+          ViewTradeCateAccount trade = viewTradeCateAccountMapper
+              .queryByTradeId(borrowLend2.getRepaymentReceiveTradeId());
+          if (trade.getDeleteAt() == null) {
+            trades.add(new TradeBo(trade));
+          }
+        }
       }
     } catch (Exception e) {
       LOGGER.warn(e.getMessage());
